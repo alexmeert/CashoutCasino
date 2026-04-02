@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://bwf71c3cph6wd"]
+
+[node name="AiEnemy" type="CharacterBody3D" unique_id=701028671]
