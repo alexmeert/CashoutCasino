@@ -1,12 +1,9 @@
 using Godot;
 using System;
-using CashoutCasino.Character;
+using CashoutCasino.Characters;
 
 namespace CashoutCasino.Weapon
 {
-    /// <summary>
-    /// Always-available melee arm. Zero cost, used for special interactions (slot machine, melee hits).
-    /// </summary>
     public partial class SlotMachineArm : MeleeWeapon
     {
         public override Projectile.Projectile Fire(Vector3 direction, Character owner)

@@ -1,28 +1,31 @@
 using Godot;
 using System;
 
-namespace CashoutCasino.Character
+namespace CashoutCasino.Characters
 {
-    /// <summary>
-    /// Player-specific character. Input handling, viewmodels and HUD hooks.
-    /// Implement `_Input` and map to `OnInputAction`.
-    /// </summary>
     public partial class Player : Character
     {
         private PlayerFirstPersonController fpController;
-        private UI.PlayerHUD playerHUD;
+        private CashoutCasino.UI.PlayerHUD playerHUD;
 
         public override void _Ready()
         {
             base._Ready();
             // Acquire references in scene tree in concrete scenes
+            fpController = GetNodeOrNull<PlayerFirstPersonController>("PlayerFirstPersonController");
+            if (fpController == null)
+            {
+                fpController = new PlayerFirstPersonController();
+                AddChild(fpController);
+                fpController.ownerCharacter = this;
+            }
         }
 
         public override void OnInputAction(string action)
         {
             // Map actions (move, jump, fire, reload, switch) to behavior.
             throw new NotImplementedException();
-        }
+        }   
 
         public override void RequestAIDecision()
         {
@@ -33,7 +36,6 @@ namespace CashoutCasino.Character
         public override void _Input(InputEvent @event)
         {
             // Translate Godot InputEvents into OnInputAction calls.
-            // Example: if Input.IsActionPressed("fire") call weaponManager.FireCurrentWeapon(...)
         }
     }
 }

@@ -1,12 +1,8 @@
 using Godot;
 using System;
 
-namespace CashoutCasino.Character
+namespace CashoutCasino.Characters
 {
-    /// <summary>
-    /// Abstract animation helper for characters. Both Player and AI can compose this.
-    /// Implement play hooks to drive AnimationTree/AnimationPlayer states.
-    /// </summary>
     public partial class CharacterAnimator : Node
     {
         public enum State { Idle, Walk, Run, Crouch, Jump, Land, Shoot, Reload, TakeDamage, Death }

@@ -1,14 +1,10 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using CashoutCasino.Character;
+using CashoutCasino.Characters;
 
 namespace CashoutCasino.Weapon
 {
-    /// <summary>
-    /// Holds the player's/AI's weapon inventory, handles switching, grenades and firing delegation.
-    /// Designed so adding a new weapon requires no changes to the manager logic.
-    /// </summary>
     public partial class WeaponManager : Node3D
     {
         [Export] public NodePath[] weaponSlots = new NodePath[4]; // designer assigns scenes

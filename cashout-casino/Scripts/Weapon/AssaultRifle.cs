@@ -1,6 +1,6 @@
 using Godot;
 using System;
-using CashoutCasino.Character;
+using CashoutCasino.Characters;
 using CashoutCasino.Projectile;
 
 namespace CashoutCasino.Weapon
@@ -12,7 +12,7 @@ namespace CashoutCasino.Weapon
         public override Projectile.Projectile Fire(Vector3 direction, Character owner)
         {
             base.Fire(direction, owner);
-            // Implement rifle hitscan logic here. Spawn tracer VFX via projectileScene if desired.
+            // Implement rifle hitscan logic here. Spawn tracer VFX via projectileScene
             throw new NotImplementedException();
         }
     }

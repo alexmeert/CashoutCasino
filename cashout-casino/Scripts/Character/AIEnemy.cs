@@ -1,11 +1,8 @@
 using Godot;
 using System;
 
-namespace CashoutCasino.Character
+namespace CashoutCasino.Characters
 {
-    /// <summary>
-    /// AI-controlled enemy. Uses AIController for decisions and pathfinding.
-    /// </summary>
     public partial class AIEnemy : Character
     {
         private AIController aiController;

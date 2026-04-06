@@ -1,3 +1,18 @@
 [gd_scene format=3 uid="uid://b2gumrt81pxck"]
 
+[ext_resource type="Script" uid="uid://bienbb2vl02pt" path="res://Scripts/Character/Player.cs" id="1_aesiy"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_aesiy"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aesiy"]
+
 [node name="Character" type="CharacterBody3D" unique_id=431421899]
+script = ExtResource("1_aesiy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=352958129]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_aesiy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=29160670]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9972944, 0)
+shape = SubResource("CapsuleShape3D_aesiy")

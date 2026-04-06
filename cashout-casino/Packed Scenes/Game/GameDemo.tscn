@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bm822iucvab14"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4rrko"]
+albedo_color = Color(0, 0, 0.1764706, 1)
+
+[node name="GameDemo" type="Node3D" unique_id=463075551]
+
+[node name="Floor" type="CSGBox3D" parent="." unique_id=1709916662]
+material_override = SubResource("StandardMaterial3D_4rrko")
+size = Vector3(50, 0.001, 50)
+
+[node name="Archway" type="CSGBox3D" parent="." unique_id=2113138942]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+operation = 1
+size = Vector3(2.1157227, 2.0428467, 2.9145508)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Archway" unique_id=699844229]
+transform = Transform3D(-1.2029183e-07, -1.98, 0, 2.7519562, -8.6548546e-08, 0, 0, 0, 2.2189062, -0.00053322315, -0.79684275, 0)
+operation = 2
+height = 1.0695953
+sides = 64
+
+[node name="Ramp" type="CSGBox3D" parent="." unique_id=1948407518]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1869998, 0.5, -6.691)
+size = Vector3(5, 1, 1)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Ramp" unique_id=1348324018]
+transform = Transform3D(0.9798236, 0.19986388, 0, -0.19986388, 0.9798236, 0, 0, 0, 1, 0.0058989525, 0.5316955, 0)
+operation = 2
+size = Vector3(5.571289, 1, 1)
+
+[node name="Walkway" type="CSGBox3D" parent="." unique_id=710328459]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8130002, 0.5, -6.691)
+size = Vector3(5, 1, 1)
+
+[node name="Wall" type="CSGBox3D" parent="." unique_id=773934103]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -14.813, 1, -6.691)
+size = Vector3(5, 2, 1)

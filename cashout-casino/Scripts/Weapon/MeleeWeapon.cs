@@ -1,6 +1,6 @@
 using Godot;
 using System;
-using CashoutCasino.Character;
+using CashoutCasino.Characters;
 
 namespace CashoutCasino.Weapon
 {

@@ -1,13 +1,8 @@
 using Godot;
 using System;
 
-namespace CashoutCasino.Character
+namespace CashoutCasino.Characters
 {
-    /// <summary>
-    /// Abstract base character used by both players and AI enemies.
-    /// Contains shared health, movement basics, currency management and signals.
-    /// Override virtual methods to change behavior; prefer composition for complex subsystems.
-    /// </summary>
     public abstract partial class Character : CharacterBody3D
     {
         [Export] public float maxHealth = 100f;
@@ -20,6 +15,12 @@ namespace CashoutCasino.Character
         protected CharacterAnimator animator;
         protected Weapon.WeaponManager weaponManager;
 
+        // Round/buff multipliers (modified by BuffDebuffSystem)
+        protected float moveSpeedMultiplier = 1f;
+        protected float damageMultiplier = 1f;
+        protected float fireRateMultiplier = 1f;
+        protected float ammoCostMultiplier = 1f;
+
         // Movement state
         protected Vector3 moveDirection = Vector3.Zero;
         protected bool isSprintingInput = false;
@@ -31,6 +32,7 @@ namespace CashoutCasino.Character
         public override void _Ready()
         {
             currentHealth = maxHealth;
+            AddToGroup("characters");
         }
 
         // Input/AI hooks
@@ -40,7 +42,7 @@ namespace CashoutCasino.Character
         // Core gameplay hooks
         public virtual void TakeDamage(float damage, Character attacker = null)
         {
-            currentHealth -= damage;
+            currentHealth -= damage * damageMultiplier;
             animator?.PlayTakeDamage();
             if (currentHealth <= 0)
             {
@@ -67,6 +69,23 @@ namespace CashoutCasino.Character
             EmitSignal(nameof(CurrencyChanged), currentCurrency);
         }
 
+        public virtual void ApplyRoundModifiers(Managers.BuffDebuffSystem.BuffDebuff modifiers)
+        {
+            if (modifiers == null) return;
+            moveSpeedMultiplier = modifiers.moveSpeedMultiplier;
+            damageMultiplier = modifiers.damageMultiplier;
+            fireRateMultiplier = modifiers.fireRateMultiplier;
+            ammoCostMultiplier = modifiers.ammoCostMultiplier;
+        }
+
+        public virtual void ClearRoundModifiers()
+        {
+            moveSpeedMultiplier = 1f;
+            damageMultiplier = 1f;
+            fireRateMultiplier = 1f;
+            ammoCostMultiplier = 1f;
+        }
+
         public virtual bool CanAffordAction(Economy.CurrencyEconomy.CostType costType)
         {
             return Economy.CurrencyEconomy.CanAffordAction(this, costType);
@@ -78,11 +97,30 @@ namespace CashoutCasino.Character
         {
             // Basic movement integration. Concrete classes should extend.
             Vector3 velocity = Velocity;
-            Vector3 desired = moveDirection * moveSpeed * (isSprintingInput ? sprintMultiplier : 1f) * (isCrouching ? crouchMultiplier : 1f);
-            velocity.x = desired.x;
-            velocity.z = desired.z;
+            float appliedSpeed = moveSpeed * moveSpeedMultiplier * (isSprintingInput ? sprintMultiplier : 1f) * (isCrouching ? crouchMultiplier : 1f);
+            Vector3 desired = moveDirection * appliedSpeed;
+            velocity.X = desired.X;
+            velocity.Z = desired.Z;
             Velocity = velocity;
             base._PhysicsProcess(delta);
+        }
+
+        [Rpc(MultiplayerApi.RpcMode.Authority, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+        public void ServerReceiveInput(Vector3 direction, bool isSprinting, uint seq)
+        {
+            if (!Multiplayer.IsServer()) return;
+            // Server-side: validate and apply movement
+            RequestMovement(direction, isSprinting);
+            // TODO: run server-side validation and authoritative physics steps
+        }
+
+        [Rpc(MultiplayerApi.RpcMode.Authority, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+        public void ServerApplyDamage(float damage, long attackerNetId)
+        {
+            if (!Multiplayer.IsServer()) return;
+            // Server applies damage and authoritative state changes
+            TakeDamage(damage, null);
+            // TODO: resolve attacker from net id and award currency/bounty
         }
     }
 }
