@@ -1,63 +1,91 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using CashoutCasino.Character;
 
 namespace CashoutCasino.Weapon
 {
-    /// <summary>
-    /// Holds the player's/AI's weapon inventory, handles switching, grenades and firing delegation.
-    /// Designed so adding a new weapon requires no changes to the manager logic.
-    /// </summary>
-    public partial class WeaponManager : Node3D
-    {
-        [Export] public NodePath[] weaponSlots = new NodePath[4]; // designer assigns scenes
-        protected List<Weapon> weapons = new List<Weapon>(4);
-        public int currentWeaponIndex = 0;
-        public int grenadeCount = 0;
+	public partial class WeaponManager : Node3D
+	{
+		protected List<Weapon> weapons = new List<Weapon>();
+		public int currentWeaponIndex = 0;
+		public int grenadeCount = 0;
 
-        public override void _Ready()
-        {
-            // Weapons should be instantiated by the scene & assigned to slots (factory pattern recommended)
-        }
+		public Camera3D PlayerCamera;
 
-        public Weapon GetCurrentWeapon()
-        {
-            if (weapons.Count == 0) return null;
-            return weapons[Math.Clamp(currentWeaponIndex, 0, weapons.Count - 1)];
-        }
+		public override void _Ready()
+		{
+			// Only collect weapons here. Do NOT reparent yet — PlayerCamera
+			// is assigned by Player._Ready which runs after this.
+			foreach (Node child in GetChildren())
+			{
+				if (child is Weapon w)
+				{
+					weapons.Add(w);
+					w.Visible = false;
+				}
+			}
+		}
 
-        public void SwitchWeapon(int slotIndex)
-        {
-            if (slotIndex < 0 || slotIndex >= weapons.Count) return;
-            currentWeaponIndex = slotIndex;
-            // Trigger animation/event for weapon switch
-        }
+		// Called by Player._Ready after it has assigned PlayerCamera.
+		public void Setup()
+		{
+			foreach (var w in weapons)
+				w.Reparent(PlayerCamera, false);
 
-        public void FireCurrentWeapon(Vector3 direction, Character owner)
-        {
-            var w = GetCurrentWeapon();
-            if (w == null) return;
-            if (!owner.CanAffordAction(Economy.CurrencyEconomy.CostType.Shoot)) return;
-            var proj = w.Fire(direction, owner);
-            Economy.CurrencyEconomy.ApplyCurrencyCost(owner, Economy.CurrencyEconomy.CostType.Shoot);
-        }
+			if (weapons.Count > 0)
+				EquipWeapon(0);
+		}
 
-        public void ReloadCurrentWeapon()
-        {
-            GetCurrentWeapon()?.Reload();
-        }
+		public Weapon GetCurrentWeapon()
+		{
+			if (weapons.Count == 0) return null;
+			return weapons[Math.Clamp(currentWeaponIndex, 0, weapons.Count - 1)];
+		}
 
-        public void ModifyGrenadeCount(int delta)
-        {
-            grenadeCount += delta;
-        }
+		public void SwitchWeapon(int slotIndex)
+		{
+			if (slotIndex < 0 || slotIndex >= weapons.Count) return;
+			weapons[currentWeaponIndex].Visible = false;
+			EquipWeapon(slotIndex);
+		}
 
-        public void UseGrenade(Vector3 direction, Character owner)
-        {
-            if (grenadeCount <= 0) return;
-            grenadeCount--;
-            // Find throwable weapon or use factory to spawn grenade projectile
-        }
-    }
+		private void EquipWeapon(int index)
+		{
+			currentWeaponIndex = index;
+			var w = weapons[index];
+			w.Visible = true;
+
+			if (w is HitscanWeapon hw)
+				hw.FireCamera = PlayerCamera;
+		}
+
+		public void FireCurrentWeapon(Vector3 direction, CashoutCasino.Character.Character owner)
+		{
+			var w = GetCurrentWeapon();
+			if (w == null) return;
+			if (!owner.CanAffordAction(Economy.CurrencyEconomy.CostType.Shoot)) return;
+			w.Fire(direction, owner);
+			Economy.CurrencyEconomy.ApplyCurrencyCost(owner, Economy.CurrencyEconomy.CostType.Shoot);
+		}
+
+		public void ReloadCurrentWeapon()
+		{
+			GetCurrentWeapon()?.Reload();
+		}
+
+		public void ModifyGrenadeCount(int delta)
+		{
+			grenadeCount += delta;
+		}
+
+		public int GetCurrentAmmo()
+		{
+			return GetCurrentWeapon()?.GetAmmoCount() ?? 0;
+		}
+
+		public string GetCurrentWeaponName()
+		{
+			return GetCurrentWeapon()?.Name ?? "None";
+		}
+	}
 }

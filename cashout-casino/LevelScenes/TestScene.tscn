@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://cqy0pqnry148c"]
+
+[ext_resource type="PackedScene" uid="uid://2xegm18wnx4d" path="res://Packed Scenes/Character/Player.tscn" id="1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(40, 1, 40)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1"]
+size = Vector3(40, 1, 40)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+albedo_color = Color(0.3, 0.3, 0.3, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2"]
+size = Vector3(1, 2, 1)
+
+[node name="TestScene" type="Node3D" unique_id=1488087813]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=120673588]
+transform = Transform3D(0.707, -0.5, 0.5, 0, 0.707, 0.707, -0.707, -0.5, 0.5, 0, 10, 0)
+light_energy = 1.2
+shadow_enabled = true
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=200865452]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=75862934]
+shape = SubResource("BoxShape3D_1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1670141010]
+mesh = SubResource("BoxMesh_1")
+surface_material_override/0 = SubResource("StandardMaterial3D_1")
+
+[node name="Player" parent="." unique_id=1104525572 instance=ExtResource("1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+jumpForce = 7.0
+
+[node name="Box1" type="MeshInstance3D" parent="." unique_id=1699160257]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -5)
+mesh = SubResource("BoxMesh_2")
+
+[node name="Box2" type="MeshInstance3D" parent="." unique_id=786038711]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 3)
+mesh = SubResource("BoxMesh_2")

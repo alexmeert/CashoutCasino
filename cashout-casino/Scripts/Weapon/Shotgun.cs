@@ -1,20 +1,44 @@
 using Godot;
 using System;
-using CashoutCasino.Character;
-using CashoutCasino.Projectile;
 
 namespace CashoutCasino.Weapon
 {
-    public partial class Shotgun : HitscanWeapon
-    {
-        [Export] public int pelletCount = 8;
-        [Export] public float spreadAngle = 12f;
+	public partial class Shotgun : HitscanWeapon
+	{
+		[Export] public int pelletCount = 8;
+		[Export] public float spreadAngle = 12f;
 
-        public override Projectile.Projectile Fire(Vector3 direction, Character owner)
-        {
-            base.Fire(direction, owner);
-            // Shotgun produces multiple pellets or dice projectiles; implement spread logic.
-            throw new NotImplementedException();
-        }
-    }
+		private RandomNumberGenerator rng = new RandomNumberGenerator();
+
+		public override void _Ready()
+		{
+			fireRate = 0.8f;
+			ammoCost = 3;
+			damagePerHit = 12f;
+			maxAmmo = 40;
+			base._Ready();
+			rng.Randomize();
+		}
+
+		public override Projectile.Projectile Fire(Vector3 direction, CashoutCasino.Character.Character owner)
+		{
+			if (!CanFire()) return null;
+			lastFireTime = Time.GetTicksMsec();
+			currentAmmo -= ammoCost;
+
+			float spreadRad = Mathf.DegToRad(spreadAngle);
+
+			for (int i = 0; i < pelletCount; i++)
+			{
+				Vector3 pelletDir = direction
+					.Rotated(Vector3.Up, rng.RandfRange(-spreadRad, spreadRad))
+					.Rotated(Vector3.Right, rng.RandfRange(-spreadRad, spreadRad))
+					.Normalized();
+
+				PerformRaycast(pelletDir, owner);
+			}
+
+			return null;
+		}
+	}
 }
