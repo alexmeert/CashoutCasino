@@ -15,6 +15,7 @@ namespace CashoutCasino.Weapon
 			ammoCost = 1;
 			damagePerHit = 10f;
 			maxAmmo = 100;
+			TrailColor = new Color(1f, 0.6f, 0.1f, 1f);
 			base._Ready();
 		}
 
@@ -22,7 +23,6 @@ namespace CashoutCasino.Weapon
 		{
 			if (!CanFire()) return null;
 			lastFireTime = Time.GetTicksMsec();
-			currentAmmo -= ammoCost;
 
 			float offsetAmount = 0.02f;
 			Vector3 offset = leftNext

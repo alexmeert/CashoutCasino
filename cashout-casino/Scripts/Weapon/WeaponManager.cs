@@ -14,8 +14,6 @@ namespace CashoutCasino.Weapon
 
 		public override void _Ready()
 		{
-			// Only collect weapons here. Do NOT reparent yet — PlayerCamera
-			// is assigned by Player._Ready which runs after this.
 			foreach (Node child in GetChildren())
 			{
 				if (child is Weapon w)
@@ -26,7 +24,6 @@ namespace CashoutCasino.Weapon
 			}
 		}
 
-		// Called by Player._Ready after it has assigned PlayerCamera.
 		public void Setup()
 		{
 			foreach (var w in weapons)
@@ -63,14 +60,30 @@ namespace CashoutCasino.Weapon
 		{
 			var w = GetCurrentWeapon();
 			if (w == null) return;
+
+			// Currency is the ammo — check it can afford before firing
 			if (!owner.CanAffordAction(Economy.CurrencyEconomy.CostType.Shoot)) return;
+
 			w.Fire(direction, owner);
+
+			// Deduct currency once per shot
 			Economy.CurrencyEconomy.ApplyCurrencyCost(owner, Economy.CurrencyEconomy.CostType.Shoot);
+
+			// Mirror player currency into all weapons so HUD stays accurate
+			SyncAmmoToAllWeapons(owner.GetCurrency());
+		}
+
+		// Called by Player after currency changes (kills, pickups, etc.)
+		// so the HUD ammo count always matches currency
+		public void SyncAmmoToAllWeapons(int currency)
+		{
+			foreach (var w in weapons)
+				w.currentAmmo = currency;
 		}
 
 		public void ReloadCurrentWeapon()
 		{
-			GetCurrentWeapon()?.Reload();
+			// No-op: ammo is currency, can't reload
 		}
 
 		public void ModifyGrenadeCount(int delta)

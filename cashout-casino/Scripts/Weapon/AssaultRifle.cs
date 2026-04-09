@@ -6,13 +6,14 @@ namespace CashoutCasino.Weapon
 	public partial class AssaultRifle : HitscanWeapon
 	{
 		[Export] public float recoil = 1.0f;
-
+ 
 		public override void _Ready()
 		{
 			fireRate = 0.1f;
 			ammoCost = 1;
 			damagePerHit = 15f;
 			maxAmmo = 100;
+			TrailColor = new Color(1f, 0.95f, 0.5f, 1f);
 			base._Ready();
 		}
 
@@ -20,7 +21,6 @@ namespace CashoutCasino.Weapon
 		{
 			if (!CanFire()) return null;
 			lastFireTime = Time.GetTicksMsec();
-			currentAmmo -= ammoCost;
 			PerformRaycast(direction, owner);
 			return null;
 		}

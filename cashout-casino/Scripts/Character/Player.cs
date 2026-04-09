@@ -10,6 +10,7 @@ namespace CashoutCasino.Character
 		[Export] public NodePath cameraHolderPath = "CameraHolder";
 		[Export] public NodePath collisionShapePath = "CollisionShape3D";
 		[Export] public NodePath weaponManagerPath = "WeaponManager";
+		[Export] public NodePath hudPath = "PlayerHUD";
 
 		[Export] public float jumpForce = 5f;
 		[Export] public float gravity = 20f;
@@ -20,6 +21,7 @@ namespace CashoutCasino.Character
 		private Node3D cameraHolder;
 		private CollisionShape3D collisionShape;
 		private Weapon.WeaponManager wm;
+		private UI.PlayerHud hud;
 
 		private float verticalVelocity = 0f;
 		private float cameraPitch = 0f;
@@ -36,14 +38,39 @@ namespace CashoutCasino.Character
 			if (HasNode(weaponManagerPath))
 			{
 				wm = GetNode<Weapon.WeaponManager>(weaponManagerPath);
-				// Assign camera first, then call Setup so Reparent has a valid target
 				wm.PlayerCamera = camera;
 				wm.Setup();
 				weaponManager = wm;
 			}
 
+			if (HasNode(hudPath))
+			{
+				var hudNode = GetNode(hudPath);
+				hud = hudNode as UI.PlayerHud;
+				if (hud != null)
+				{
+					hud.WeaponManager = wm;
+					CurrencyChanged += hud.OnCurrencyChanged;
+				}
+			}
+
 			currentCurrency = Economy.CurrencyEconomy.INITIAL_SPAWN;
+
+			// Sync initial currency into weapon ammo display
+			wm?.SyncAmmoToAllWeapons(currentCurrency);
+
+			// Also wire currency changes to keep weapon ammo display in sync
+			// for kills, pickups etc. that happen outside of firing
+			CurrencyChanged += OnCurrencyChangedSync;
+
+			hud?.OnCurrencyChanged(currentCurrency);
+
 			Input.MouseMode = Input.MouseModeEnum.Captured;
+		}
+
+		private void OnCurrencyChangedSync(int newAmount)
+		{
+			wm?.SyncAmmoToAllWeapons(newAmount);
 		}
 
 		public override void _Input(InputEvent @event)
@@ -104,9 +131,6 @@ namespace CashoutCasino.Character
 
 			if (Input.IsActionPressed("fire"))
 				wm.FireCurrentWeapon(-camera.GlobalTransform.Basis.Z, this);
-
-			if (Input.IsActionJustPressed("reload"))
-				wm.ReloadCurrentWeapon();
 
 			if (Input.IsActionJustPressed("weapon_1"))
 				wm.SwitchWeapon(0);

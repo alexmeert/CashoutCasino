@@ -16,6 +16,7 @@ namespace CashoutCasino.Weapon
 			ammoCost = 3;
 			damagePerHit = 12f;
 			maxAmmo = 40;
+			TrailColor = new Color(1f, 0.2f, 0.1f, 1f);
 			base._Ready();
 			rng.Randomize();
 		}
@@ -24,7 +25,6 @@ namespace CashoutCasino.Weapon
 		{
 			if (!CanFire()) return null;
 			lastFireTime = Time.GetTicksMsec();
-			currentAmmo -= ammoCost;
 
 			float spreadRad = Mathf.DegToRad(spreadAngle);
 

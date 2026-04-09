@@ -4,10 +4,6 @@ using CashoutCasino.Projectile;
 
 namespace CashoutCasino.Weapon
 {
-	/// <summary>
-	/// Abstract base class for all weapons. Handles ammo bookkeeping, cooldowns and owner binding.
-	/// Concrete weapons override Fire/Reload to implement behavior.
-	/// </summary>
 	public abstract partial class Weapon : Node3D
 	{
 		[Export] public float fireRate = 0.1f;
@@ -15,7 +11,8 @@ namespace CashoutCasino.Weapon
 		[Export] public int maxAmmo = 100;
 		[Export] public float damagePerHit = 10f;
 
-		protected int currentAmmo;
+		// Mirrors the player's currency for HUD display — not a separate resource
+		public int currentAmmo;
 		protected ulong lastFireTime = 0;
 		protected CashoutCasino.Character.Character owner;
 
@@ -24,15 +21,13 @@ namespace CashoutCasino.Weapon
 			throw new NotImplementedException();
 		}
 
-		public virtual void Reload()
-		{
-			currentAmmo = maxAmmo;
-		}
+		// Reload not meaningful when ammo = currency, kept as no-op for now
+		public virtual void Reload() { }
 
+		// Only checks fire rate — currency affordability is checked by WeaponManager
 		public bool CanFire()
 		{
 			ulong now = Time.GetTicksMsec();
-			if (currentAmmo < ammoCost) return false;
 			if (now - lastFireTime < (ulong)(fireRate * 1000.0)) return false;
 			return true;
 		}
