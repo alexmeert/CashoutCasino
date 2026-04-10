@@ -99,4 +99,4 @@ _portMaximum = 10000
 _portMinimum = 9000
 _localPort = 9001
 
-[connection signal="pressed" from="GenericLobbySystem/HBoxContainer/ColorRect/MarginContainer/LeftMenu/Button" to="GenericLobbySystem" method="CreatNewGameServer"]
+[connection signal="pressed" from="GenericLobbySystem/HBoxContainer/ColorRect/MarginContainer/LeftMenu/Button" to="GenericLobbySystem" method="CreateNewGameServer"]

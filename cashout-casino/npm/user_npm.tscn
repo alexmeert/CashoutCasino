@@ -73,9 +73,9 @@ tab_input_mode = false
 [node name="PlayerColorOption" type="Label" parent="." unique_id=796197188]
 layout_mode = 0
 offset_left = 55.0
-offset_top = 100.0
+offset_top = 80.0
 offset_right = 144.0
-offset_bottom = 123.0
+offset_bottom = 103.0
 text = "Color"
 label_settings = SubResource("LabelSettings_uohv0")
 
@@ -84,9 +84,9 @@ clip_contents = true
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 0
 offset_left = 55.0
-offset_top = 132.0
+offset_top = 108.0
 offset_right = 205.0
-offset_bottom = 182.0
+offset_bottom = 158.0
 allow_reselect = true
 item_count = 6
 popup/item_0/text = "Red"
@@ -105,9 +105,9 @@ popup/item_5/id = 6
 [node name="PlayerClassOption" type="Label" parent="." unique_id=1579269605]
 layout_mode = 0
 offset_left = 55.0
-offset_top = 200.0
+offset_top = 158.0
 offset_right = 144.0
-offset_bottom = 223.0
+offset_bottom = 181.0
 text = "Class"
 label_settings = SubResource("LabelSettings_uohv0")
 
@@ -116,9 +116,9 @@ clip_contents = true
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 0
 offset_left = 54.0
-offset_top = 236.0
+offset_top = 181.0
 offset_right = 204.0
-offset_bottom = 286.0
+offset_bottom = 231.0
 item_count = 3
 popup/item_0/text = "Assault Rifle"
 popup/item_0/id = 0
@@ -130,22 +130,37 @@ popup/item_2/id = 2
 [node name="ReadyCheckBox" type="CheckBox" parent="." unique_id=1625837649]
 layout_mode = 0
 offset_left = 180.0
-offset_top = 302.0
+offset_top = 242.0
 offset_right = 204.0
-offset_bottom = 326.0
+offset_bottom = 266.0
 
 [node name="ReadyLabel" type="Label" parent="." unique_id=1373019353]
 layout_mode = 0
-offset_left = 56.0
-offset_top = 302.0
-offset_right = 96.0
-offset_bottom = 325.0
+offset_left = 55.0
+offset_top = 242.0
+offset_right = 103.0
+offset_bottom = 265.0
 text = "Ready"
 label_settings = SubResource("LabelSettings_iahp6")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=921206016]
 replication_config = SubResource("SceneReplicationConfig_rrpvg")
 script = ExtResource("2_netid")
+
+[node name="PlayerDisconnectButton" type="Button" parent="." unique_id=401289050]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -29.0
+offset_right = 4.0
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Disconnect"
 
 [connection signal="text_changed" from="PlayerName" to="." method="OnNameChange"]
 [connection signal="item_selected" from="PlayerColorOptionButton" to="." method="OnTeamChange"]

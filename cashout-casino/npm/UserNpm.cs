@@ -115,13 +115,13 @@ public partial class UserNpm : Control
 				case 2: //Blue
 					MyBG.Color = new Color(0,0,1,1);
 					break;
-				case 4: //Yellow
+				case 3: //Yellow
 					MyBG.Color = new Color(1,1,0,1);
 					break;
-				case 5: //Purple
+				case 4: //Purple
 					MyBG.Color = new Color(1,0,1,1);
 					break;
-				case 6: //Orange
+				case 5: //Orange
 					MyBG.Color = new Color(1,0.5f,0,1);
 					break;
 				default:

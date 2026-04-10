@@ -357,7 +357,7 @@ public partial class LobbyStreamlined : Node
         }
     }
 
-    public void CreatNewGameServer()
+    public void CreateNewGameServer()
     {
         if (GameNameBox.Text.Length < 2)
         {
