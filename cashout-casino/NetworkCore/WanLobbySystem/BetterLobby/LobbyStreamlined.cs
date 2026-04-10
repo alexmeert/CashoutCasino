@@ -22,6 +22,9 @@ public partial class LobbyStreamlined : Node
     [Export]
     private int portOffset = 1;
 
+    [Export]
+    private int PortMaximum;
+
     public string LobbyServerIP;
     private bool UsePublic;
     private bool UsePrivate;
@@ -69,7 +72,6 @@ public partial class LobbyStreamlined : Node
             if (arg == "MASTER")
             {
                 CreateMasterServer();
-                
             }
             if(arg.Contains("GAMENAME"))
             {
@@ -181,7 +183,7 @@ public partial class LobbyStreamlined : Node
                 else
                 {
                     LobbyServerIP = "127.0.0.1";
-                    GD.Print("The Private IP failed to respond");
+                    GD.Print("The Florida Poly IP failed to respond");
                     UsePrivate = false;
                 }
             }
@@ -321,6 +323,10 @@ public partial class LobbyStreamlined : Node
                 proc.StartInfo.Arguments += "--headless GAMESERVER " +(PortMinimum+ portOffset) + " GAMENAME#"+n+" > "+n+".log";
                 GD.Print("Starting Game Server With: "+proc.StartInfo.Arguments);
                 portOffset++;
+                if(PortMinimum + portOffset>PortMaximum)
+                {
+                    portOffset = 0;
+                }
                 Rpc("UpdatePortOffset", portOffset);
                 proc.Start();
                 if (MaxGameTime > 0)
@@ -388,5 +394,3 @@ public partial class LobbyStreamlined : Node
         }
     }
 }
-
-
