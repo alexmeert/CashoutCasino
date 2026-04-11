@@ -149,9 +149,19 @@ public partial class GenericCore : Node
 	{
 		try
 		{
-			_localPort = int.Parse(s);
+			int parsedPort = int.Parse(s);
+			if (parsedPort <= 0 || parsedPort > 65535)
+			{
+				GD.PrintErr($"Invalid port: {parsedPort}");
+				return;
+			}
+			_localPort = parsedPort;
+			GD.Print($"[GenericCore] Port set to: {_localPort}");
 		}
-		catch (Exception ex) { }
+		catch (Exception ex) 
+		{ 
+			GD.PrintErr($"SetPort failed: {ex.Message}");
+		}
 	}
 	public void SetIP(string s)
 	{
@@ -285,6 +295,35 @@ public partial class GenericCore : Node
 		//_peers.Clear();
 		IsListening = true;
 		return Error.Ok;
+	}
+
+	public void ShutdownGame()
+	{
+		if (!IsServer)
+			return;
+
+		GD.Print("Server shutting down game...");
+		
+		// Stop listening for new connections
+		StopListening();
+		
+		// Notify all clients before closing
+		Rpc(MethodName.ClientShutdown);
+		
+		// Give clients time to process the shutdown message
+		GetTree().CreateTimer(0.1f).Timeout += () =>
+		{
+			// Now disconnect
+			DisconnectFromGame();
+		};
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false,
+		TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void ClientShutdown()
+	{
+		GD.Print("Received shutdown signal from server");
+		// Clients will automatically handle disconnection
 	}
 
 

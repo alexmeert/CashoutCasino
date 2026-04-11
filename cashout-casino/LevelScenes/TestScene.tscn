@@ -1,6 +1,20 @@
 [gd_scene format=3 uid="uid://cqy0pqnry148c"]
 
-[ext_resource type="PackedScene" uid="uid://2xegm18wnx4d" path="res://Packed Scenes/Character/Player.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://hxitfxl83nh7" path="res://Packed Scenes/Character/Player.tscn" id="1"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ernkg"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+energy_multiplier = 2.0
+
+[sub_resource type="Sky" id="Sky_d2gth"]
+sky_material = SubResource("ProceduralSkyMaterial_ernkg")
+
+[sub_resource type="Environment" id="Environment_7f6qr"]
+background_mode = 2
+sky = SubResource("Sky_d2gth")
+tonemap_mode = 2
+glow_enabled = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1"]
 size = Vector3(40, 1, 40)
@@ -15,6 +29,9 @@ albedo_color = Color(0.3, 0.3, 0.3, 1)
 size = Vector3(1, 2, 1)
 
 [node name="TestScene" type="Node3D" unique_id=1488087813]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=948161909]
+environment = SubResource("Environment_7f6qr")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=120673588]
 transform = Transform3D(0.707, -0.5, 0.5, 0, 0.707, 0.707, -0.707, -0.5, 0.5, 0, 10, 0)

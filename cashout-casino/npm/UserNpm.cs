@@ -1,33 +1,24 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class UserNpm : Control
 {
 	[Export] public string PlayerName;
 	[Export] public int Team;
-	[Export] public int Sprite;
+	[Export] public int WeaponClass;
 	
 	[Export] public TextEdit MyName;
 	[Export] public ColorRect MyBG;
-	[Export] public Color MyColor;
-	[Export] public OptionButton PlayerColor;
-	[Export] public OptionButton PlayerWeaponClass;
+	[Export] OptionButton TeamOptionButton;
+	[Export] OptionButton WeaponClassOptionButton;
 	[Export] Label ReadyLabel;
 	[Export] CheckBox ReadyCheckBox;
 	
 	[Export] public NetID MyNetID;
 	
 	[Export] public bool IsReady;
-
-	/// <summary>
-	/// True when this panel is for the local peer (editable name, color/class, ready).
-	/// </summary>
-	private bool IsLocalNpm()
-	{
-		if (MyNetID == null)
-			return false;
-		return MyNetID.IsLocal;
-	}
+	[Export] public Color MyColor;
 	
 	public override void _Ready()
 	{
@@ -38,30 +29,24 @@ public partial class UserNpm : Control
 	
 	public async void SlowStart()
 	{
-		if (MyNetID == null)
-		{
-			GD.PushError("UserNpm: assign MyNetID (NetID / MultiplayerSynchronizer on this instance).");
-			return;
-		}
-
-		await ToSignal(MyNetID, NetID.SignalName.NetIDReady);
-
+		//Wait in case the NetworkID didn't get set yet
 		await ToSignal(GetTree().CreateTimer(0.2f), SceneTreeTimer.SignalName.Timeout);
 		IsReady = false;
 		
 		// Set default color to white
 		MyColor = new Color(1, 1, 1, 1); // White
 		
-		if (!IsLocalNpm())
+		if(!MyNetID.IsLocal)
 		{
-			if (MyName != null)
-				MyName.Editable = false;
-			if (PlayerColor != null)
-				PlayerColor.Disabled = true;
-			if (PlayerWeaponClass != null)
-				PlayerWeaponClass.Disabled = true;
-			if (ReadyCheckBox != null)
-				ReadyCheckBox.Disabled = true;
+			//A player has just hidden their ItemsList and made they're name uneditable
+			MyName.Editable = false;
+			TeamOptionButton.Disabled = true;
+			WeaponClassOptionButton.Disabled = true;
+		}
+		else
+		{
+			// Update color availability for local player
+			UpdateAvailableColors();
 		}
 	}
 	
@@ -69,18 +54,14 @@ public partial class UserNpm : Control
 	{
 		base._Process(delta);
 		
-		if (!IsLocalNpm())
+		if(!MyNetID.IsLocal)
 		{
-			if (MyName != null)
-				MyName.Text = PlayerName;
-			if (MyBG != null)
-				MyBG.Color = MyColor;
-			if (PlayerColor != null)
-				PlayerColor.Selected = Team;
-			if (PlayerWeaponClass != null)
-				PlayerWeaponClass.Selected = Sprite;
-			if (ReadyCheckBox != null)
-				ReadyCheckBox.ButtonPressed = IsReady;
+			// Only update remote player's UI from synced data
+			MyName.Text = PlayerName;
+			MyBG.Color = MyColor;
+			TeamOptionButton.Selected = Team;
+			WeaponClassOptionButton.Selected = WeaponClass;
+			ReadyCheckBox.ButtonPressed = IsReady;
 		}
 	}
 
@@ -88,79 +69,145 @@ public partial class UserNpm : Control
 	public void OnTeamChange(int n)
 	{
 		GD.Print($"OnTeamChange called! n={n}");
-		//Only the local player should be asking the player to change their team
-		//Prevents the local player from controlling other players' teams
-		//Solves the issue of why player can control all PCs in a scene
-		if (IsLocalNpm())
+		if(MyNetID.IsLocal)
+		{
 			Rpc(MethodName.TeamChangeRPC, n);
+		}
 	}
 	
 	//Change the team of a player
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal=false, TransferMode=MultiplayerPeer.TransferModeEnum.Reliable)]
-	public void TeamChangeRPC(int n){
+	public void TeamChangeRPC(int n)
+	{
 		GD.Print($"TeamChangeRPC called with n={n}");
 		GD.Print($"IsServer: {GenericCore.Instance.IsServer}");
 		
 		if(GenericCore.Instance.IsServer)
 		{
-			//Why not use Multiplayer.IsServer? Because that'll work if it's not connected to anything
-			Team = n;
-			switch(n){
-				case 0: //Red
-					MyBG.Color = new Color(1,0,0,1);
-					break;
-				case 1: //Green
-					MyBG.Color = new Color(0,1,0,1);
-					break;
-				case 2: //Blue
-					MyBG.Color = new Color(0,0,1,1);
-					break;
-				case 3: //Yellow
-					MyBG.Color = new Color(1,1,0,1);
-					break;
-				case 4: //Purple
-					MyBG.Color = new Color(1,0,1,1);
-					break;
-				case 5: //Orange
-					MyBG.Color = new Color(1,0.5f,0,1);
-					break;
-				default:
-					break;
+			// Get the peer ID of who sent this RPC
+			int requestingPeerId = Multiplayer.GetRemoteSenderId();
+			
+			// Check if color is already taken by another player
+			if (IsColorTaken(n, requestingPeerId))
+			{
+				GD.Print($"Color {n} is already taken!");
+				return;
 			}
-			MyColor = MyBG.Color;
+
+			Team = n;
+			ApplyTeamColor(n);
 			GD.Print($"Server set MyColor to: {MyColor}");
-			//Should just synchronize across all players
-			//Don't forget to synchronize the color rect!
+			
+			// Tell all clients to update available colors
+			Rpc(MethodName.UpdateAvailableColors);
+		}
+	}
+
+	private bool IsColorTaken(int colorIndex, int requestingPeerId)
+	{
+		// Get all UserNpm panels in the scene
+		var npmPanels = GetTree().GetNodesInGroup("NPM");
+		
+		foreach (UserNpm npm in npmPanels)
+		{
+			// Skip the requesting player
+			if (npm.MyNetID.OwnerId == requestingPeerId)
+				continue;
+			
+			// Check if another player has this color
+			if (npm.Team == colorIndex)
+				return true;
+		}
+		
+		return false;
+	}
+	
+	private void ApplyTeamColor(int colorIndex)
+	{
+		switch(colorIndex)
+		{
+			case 0: //Red
+				MyBG.Color = new Color(1, 0, 0, 1);
+				break;
+			case 1: //Green
+				MyBG.Color = new Color(0, 1, 0, 1);
+				break;
+			case 2: //Blue
+				MyBG.Color = new Color(0, 0, 1, 1);
+				break;
+			case 3: //Yellow
+				MyBG.Color = new Color(1, 1, 0, 1);
+				break;
+			case 4: //Purple
+				MyBG.Color = new Color(1, 0, 1, 1);
+				break;
+			case 5: //Orange
+				MyBG.Color = new Color(1, 0.5f, 0, 1);
+				break;
+			default:
+				break;
+		}
+		MyColor = MyBG.Color;
+	}
+	
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal=true, TransferMode=MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void UpdateAvailableColors()
+	{
+		if (TeamOptionButton == null)
+			return;
+
+		// Get all taken colors
+		var takenColors = new HashSet<int>();
+		var npmPanels = GetTree().GetNodesInGroup("NPM");
+		
+		foreach (UserNpm npm in npmPanels)
+		{
+			takenColors.Add(npm.Team);
+		}
+
+		// Disable taken colors in the dropdown
+		for (int i = 0; i < TeamOptionButton.ItemCount; i++)
+		{
+			bool isTaken = takenColors.Contains(i);
+			TeamOptionButton.SetItemDisabled(i, isTaken);
 		}
 	}
 	
-	public void OnSpriteChange(int n)
+	public void OnWeaponClassChange(int n)
 	{
-		if (IsLocalNpm())
-			Rpc(MethodName.SpriteChangeRPC, n);
+		if(MyNetID.IsLocal)
+		{
+			GD.Print($"Remote player updating UI - WeaponClass value is: {WeaponClass}");
+			Rpc(MethodName.WeaponClassChangeRPC, n);
+		}
 	}
 	
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal=false, TransferMode=MultiplayerPeer.TransferModeEnum.Reliable)]
-	public void SpriteChangeRPC(int n){
+	public void WeaponClassChangeRPC(int n)
+	{
 		if(GenericCore.Instance.IsServer)
 		{
-			GD.Print($"Server setting Sprite from {Sprite} to {n}");
-			Sprite = n;
-			GD.Print($"Sprite is now: {Sprite}");
+			GD.Print($"Server setting WeaponClass from {WeaponClass} to {n}");
+			WeaponClass = n;
+			GD.Print($"WeaponClass is now: {WeaponClass}");
 		}
 	}
 	
 	//Ask the server to change our name
 	public void OnNameChange()
 	{
-		if (IsLocalNpm() && MyName != null)
+		if(MyNetID.IsLocal)
+		{
 			Rpc(MethodName.NameChangeRPC, MyName.Text);
+		}
 	}
 	
 	//Change the name of a client
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal=false, TransferMode=MultiplayerPeer.TransferModeEnum.Reliable)]
-	public void NameChangeRPC(string Text){
-		if(GenericCore.Instance.IsServer){
+	public void NameChangeRPC(string Text)
+	{
+		if(GenericCore.Instance.IsServer)
+		{
 			PlayerName = Text;
 			MyName.Text = Text;
 		}
@@ -169,8 +216,10 @@ public partial class UserNpm : Control
 	//Ask the server to change ready
 	public void OnIsReady(bool Change)
 	{
-		if (IsLocalNpm())
+		if(MyNetID.IsLocal)
+		{
 			Rpc(MethodName.IsReadyChange, Change);
+		}
 	}
 	
 	//Set the client to be ready

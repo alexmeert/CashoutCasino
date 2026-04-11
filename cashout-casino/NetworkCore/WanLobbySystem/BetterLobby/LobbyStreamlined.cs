@@ -3,14 +3,9 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
 [GlobalClass]
 public partial class LobbyStreamlined : Node
-    {
-
-
-
+{
     [Export]
     public string PublicIP;
     [Export]
@@ -35,10 +30,8 @@ public partial class LobbyStreamlined : Node
 
     public static LobbyStreamlined Instance;
 
-
     [Export]
     private MultiplayerSpawner AgentSpawner;
-
 
     private ENetMultiplayerPeer AgentPeer;
 
@@ -55,8 +48,7 @@ public partial class LobbyStreamlined : Node
     public float MaxGameTime = 30;
     
     public override void _Ready()
-        {
-        //D.Print(OS.GetExecutablePath());
+    {
         Instance = this;
         AgentAPI = MultiplayerApi.CreateDefaultInterface();
         GetTree().SetMultiplayer(AgentAPI, GetPath());
@@ -67,11 +59,16 @@ public partial class LobbyStreamlined : Node
         string[] args = OS.GetCmdlineArgs();
         AgentSpawner.SpawnFunction = new Callable(this, nameof(SpawnAgent));
         bool isGameServer = false;
+        bool isMasterServer = false;
+        
         foreach (string arg in args)
         {
             if (arg == "MASTER")
             {
+                GD.Print("[LobbyStreamlined] Creating MASTER server");
+                isMasterServer = true;
                 CreateMasterServer();
+                break;  // Exit loop after finding MASTER
             }
             if(arg.Contains("GAMENAME"))
             {
@@ -80,37 +77,41 @@ public partial class LobbyStreamlined : Node
             }
         }
 
-        if (!IsWanLobbyConnected)
+        if (!IsWanLobbyConnected && !isMasterServer)
         {
-            GD.Print("Connecting the agent to the master!");
-            //This will find the correct IP address
-            //Then connect to the lobby master.
+            GD.Print("[LobbyStreamlined] Connecting the agent to the master!");
             if (!isGameServer)
             {
-                GD.Print("Connecting agent to master server using IP Ping");
+                GD.Print("[LobbyStreamlined] Connecting agent to master server using IP Ping");
                 CheckIPAddresses();
             }
             else
             {
-                GD.Print("Connecting game server to local master.");
+                GD.Print("[LobbyStreamlined] Connecting game server to local master.");
                 LobbyServerIP = "127.0.0.1";
                 JoinLobbyServer();
             }
         }
-
-
-
+        else if (isMasterServer)
+        {
+            GD.Print("[LobbyStreamlined] Master server created, not connecting as client");
+        }
     }
 
     private void OnPeerConnected(long id)
     {
+        GD.Print($"[LobbyStreamlined] Peer connected: {id}");
+        
         if (IsWanLobbyServer)
         {
+            GD.Print($"[LobbyStreamlined] Spawning Agent for peer {id}");
             AgentSpawner.Spawn(id);
-            GD.Print("Spawning Agent");
-            Rpc("UpdatePortOffset", portOffset);
         }
-}
+        else
+        {
+            GD.Print($"[LobbyStreamlined] Client connected (not server, no spawn)");
+        }
+    }
 
     private Node SpawnAgent(Variant d)
     {
@@ -123,30 +124,27 @@ public partial class LobbyStreamlined : Node
 
     private void OnPeerDisconnected(long id)
     {
-        GD.Print($"Agent disconnected: {id}");
+        GD.Print($"[LobbyStreamlined] Peer disconnected: {id}");
 
-        // Only the server should clean up
         if (!IsWanLobbyServer)
             return;
 
-        // Get the container where agents are spawned
         Node spawnRoot = GetNode(AgentSpawner.GetPath() + "/" + AgentSpawner.SpawnPath);
 
         foreach (Node child in spawnRoot.GetChildren())
         {
             if (child.GetMultiplayerAuthority() == id)
             {
-                GD.Print($"Freeing agent owned by {id}");
+                GD.Print($"[LobbyStreamlined] Freeing agent owned by {id}");
                 child.QueueFree();
             }
         }
     }
+
     public async Task CheckIPAddresses()
     {
-
-        GD.Print("Attempting to connect to public IP.");
-        //Ping Public Ip address to see if we are external..........
-        GD.Print("Trying Public IP Address: " + PublicIP.ToString());
+        GD.Print("[LobbyStreamlined] Attempting to connect to public IP.");
+        GD.Print("[LobbyStreamlined] Trying Public IP Address: " + PublicIP.ToString());
         System.Net.NetworkInformation.Ping ping = new System.Net.NetworkInformation.Ping();
         System.Net.NetworkInformation.PingOptions po = new System.Net.NetworkInformation.PingOptions();
         po.DontFragment = true;
@@ -155,35 +153,33 @@ public partial class LobbyStreamlined : Node
         int timeout = 500;
         System.Net.NetworkInformation.PingReply pr = ping.Send(PublicIP, timeout, buffer, po);
         await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
-        GD.Print("Ping Return: " + pr.Status.ToString());
+        GD.Print("[LobbyStreamlined] Ping Return: " + pr.Status.ToString());
         if (pr.Status == System.Net.NetworkInformation.IPStatus.Success)
         {
-            GD.Print("The public IP responded with a roundtrip time of: " + pr.RoundtripTime);
+            GD.Print("[LobbyStreamlined] The public IP responded with a roundtrip time of: " + pr.RoundtripTime);
             UsePublic = true;
             LobbyServerIP = PublicIP;
-          
         }
         else
         {
-            GD.Print("The public IP failed to respond");
+            GD.Print("[LobbyStreamlined] The public IP failed to respond");
        
-        //-------------------If not public, ping Florida Poly for internal access.
-        if (!UsePublic)
-        {
-                GD.Print("Trying Private Address: " + PrivateIP.ToString());
+            if (!UsePublic)
+            {
+                GD.Print("[LobbyStreamlined] Trying Private Address: " + PrivateIP.ToString());
                 pr = ping.Send(PrivateIP, timeout, buffer, po);
                 await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
-                GD.Print("Ping Return: " + pr.Status.ToString());
+                GD.Print("[LobbyStreamlined] Ping Return: " + pr.Status.ToString());
                 if (pr.Status.ToString() == "Success")
                 {
-                    GD.Print("The Private IP responded with a roundtrip time of: " + pr.RoundtripTime);
+                    GD.Print("[LobbyStreamlined] The Private IP responded with a roundtrip time of: " + pr.RoundtripTime);
                     UsePrivate = true;
                     LobbyServerIP = PrivateIP;
                 }
                 else
                 {
                     LobbyServerIP = "127.0.0.1";
-                    GD.Print("The Florida Poly IP failed to respond");
+                    GD.Print("[LobbyStreamlined] The Private IP failed to respond");
                     UsePrivate = false;
                 }
             }
@@ -195,10 +191,9 @@ public partial class LobbyStreamlined : Node
         }
     }
 
-
     private Error JoinLobbyServer()
     {
-        GD.Print($"LOBBY Attempting to connect to {LobbyServerIP}:{PortMinimum}");
+        GD.Print($"[LobbyStreamlined] Attempting to connect to {LobbyServerIP}:{PortMinimum}");
         AgentPeer = new ENetMultiplayerPeer();
 
         Error error = AgentPeer.CreateClient(LobbyServerIP, PortMinimum);
@@ -206,59 +201,61 @@ public partial class LobbyStreamlined : Node
         if (error != Error.Ok)
             return error;
 
-        GD.Print("Connected to MASTER");
+        GD.Print("[LobbyStreamlined] Connected to MASTER");
 
         IsWanLobbyConnected = true;
         return Error.Ok;
     }
+
     public Error CreateMasterServer()
     {
-        GD.Print("Attempting to create lobby system at port: " + PortMinimum);
+        GD.Print("[LobbyStreamlined] Attempting to create lobby system at port: " + PortMinimum);
         AgentPeer = new ENetMultiplayerPeer();
 
         Error err = AgentPeer.CreateServer(PortMinimum, 1000);
         AgentAPI.MultiplayerPeer = AgentPeer;
         if (err != Error.Ok)
         {
-            GD.Print(err.ToString());
+            GD.Print("[LobbyStreamlined] " + err.ToString());
             return err;
         }
-        GD.Print("Master Server Created!");
+        GD.Print("[LobbyStreamlined] Master Server Created!");
         IsWanLobbyConnected = true;
         IsWanLobbyServer = true;
-        //GameNameBox.Hide();
-        //CreateNewGame.Hide();
         return Error.Ok;
     }
 
     public override void _Process(double delta)
-        {   
-            base._Process(delta);
-            AgentAPI.Poll();
+    {
+        base._Process(delta);
+        AgentAPI.Poll();
+        
         if (!IsWanLobbyServer)
-            { UpdateVBoxChildren((VBoxContainer)GetNode(AgentSpawner.GetPath() + "/" + AgentSpawner.SpawnPath)); }
+        {
+            UpdateVBoxChildren((VBoxContainer)GetNode(AgentSpawner.GetPath() + "/" + AgentSpawner.SpawnPath));
+        }
        
         if (GenericCore.Instance.IsGenericCoreConnected || IsWanLobbyServer)
+        {
+            ((Control)GetChild(0)).Visible = false;
+            foreach(Node n in GenericCore.Instance.GetChildren())
             {
-                ((Control)GetChild(0)).Visible = false;
-                foreach(Node n in GenericCore.Instance.GetChildren())
+                if (n is CanvasItem canvasItem)
                 {
-                    if (n is CanvasItem canvasItem)
-                    {
-                        canvasItem.Visible = true;
-                    }
-                    else if (n is Node3D node3D)
-                    {
-                        node3D.Visible = true;
-                    }
-                    else if (n is CanvasLayer canvasLayer)
-                    {
-                        canvasLayer.Visible = true;
-                    }
+                    canvasItem.Visible = true;
+                }
+                else if (n is Node3D node3D)
+                {
+                    node3D.Visible = true;
+                }
+                else if (n is CanvasLayer canvasLayer)
+                {
+                    canvasLayer.Visible = true;
                 }
             }
+        }
         else
-            {
+        {
             ((Control)GetChild(0)).Visible = true;
             foreach (Node n in GenericCore.Instance.GetChildren())
             {
@@ -286,28 +283,21 @@ public partial class LobbyStreamlined : Node
             {
                 Control child = (Control)c;
 
-                // Find the button inside the child (assume it's direct child)
                 Button btn = child.GetNode<Button>("Button");
 
                 if (btn != null && btn.Visible)
                 {
-                    // Make the child 32 pixels high
-                    //child.CustomMinimumSize = new Vector2(0, 32);
-                    //child.Visible = true;
+                    // Visible button
                 }
                 else
                 {
-                    // Collapse the child
-                    //child.CustomMinimumSize = Vector2.Zero;
-                    //child.Visible = false; // optional if you want full collapse
+                    // Hidden button
                 }
             }
         }
 
-        // Force the container to recalc layout
         vbox.QueueSort();
     }
-
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     public void ProcessSpawnServerSide(String n)
@@ -318,12 +308,15 @@ public partial class LobbyStreamlined : Node
             {
                 System.Diagnostics.Process proc = new System.Diagnostics.Process();
                 proc.StartInfo.UseShellExecute = true;     
-                string[] args = OS.GetCmdlineArgs(); ;
+                string[] args = OS.GetCmdlineArgs();
                 proc.StartInfo.FileName = OS.GetExecutablePath();
-                proc.StartInfo.Arguments += "--headless GAMESERVER " +(PortMinimum+ portOffset) + " GAMENAME#"+n+" > "+n+".log";
-                GD.Print("Starting Game Server With: "+proc.StartInfo.Arguments);
+                
+                string sanitizedName = SanitizeGameName(n);
+                proc.StartInfo.Arguments += $"--headless GAMESERVER {PortMinimum + portOffset} GAMENAME#{sanitizedName} > {sanitizedName}.log";
+                
+                GD.Print("[LobbyStreamlined] Starting Game Server With: " + proc.StartInfo.Arguments);
                 portOffset++;
-                if(PortMinimum + portOffset>PortMaximum)
+                if(PortMinimum + portOffset > PortMaximum)
                 {
                     portOffset = 0;
                 }
@@ -336,10 +329,24 @@ public partial class LobbyStreamlined : Node
             }
             catch (System.Exception e)
             {
-                GD.Print("EXCEPTION - in creating a game!!! - " + e.ToString());
+                GD.Print("[LobbyStreamlined] EXCEPTION - in creating a game!!! - " + e.ToString());
             }
         }
     }
+
+    private string SanitizeGameName(string name)
+    {
+        string valid = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+        var result = new System.Text.StringBuilder();
+        
+        foreach (char c in name)
+        {
+            result.Append(valid.Contains(c) ? c : '-');
+        }
+        
+        return result.ToString();
+    }
+
     [Rpc(MultiplayerApi.RpcMode.Authority, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     public void UpdatePortOffset(int p)
     {
@@ -348,6 +355,7 @@ public partial class LobbyStreamlined : Node
             portOffset = p;
         }
     }
+
     public async void GameMonitor(System.Diagnostics.Process proc)
     {
         await ToSignal(GetTree().CreateTimer(MaxGameTime), SceneTreeTimer.SignalName.Timeout);
@@ -363,34 +371,46 @@ public partial class LobbyStreamlined : Node
         {
             return;
         }
-        int currentPort = portOffset;
         
-        RpcId(1, "ProcessSpawnServerSide", GameNameBox.Text.Replace(' ','-').Replace('\n','-').Replace('#','-'));
+        RpcId(1, "ProcessSpawnServerSide", GameNameBox.Text);
         WaitForGameToStart(portOffset);
     }
+
     public async void WaitForGameToStart(int p)
     {
+        GD.Print($"[LobbyStreamlined] Waiting for game to start on port {p + PortMinimum}");
+        
         GenericCore.Instance.SetPort((p + PortMinimum).ToString());
         GenericCore.Instance.SetIP(LobbyServerIP);
-        while (p == portOffset)
+        
+        GD.Print($"[LobbyStreamlined] Set connection to {LobbyServerIP}:{p + PortMinimum}");
+        
+        int waitCount = 0;
+        while (p == portOffset && waitCount < 50)
         {
-            await ToSignal(GetTree().CreateTimer(.1f), SceneTreeTimer.SignalName.Timeout);
+            await ToSignal(GetTree().CreateTimer(0.1f), SceneTreeTimer.SignalName.Timeout);
+            waitCount++;
         }
+        
+        if (waitCount >= 50)
+        {
+            GD.PrintErr($"[LobbyStreamlined] Timeout waiting for game server on port {p + PortMinimum}");
+        }
+        
         await ToSignal(GetTree().CreateTimer(2.5f), SceneTreeTimer.SignalName.Timeout);
+        
+        GD.Print($"[LobbyStreamlined] Attempting to join game at {LobbyServerIP}:{GenericCore.Instance.GetPort()}");
         GenericCore.Instance.JoinGame();
     }
+
     public void DisconnectFromLobbySystem()
     {
         if (AgentAPI.MultiplayerPeer != null)
         {
-            GD.Print("Disconnecting from ENet session<Lobby>");
+            GD.Print("[LobbyStreamlined] Disconnecting from ENet session<Lobby>");
 
-            // Close the connection
             AgentAPI.MultiplayerPeer.Close();
-
-            // Remove the peer from the Multiplayer API
             AgentAPI.MultiplayerPeer = null;
-
         }
     }
 }

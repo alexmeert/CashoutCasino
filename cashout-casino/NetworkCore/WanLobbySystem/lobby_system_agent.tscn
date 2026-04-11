@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://cs7s4kaurdy11"]
+[gd_scene format=3 uid="uid://cs7s4kaurdy11"]
 
 [ext_resource type="Script" uid="uid://b3bmwbi4tj8it" path="res://NetworkCore/WanLobbySystem/LobbySystemAgent.cs" id="1_5ay6b"]
 
@@ -22,7 +22,7 @@ properties/5/path = NodePath(".:IsGameServer")
 properties/5/spawn = true
 properties/5/replication_mode = 1
 
-[node name="LobbySystemAgent" type="Control" node_paths=PackedStringArray("myId", "GameButton")]
+[node name="LobbySystemAgent" type="Control" unique_id=1941833525 node_paths=PackedStringArray("myId", "GameButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -33,10 +33,10 @@ script = ExtResource("1_5ay6b")
 myId = NodePath("MultiplayerSynchronizer")
 GameButton = NodePath("Button")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=431240868]
 replication_config = SubResource("SceneReplicationConfig_i7q6c")
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="." unique_id=1840169933]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.187

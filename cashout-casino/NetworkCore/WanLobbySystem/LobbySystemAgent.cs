@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Text;
 
 public partial class LobbySystemAgent : Control
 {
@@ -33,6 +32,16 @@ public partial class LobbySystemAgent : Control
 
     public async void SlowStart()
     {
+        // Wait for multiplayer to be ready
+        await ToSignal(GetTree().CreateTimer(0.2f), SceneTreeTimer.SignalName.Timeout);
+        
+        // Check if multiplayer is active before calling IsMultiplayerAuthority
+        if (Multiplayer.MultiplayerPeer == null)
+        {
+            GD.Print("Multiplayer not ready yet");
+            return;
+        }
+
         if (IsMultiplayerAuthority())
         {
             string[] args = OS.GetCmdlineArgs();
@@ -53,18 +62,14 @@ public partial class LobbySystemAgent : Control
             
             gameName = LobbyStreamlined.Instance.tempGameName;
             
-            //This will happen automatically if it is a server.
             GD.Print("Is this a game server: " + GenericCore.Instance.IsServer);
             if (GenericCore.Instance.IsServer)
             {
                 GD.Print("Setting the button to visible!");
-                //GameButton.Hide();
-                //   RpcId(1, "SetGameServer", false);
                 IsGameServer = true;
             }
             else
             {
-                //RpcId(1, "SetGameServer", true);
                 IsGameServer = false;
             }
             GameButton.Visible = IsGameServer;
@@ -72,29 +77,38 @@ public partial class LobbySystemAgent : Control
             numPlayers = GenericCore.Instance._peers.Count;
         }
     }
-    
 
     public override void _Process(double delta)
     {
         base._Process(delta);
-        GameButton.Text = gameName +" ("+numPlayers+")";
-        if (IsMultiplayerAuthority())
+        
+        // Add null check for multiplayer peer
+        if (Multiplayer.MultiplayerPeer == null)
+            return;
+
+        // Add try-catch to handle the case where multiplayer becomes inactive mid-process
+        try
         {
-            numPlayers = GenericCore.Instance._peers.Count-1;
+            if (!IsMultiplayerAuthority())
+                return;
         }
+        catch (InvalidOperationException)
+        {
+            // Multiplayer became inactive, skip this frame
+            return;
+        }
+
+        GameButton.Text = gameName + " (" + numPlayers + ")";
+        numPlayers = GenericCore.Instance._peers.Count - 1;
     }
 
     public void Click()
     {
-        if(GenericCore.Instance.IsGenericCoreConnected == false)
+        if (GenericCore.Instance.IsGenericCoreConnected == false)
         {
             GenericCore.Instance.SetPort(gamePort.ToString());
             GenericCore.Instance.SetIP(LobbyStreamlined.Instance.LobbyServerIP.ToString());
             GenericCore.Instance.JoinGame();
-
         }
     }
-
-
-
 }

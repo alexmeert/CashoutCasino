@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bs3rqo5o8vn1x" path="res://npm/UserNpm.cs" id="1_a7naa"]
 [ext_resource type="Script" uid="uid://yo2i7m3b6pph" path="res://NetworkCore/NetID.cs" id="2_netid"]
+[ext_resource type="PackedScene" uid="uid://ksgbhckwjuob" path="res://npm/game_lobby_agent.tscn" id="3_0s47f"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_uohv0"]
 font_color = Color(0, 0, 0, 1)
@@ -30,9 +31,15 @@ properties/5/spawn = true
 properties/5/replication_mode = 1
 properties/6/path = NodePath("ColorRect:color")
 properties/6/spawn = true
-properties/6/replication_mode = 1
+properties/6/replication_mode = 2
+properties/7/path = NodePath(".:Team")
+properties/7/spawn = true
+properties/7/replication_mode = 1
+properties/8/path = NodePath(".:WeaponClass")
+properties/8/spawn = true
+properties/8/replication_mode = 2
 
-[node name="UserNPM" type="Control" unique_id=2011520075 node_paths=PackedStringArray("MyName", "MyBG", "PlayerColor", "PlayerWeaponClass", "ReadyLabel", "ReadyCheckBox", "MyNetID")]
+[node name="UserNPM" type="Control" unique_id=2011520075 node_paths=PackedStringArray("MyName", "MyBG", "TeamOptionButton", "WeaponClassOptionButton", "ReadyLabel", "ReadyCheckBox", "MyNetID")]
 custom_minimum_size = Vector2(256, 341)
 layout_mode = 3
 anchors_preset = 15
@@ -43,10 +50,12 @@ offset_bottom = -307.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_a7naa")
+Team = -1
+WeaponClass = -1
 MyName = NodePath("PlayerName")
 MyBG = NodePath("ColorRect")
-PlayerColor = NodePath("PlayerColorOptionButton")
-PlayerWeaponClass = NodePath("PlayerClassOptionButton")
+TeamOptionButton = NodePath("PlayerColorOptionButton")
+WeaponClassOptionButton = NodePath("PlayerClassOptionButton")
 ReadyLabel = NodePath("ReadyLabel")
 ReadyCheckBox = NodePath("ReadyCheckBox")
 MyNetID = NodePath("MultiplayerSynchronizer")
@@ -147,20 +156,31 @@ label_settings = SubResource("LabelSettings_iahp6")
 replication_config = SubResource("SceneReplicationConfig_rrpvg")
 script = ExtResource("2_netid")
 
-[node name="PlayerDisconnectButton" type="Button" parent="." unique_id=401289050]
+[node name="GameLobbyAgent" parent="." unique_id=773831672 node_paths=PackedStringArray("GameInfoLabel") instance=ExtResource("3_0s47f")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+offset_left = -45.0
+offset_top = -53.0
+offset_right = -45.0
+offset_bottom = -53.0
+grow_vertical = 0
+GameInfoLabel = NodePath("../GameInfo")
+
+[node name="GameInfo" type="Label" parent="." unique_id=1731052003]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -4.0
-offset_top = -29.0
-offset_right = 4.0
-offset_bottom = -21.0
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
 grow_horizontal = 2
 grow_vertical = 0
-text = "Disconnect"
 
 [connection signal="text_changed" from="PlayerName" to="." method="OnNameChange"]
 [connection signal="item_selected" from="PlayerColorOptionButton" to="." method="OnTeamChange"]

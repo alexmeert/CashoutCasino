@@ -95,8 +95,6 @@ SpawnInexZeroOnConnect = true
 [node name="GameRoot" type="Node" parent="." unique_id=269623982]
 
 [node name="GameLobby" parent="GameRoot" unique_id=950198046 instance=ExtResource("3_nacce")]
-_portMaximum = 10000
-_portMinimum = 9000
 _localPort = 9001
 
 [connection signal="pressed" from="GenericLobbySystem/HBoxContainer/ColorRect/MarginContainer/LeftMenu/Button" to="GenericLobbySystem" method="CreateNewGameServer"]

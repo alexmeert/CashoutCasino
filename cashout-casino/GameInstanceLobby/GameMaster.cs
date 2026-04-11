@@ -8,18 +8,12 @@ public partial class GameMaster : Node
 	[Export] public NetworkCore NpmSpawner;
 	[Export] public NetworkCore LevelSpawner;
 
-
-	[Export] public OptionButton LevelDropdown;
-
 	
 	[Export] public int SelectedLevel = 0;
 
 	public override void _Ready()
 	{
 		base._Ready();
-
-		if (LevelDropdown != null)
-			LevelDropdown.Visible = false;
 
 		ResolveNpmSpawner();
 		// Player Lobby loads after peers are already connected; ClientConnected will not fire again for them.
@@ -85,9 +79,6 @@ public partial class GameMaster : Node
 			CallDeferred(new StringName(nameof(SpawnNpmsForAlreadyConnectedPeers)));
 		}
 
-		// Show the level dropdown right away for the host.
-		if (LevelDropdown != null)
-			LevelDropdown.Visible = true;
 
 		GameCycle();
 	}
@@ -189,10 +180,6 @@ public partial class GameMaster : Node
 				npm.Visible = false;
 			}
 		}
-
-		// Hide the level dropdown too (no longer needed mid-game).
-		if (LevelDropdown != null)
-			LevelDropdown.Visible = false;
 
 		// Store the level so Phase 2 can use it when spawning.
 		SelectedLevel = levelIndex;

@@ -6,9 +6,9 @@
 
 [node name="GameLobby" type="Node" unique_id=950198046]
 script = ExtResource("1_kxm1j")
-_portMaximum = 7000
-_portMinimum = 7010
-_localPort = 7000
+_portMaximum = 10000
+_portMinimum = 9000
+_localPort = 9000
 _serverAddress = "127.0.0.1"
 _maxConnections = 4
 
@@ -31,8 +31,9 @@ _spawnable_scenes = PackedStringArray("uid://d04vhwk4mdveb")
 spawn_path = NodePath("..")
 script = ExtResource("2_372jb")
 
-[node name="GameMaster" type="Node" parent="." unique_id=1286514242]
+[node name="GameMaster" type="Node" parent="." unique_id=1286514242 node_paths=PackedStringArray("NpmSpawner")]
 script = ExtResource("2_wmob6")
+NpmSpawner = NodePath("../CanvasLayer/Control/GridContainer/MultiplayerSpawner")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1272687329]
 anchors_preset = 15
