@@ -37,7 +37,7 @@ properties/7/spawn = true
 properties/7/replication_mode = 1
 properties/8/path = NodePath(".:WeaponClass")
 properties/8/spawn = true
-properties/8/replication_mode = 2
+properties/8/replication_mode = 1
 
 [node name="UserNPM" type="Control" unique_id=2011520075 node_paths=PackedStringArray("MyName", "MyBG", "TeamOptionButton", "WeaponClassOptionButton", "ReadyLabel", "ReadyCheckBox", "MyNetID")]
 custom_minimum_size = Vector2(256, 341)
@@ -156,7 +156,7 @@ label_settings = SubResource("LabelSettings_iahp6")
 replication_config = SubResource("SceneReplicationConfig_rrpvg")
 script = ExtResource("2_netid")
 
-[node name="GameLobbyAgent" parent="." unique_id=773831672 node_paths=PackedStringArray("GameInfoLabel") instance=ExtResource("3_0s47f")]
+[node name="GameLobbyAgent" parent="." unique_id=773831672 node_paths=PackedStringArray("GameInfoLabel", "MyNetID") instance=ExtResource("3_0s47f")]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -168,6 +168,7 @@ offset_right = -45.0
 offset_bottom = -53.0
 grow_vertical = 0
 GameInfoLabel = NodePath("../GameInfo")
+MyNetID = NodePath("../MultiplayerSynchronizer")
 
 [node name="GameInfo" type="Label" parent="." unique_id=1731052003]
 layout_mode = 1
@@ -184,5 +185,5 @@ grow_vertical = 0
 
 [connection signal="text_changed" from="PlayerName" to="." method="OnNameChange"]
 [connection signal="item_selected" from="PlayerColorOptionButton" to="." method="OnTeamChange"]
-[connection signal="item_selected" from="PlayerClassOptionButton" to="." method="OnSpriteChange"]
+[connection signal="item_selected" from="PlayerClassOptionButton" to="." method="OnWeaponClassChange"]
 [connection signal="toggled" from="ReadyCheckBox" to="." method="OnIsReady"]

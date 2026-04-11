@@ -29,23 +29,23 @@ public partial class UserNpm : Control
 	
 	public async void SlowStart()
 	{
-		//Wait in case the NetworkID didn't get set yet
-		await ToSignal(GetTree().CreateTimer(0.2f), SceneTreeTimer.SignalName.Timeout);
+		// Wait longer for all nodes to initialize
+		await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
 		IsReady = false;
 		
 		// Set default color to white
-		MyColor = new Color(1, 1, 1, 1); // White
+		MyColor = new Color(1, 1, 1, 1);
 		
 		if(!MyNetID.IsLocal)
 		{
-			//A player has just hidden their ItemsList and made they're name uneditable
 			MyName.Editable = false;
 			TeamOptionButton.Disabled = true;
 			WeaponClassOptionButton.Disabled = true;
 		}
 		else
 		{
-			// Update color availability for local player
+			// Delay color update RPC
+			await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
 			UpdateAvailableColors();
 		}
 	}
@@ -177,7 +177,7 @@ public partial class UserNpm : Control
 	{
 		if(MyNetID.IsLocal)
 		{
-			GD.Print($"Remote player updating UI - WeaponClass value is: {WeaponClass}");
+			GD.Print($"Local player changing WeaponClass to: {n}");
 			Rpc(MethodName.WeaponClassChangeRPC, n);
 		}
 	}
@@ -185,12 +185,24 @@ public partial class UserNpm : Control
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal=false, TransferMode=MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void WeaponClassChangeRPC(int n)
 	{
+		GD.Print($"WeaponClassChangeRPC called with n={n}");
+		
 		if(GenericCore.Instance.IsServer)
 		{
 			GD.Print($"Server setting WeaponClass from {WeaponClass} to {n}");
 			WeaponClass = n;
 			GD.Print($"WeaponClass is now: {WeaponClass}");
+			
+			// Broadcast the change to all clients
+			Rpc(MethodName.SyncWeaponClass, n);
 		}
+	}
+	
+	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal=true, TransferMode=MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void SyncWeaponClass(int newWeaponClass)
+	{
+		GD.Print($"SyncWeaponClass: updating WeaponClass to {newWeaponClass}");
+		WeaponClass = newWeaponClass;
 	}
 	
 	//Ask the server to change our name

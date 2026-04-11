@@ -42,15 +42,25 @@ public partial class GameLobbyAgent : Control
             
         await ToSignal(GetTree().CreateTimer(0.2f), SceneTreeTimer.SignalName.Timeout);
         
-        if (LeaveButton != null)
+        // Hide UI for remote players
+        if (MyNetID != null && !MyNetID.IsLocal)
         {
-            LeaveButton.Pressed += OnLeavePressed;
-            
-            if (MyNetID != null && !MyNetID.IsLocal)
+            if (LeaveButton != null)
             {
                 LeaveButton.Disabled = true;
                 LeaveButton.Visible = false;
             }
+            if (GameInfoLabel != null)
+            {
+                GameInfoLabel.Visible = false;
+            }
+            return;
+        }
+        
+        // Setup for local player only
+        if (LeaveButton != null)
+        {
+            LeaveButton.Pressed += OnLeavePressed;
         }
     }
 
@@ -61,13 +71,17 @@ public partial class GameLobbyAgent : Control
             
         base._Process(delta);
         
+        // Only show info for local player
+        if (MyNetID != null && !MyNetID.IsLocal)
+            return;
+        
         if (GameInfoLabel != null && !isDisconnecting && 
             GenericCore.Instance != null && !GenericCore.Instance.IsQueuedForDeletion())
         {
             try
             {
                 int playerCount = GenericCore.Instance._peers.Count;
-                GameInfoLabel.Text = $"Players in lobby: {playerCount}";
+                GameInfoLabel.Text = $"Players in lobby: {playerCount-1}"; //exclude server
             }
             catch (ObjectDisposedException)
             {

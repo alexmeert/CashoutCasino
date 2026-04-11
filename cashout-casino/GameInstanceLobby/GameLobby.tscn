@@ -10,7 +10,7 @@ _portMaximum = 10000
 _portMinimum = 9000
 _localPort = 9000
 _serverAddress = "127.0.0.1"
-_maxConnections = 4
+_maxConnections = 10
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1764211829]
 
