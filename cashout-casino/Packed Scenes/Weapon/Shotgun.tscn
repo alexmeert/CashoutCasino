@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cn70t0now5k1c"]
 
-[ext_resource type="Script" path="res://Scripts/Weapon/Shotgun.cs" id="1"]
+[ext_resource type="Script" uid="uid://bvr8jj3d8i701" path="res://Scripts/Weapon/Shotgun.cs" id="1"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_Body"]
 size = Vector3(0.08, 0.09, 0.45)
@@ -28,25 +28,25 @@ size = Vector3(0.06, 0.07, 0.18)
 [sub_resource type="StandardMaterial3D" id="Mat_Stock"]
 albedo_color = Color(0.3, 0.18, 0.08, 1)
 
-[node name="Shotgun" type="Node3D"]
+[node name="Shotgun" type="Node3D" unique_id=1004360983]
 script = ExtResource("1")
 
-[node name="Body" type="MeshInstance3D" parent="."]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=639696301]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -0.13, -0.35)
 mesh = SubResource("BoxMesh_Body")
 surface_material_override/0 = SubResource("Mat_Body")
 
-[node name="Barrel" type="MeshInstance3D" parent="."]
-transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0.18, -0.11, -0.62)
+[node name="Barrel" type="MeshInstance3D" parent="." unique_id=1190806118]
+transform = Transform3D(0, -4.371139e-08, 1, -1, 0, 0, 0, -1, -4.371139e-08, 0.18, -0.117891654, -0.62)
 mesh = SubResource("CylinderMesh_Barrel")
 surface_material_override/0 = SubResource("Mat_Barrel")
 
-[node name="Pump" type="MeshInstance3D" parent="."]
+[node name="Pump" type="MeshInstance3D" parent="." unique_id=758367169]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -0.16, -0.42)
 mesh = SubResource("BoxMesh_Pump")
 surface_material_override/0 = SubResource("Mat_Pump")
 
-[node name="Stock" type="MeshInstance3D" parent="."]
+[node name="Stock" type="MeshInstance3D" parent="." unique_id=1682132803]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -0.14, -0.13)
 mesh = SubResource("BoxMesh_Stock")
 surface_material_override/0 = SubResource("Mat_Stock")
