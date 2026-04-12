@@ -28,25 +28,33 @@ size = Vector3(0.06, 0.07, 0.18)
 [sub_resource type="StandardMaterial3D" id="Mat_Stock"]
 albedo_color = Color(0.3, 0.18, 0.08, 1)
 
-[node name="Shotgun" type="Node3D" unique_id=1004360983]
+[node name="Shotgun" type="Node3D" unique_id=1004360983 node_paths=PackedStringArray("Muzzle")]
 script = ExtResource("1")
+Muzzle = NodePath("Marker3D")
 
 [node name="Body" type="MeshInstance3D" parent="." unique_id=639696301]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -0.13, -0.35)
+cast_shadow = 0
 mesh = SubResource("BoxMesh_Body")
 surface_material_override/0 = SubResource("Mat_Body")
 
 [node name="Barrel" type="MeshInstance3D" parent="." unique_id=1190806118]
-transform = Transform3D(0, -4.371139e-08, 1, -1, 0, 0, 0, -1, -4.371139e-08, 0.18, -0.117891654, -0.62)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.18, -0.117891654, -0.62)
+cast_shadow = 0
 mesh = SubResource("CylinderMesh_Barrel")
 surface_material_override/0 = SubResource("Mat_Barrel")
 
 [node name="Pump" type="MeshInstance3D" parent="." unique_id=758367169]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -0.16, -0.42)
+cast_shadow = 0
 mesh = SubResource("BoxMesh_Pump")
 surface_material_override/0 = SubResource("Mat_Pump")
 
 [node name="Stock" type="MeshInstance3D" parent="." unique_id=1682132803]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -0.14, -0.13)
+cast_shadow = 0
 mesh = SubResource("BoxMesh_Stock")
 surface_material_override/0 = SubResource("Mat_Stock")
+
+[node name="Marker3D" type="Marker3D" parent="." unique_id=430002946]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17991401, -0.118460745, -0.8356195)

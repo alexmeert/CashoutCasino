@@ -129,7 +129,10 @@ namespace CashoutCasino.Character
 
 			if (wm == null) return;
 
-			if (Input.IsActionPressed("fire"))
+			bool fireHeld = Input.IsActionPressed("fire");
+			bool firePressed = Input.IsActionJustPressed("fire");
+			bool wantFire = wm.CurrentWeaponHoldToFire() ? fireHeld : firePressed;
+			if (wantFire)
 				wm.FireCurrentWeapon(-camera.GlobalTransform.Basis.Z, this);
 
 			if (Input.IsActionJustPressed("weapon_1"))

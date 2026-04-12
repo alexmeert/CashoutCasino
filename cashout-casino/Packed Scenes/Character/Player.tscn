@@ -11,33 +11,48 @@
 radius = 0.4
 height = 1.8
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cl7pc"]
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_1"]
 radius = 0.4
 height = 1.8
 
-[node name="Player" type="CharacterBody3D" unique_id=920529542]
+[node name="Player" type="CharacterBody3D" unique_id=920529542 groups=["Player"]]
 script = ExtResource("1")
+weaponManagerPath = NodePath("CameraHolder/Camera3D/WeaponManager")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=570789552]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape3D_1")
 
+[node name="Area3D" type="Area3D" parent="." unique_id=1287168015]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=2040711886]
+shape = SubResource("CapsuleShape3D_cl7pc")
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1346571301]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+cast_shadow = 0
 mesh = SubResource("CapsuleMesh_1")
 
 [node name="CameraHolder" type="Node3D" parent="." unique_id=1906864615]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CameraHolder" unique_id=180508122]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.43858767, 0)
 
-[node name="WeaponManager" type="Node3D" parent="." unique_id=143208665]
+[node name="WeaponManager" type="Node3D" parent="CameraHolder/Camera3D" unique_id=143208665]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2114123, 0)
 script = ExtResource("2")
 
-[node name="AssaultRifle" parent="WeaponManager" unique_id=2146712028 instance=ExtResource("3")]
+[node name="AssaultRifle" parent="CameraHolder/Camera3D/WeaponManager" unique_id=2146712028 instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1662817, 0)
 
-[node name="DualPistols" parent="WeaponManager" unique_id=726762643 instance=ExtResource("4")]
+[node name="DualPistols" parent="CameraHolder/Camera3D/WeaponManager" unique_id=726762643 instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1662817, 0)
 
-[node name="Shotgun" parent="WeaponManager" unique_id=521789765 instance=ExtResource("5")]
+[node name="Shotgun" parent="CameraHolder/Camera3D/WeaponManager" unique_id=521789765 instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1662817, 0)
 
 [node name="PlayerHUD" parent="." unique_id=335599664 instance=ExtResource("6_cl7pc")]

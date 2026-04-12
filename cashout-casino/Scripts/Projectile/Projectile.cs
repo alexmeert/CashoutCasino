@@ -38,7 +38,8 @@ namespace CashoutCasino.Projectile
 
 		public override void _PhysicsProcess(double delta)
 		{
-			Translate(direction * (float)delta * speed);
+			if (direction != Vector3.Zero)
+				GlobalPosition += direction * speed * (float)delta;
 			if (Time.GetTicksMsec() - spawnTime > (ulong)(lifetime * 1000f)) Despawn();
 		}
 	}

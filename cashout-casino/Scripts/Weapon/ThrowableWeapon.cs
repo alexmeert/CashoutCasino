@@ -9,10 +9,9 @@ namespace CashoutCasino.Weapon
 		[Export] public PackedScene projectileScene;
 		[Export] public float throwForce = 10f;
 
-		public override Projectile.Projectile Fire(Vector3 direction, CashoutCasino.Character.Character owner)
+		public override bool Fire(Vector3 direction, CashoutCasino.Character.Character owner)
 		{
-			if (!CanFire()) return null;
-			lastFireTime = Time.GetTicksMsec();
+			if (!TryStartFire(owner)) return false;
 			currentAmmo -= ammoCost;
 			throw new NotImplementedException();
 		}

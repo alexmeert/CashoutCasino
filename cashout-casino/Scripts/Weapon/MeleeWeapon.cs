@@ -8,7 +8,7 @@ namespace CashoutCasino.Weapon
 		[Export] public float reach = 2.0f;
 		[Export] public float swingTime = 0.3f;
 
-		public override Projectile.Projectile Fire(Vector3 direction, CashoutCasino.Character.Character owner)
+		public override bool Fire(Vector3 direction, CashoutCasino.Character.Character owner)
 		{
 			throw new NotImplementedException();
 		}
