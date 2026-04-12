@@ -1,19 +1,15 @@
 using Godot;
-using System;
 
 namespace CashoutCasino.UI
 {
-	/// <summary>
-	/// Bottom-left HUD panel showing weapon name, ammo, and currency.
-	/// Currency updates via signal. Ammo polls WeaponManager each frame.
-	/// </summary>
 	public partial class PlayerHud : CanvasLayer
 	{
 		private Label weaponNameLabel;
 		private Label ammoLabel;
 		private Label currencyLabel;
+		private Label healthLabel;
+		private TextureProgressBar healthBar;
 
-		// Set by Player._Ready after both nodes exist
 		public Weapon.WeaponManager WeaponManager;
 
 		public override void _Ready()
@@ -21,24 +17,35 @@ namespace CashoutCasino.UI
 			weaponNameLabel = GetNode<Label>("Panel/VBox/WeaponName");
 			ammoLabel = GetNode<Label>("Panel/VBox/Ammo");
 			currencyLabel = GetNode<Label>("Panel/VBox/Currency");
+			healthLabel = GetNodeOrNull<Label>("HealthPanel/VBox/HealthLabel");
+			healthBar = GetNodeOrNull<TextureProgressBar>("HealthPanel/VBox/HealthBar");
 		}
 
 		public override void _Process(double delta)
 		{
 			if (WeaponManager == null) return;
 
-			string weaponName = WeaponManager.GetCurrentWeaponName();
-			int ammo = WeaponManager.GetCurrentAmmo();
-			int maxAmmo = WeaponManager.GetCurrentWeapon()?.maxAmmo ?? 0;
-
-			weaponNameLabel.Text = weaponName;
-			ammoLabel.Text = $"{ammo} / {maxAmmo}";
+			weaponNameLabel.Text = WeaponManager.GetCurrentWeaponName();
+			var w = WeaponManager.GetCurrentWeapon();
+			if (w != null)
+				ammoLabel.Text = $"{w.GetAmmoCount()} / {w.maxAmmo}";
 		}
 
-		// Connected to Player.CurrencyChanged signal
 		public void OnCurrencyChanged(int newAmount)
 		{
 			currencyLabel.Text = $"${newAmount}";
+		}
+
+		public void OnHealthChanged(float current, float max)
+		{
+			if (healthLabel != null)
+				healthLabel.Text = $"HP  {Mathf.CeilToInt(current)} / {Mathf.CeilToInt(max)}";
+
+			if (healthBar != null)
+			{
+				healthBar.MaxValue = max;
+				healthBar.Value = current;
+			}
 		}
 	}
 }

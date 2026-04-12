@@ -3,11 +3,6 @@ using System;
 
 namespace CashoutCasino.Character
 {
-	/// <summary>
-	/// Abstract base character used by both players and AI enemies.
-	/// Contains shared health, movement basics, currency management and signals.
-	/// Override virtual methods to change behavior; prefer composition for complex subsystems.
-	/// </summary>
 	public abstract partial class Character : CharacterBody3D
 	{
 		[Export] public float maxHealth = 100f;
@@ -24,8 +19,13 @@ namespace CashoutCasino.Character
 		protected bool isSprintingInput = false;
 		protected bool isCrouching = false;
 
+		// Reference to the world-space health bar above this character's head
+		// Set in _Ready by subclasses if a WorldHealthBar node exists
+		public UI.WorldHealthBar WorldHealthBar;
+
 		[Signal] public delegate void CurrencyChangedEventHandler(int newAmount);
 		[Signal] public delegate void DiedEventHandler(Character killer);
+		[Signal] public delegate void HealthChangedEventHandler(float current, float max);
 
 		public override void _Ready()
 		{
@@ -38,7 +38,10 @@ namespace CashoutCasino.Character
 		public virtual void TakeDamage(float damage, Character attacker = null)
 		{
 			currentHealth -= damage;
+			currentHealth = Mathf.Max(currentHealth, 0f);
 			animator?.PlayTakeDamage();
+			EmitSignal(nameof(HealthChanged), currentHealth, maxHealth);
+
 			if (currentHealth <= 0)
 				OnDeath(attacker);
 		}
@@ -67,11 +70,15 @@ namespace CashoutCasino.Character
 		}
 
 		public int GetCurrency() => currentCurrency;
+		public float GetHealth() => currentHealth;
+		public float GetMaxHealth() => maxHealth;
 
 		public override void _PhysicsProcess(double delta)
 		{
 			Vector3 velocity = Velocity;
-			Vector3 desired = moveDirection * moveSpeed * (isSprintingInput ? sprintMultiplier : 1f) * (isCrouching ? crouchMultiplier : 1f);
+			Vector3 desired = moveDirection * moveSpeed
+				* (isSprintingInput ? sprintMultiplier : 1f)
+				* (isCrouching ? crouchMultiplier : 1f);
 			velocity.X = desired.X;
 			velocity.Z = desired.Z;
 			Velocity = velocity;

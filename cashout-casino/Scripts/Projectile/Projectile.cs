@@ -3,9 +3,6 @@ using System;
 
 namespace CashoutCasino.Projectile
 {
-	/// <summary>
-	/// Generic projectile base for moving objects, hitscan wrappers or area effects.
-	/// </summary>
 	public abstract partial class Projectile : Area3D
 	{
 		[Export] public float speed = 30f;
@@ -15,6 +12,9 @@ namespace CashoutCasino.Projectile
 		protected Vector3 direction = Vector3.Zero;
 		protected CashoutCasino.Character.Character owner;
 		protected ulong spawnTime = 0;
+
+		// Set by the weapon when spawning so bullet hits can show the health bar
+		public Camera3D ShooterCamera;
 
 		public virtual void Launch(Vector3 dir, CashoutCasino.Character.Character projectileOwner)
 		{

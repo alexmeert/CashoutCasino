@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 namespace CashoutCasino.Character
 {
@@ -9,7 +8,7 @@ namespace CashoutCasino.Character
 		[Export] public NodePath cameraPath = "CameraHolder/Camera3D";
 		[Export] public NodePath cameraHolderPath = "CameraHolder";
 		[Export] public NodePath collisionShapePath = "CollisionShape3D";
-		[Export] public NodePath weaponManagerPath = "WeaponManager";
+		[Export] public NodePath weaponManagerPath = "CameraHolder/Camera3D/WeaponManager";
 		[Export] public NodePath hudPath = "PlayerHUD";
 
 		[Export] public float jumpForce = 5f;
@@ -45,25 +44,30 @@ namespace CashoutCasino.Character
 
 			if (HasNode(hudPath))
 			{
-				var hudNode = GetNode(hudPath);
-				hud = hudNode as UI.PlayerHud;
+				hud = GetNode(hudPath) as UI.PlayerHud;
 				if (hud != null)
 				{
 					hud.WeaponManager = wm;
 					CurrencyChanged += hud.OnCurrencyChanged;
+					HealthChanged += hud.OnHealthChanged;
 				}
 			}
 
+			// Hide own world health bar — you never see it above your own head
+			var whb = GetNodeOrNull<UI.WorldHealthBar>("WorldHealthBar");
+			if (whb != null)
+			{
+				WorldHealthBar = whb;
+				whb.Visible = false;
+			}
+
 			currentCurrency = Economy.CurrencyEconomy.INITIAL_SPAWN;
-
-			// Sync initial currency into weapon ammo display
 			wm?.SyncAmmoToAllWeapons(currentCurrency);
-
-			// Also wire currency changes to keep weapon ammo display in sync
-			// for kills, pickups etc. that happen outside of firing
 			CurrencyChanged += OnCurrencyChangedSync;
 
+			// Fire initial values so HUD shows correct state on spawn
 			hud?.OnCurrencyChanged(currentCurrency);
+			hud?.OnHealthChanged(currentHealth, maxHealth);
 
 			Input.MouseMode = Input.MouseModeEnum.Captured;
 		}
