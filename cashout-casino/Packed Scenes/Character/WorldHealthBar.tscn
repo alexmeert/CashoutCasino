@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://b2fqv0eq022po"]
+
+[ext_resource type="Script" uid="uid://cauf6cx0jlomm" path="res://Scripts/Character/WorldHealthBar.cs" id="1_0qv6d"]
+
+[node name="WorldHealthBar" type="Node3D" unique_id=1994515009]
+script = ExtResource("1_0qv6d")
+
+[node name="Bar" type="Label3D" parent="." unique_id=2005350052]
+pixel_size = 0.008
+billboard = 2
+modulate = Color(0.2, 0.9, 0.1, 1)
+text = "██████████"
+font_size = 64
+outline_size = 8

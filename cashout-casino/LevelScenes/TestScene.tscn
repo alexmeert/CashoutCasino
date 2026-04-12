@@ -60,4 +60,3 @@ size = Vector3(1, 2.9815674, 1)
 
 [node name="AiEnemy" parent="." unique_id=701028671 instance=ExtResource("2_d2gth")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.150295, 1, -15.74277)
-script = null

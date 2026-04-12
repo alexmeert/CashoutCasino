@@ -78,6 +78,9 @@ namespace CashoutCasino.Weapon
 			proj.baseDamage = damage;
 			proj.speed = projectileSpeed;
 
+			// Pass the camera so bullet hits can show the health bar
+			proj.ShooterCamera = FireCamera;
+
 			sceneRoot.AddChild(proj);
 
 			Vector3 up = Mathf.Abs(worldDirection.Dot(Vector3.Up)) > 0.99f

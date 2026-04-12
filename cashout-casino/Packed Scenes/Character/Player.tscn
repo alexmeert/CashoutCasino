@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://hxitfxl83nh7"]
+[gd_scene format=3 uid="uid://coscxp08lodnw"]
 
 [ext_resource type="Script" uid="uid://cxj1y7wlgugvl" path="res://Scripts/Character/Player.cs" id="1"]
 [ext_resource type="Script" uid="uid://74q1uh0jxy77" path="res://Scripts/Weapon/WeaponManager.cs" id="2"]
@@ -11,7 +11,8 @@
 radius = 0.4
 height = 1.8
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cl7pc"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hit"]
+height = 1.9
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_1"]
 radius = 0.4
@@ -25,11 +26,14 @@ weaponManagerPath = NodePath("CameraHolder/Camera3D/WeaponManager")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape3D_1")
 
-[node name="Area3D" type="Area3D" parent="." unique_id=1287168015]
+[node name="Hitbox" type="Area3D" parent="." unique_id=1287168015]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+collision_layer = 2
+collision_mask = 0
+monitoring = false
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=2040711886]
-shape = SubResource("CapsuleShape3D_cl7pc")
+[node name="HitboxShape" type="CollisionShape3D" parent="Hitbox" unique_id=2040711886]
+shape = SubResource("CapsuleShape3D_hit")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1346571301]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)

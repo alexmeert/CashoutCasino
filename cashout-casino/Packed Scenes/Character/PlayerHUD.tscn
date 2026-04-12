@@ -31,11 +31,16 @@ font = SubResource("SystemFont_Main")
 font_size = 20
 font_color = Color(0.3, 1, 0.4, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_Health"]
+font = SubResource("SystemFont_Main")
+font_size = 14
+font_color = Color(1, 0.4, 0.4, 1)
+
 [node name="PlayerHud" type="CanvasLayer" unique_id=335599664]
 layer = 10
 script = ExtResource("1_5yeb8")
 
-[node name="Panel" type="Panel" parent="." unique_id=1864740566]
+[node name="Panel" type="Panel" parent="."]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -45,28 +50,59 @@ offset_right = 220.0
 offset_bottom = -16.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_Panel")
 
-[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=710312133]
+[node name="VBox" type="VBoxContainer" parent="Panel"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/separation = 2
 
-[node name="WeaponName" type="Label" parent="Panel/VBox" unique_id=1095419330]
+[node name="WeaponName" type="Label" parent="Panel/VBox"]
 layout_mode = 2
 text = "Assault Rifle"
 label_settings = SubResource("LabelSettings_WeaponName")
 
-[node name="Ammo" type="Label" parent="Panel/VBox" unique_id=320070141]
+[node name="Ammo" type="Label" parent="Panel/VBox"]
 layout_mode = 2
 text = "100 / 100"
 label_settings = SubResource("LabelSettings_Ammo")
 
-[node name="Currency" type="Label" parent="Panel/VBox" unique_id=683805960]
+[node name="Currency" type="Label" parent="Panel/VBox"]
 layout_mode = 2
 text = "$100"
 label_settings = SubResource("LabelSettings_Currency")
 
-[node name="Reticle" type="Control" parent="." unique_id=1199711718]
+[node name="HealthPanel" type="Panel" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -220.0
+offset_top = -80.0
+offset_right = -16.0
+offset_bottom = -16.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_Panel")
+
+[node name="VBox" type="VBoxContainer" parent="HealthPanel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 4
+
+[node name="HealthLabel" type="Label" parent="HealthPanel/VBox"]
+layout_mode = 2
+text = "HP  100 / 100"
+label_settings = SubResource("LabelSettings_Health")
+
+[node name="HealthBar" type="TextureProgressBar" parent="HealthPanel/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 12)
+max_value = 100.0
+value = 100.0
+tint_progress = Color(0.85, 0.2, 0.2, 1)
+tint_under = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Reticle" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -74,7 +110,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="Reticle" unique_id=690719545]
+[node name="TextureRect" type="TextureRect" parent="Reticle"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
