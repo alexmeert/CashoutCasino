@@ -1,3 +1,21 @@
 [gd_scene format=3 uid="uid://bwf71c3cph6wd"]
 
-[node name="AiEnemy" type="CharacterBody3D" unique_id=701028671]
+[ext_resource type="Script" uid="uid://b1sk2ef46dyjv" path="res://Scripts/Character/AIEnemy.cs" id="1_aienemy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wq457"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_dvb0v"]
+material = SubResource("StandardMaterial3D_wq457")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wq457"]
+
+[node name="AiEnemy" type="CharacterBody3D" unique_id=701028671 groups=["Enemy"]]
+script = ExtResource("1_aienemy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1550886387]
+cast_shadow = 0
+mesh = SubResource("CapsuleMesh_dvb0v")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2111164968]
+shape = SubResource("CapsuleShape3D_wq457")

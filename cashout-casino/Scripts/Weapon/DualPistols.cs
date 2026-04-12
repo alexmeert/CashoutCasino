@@ -1,37 +1,41 @@
 using Godot;
-using System;
+using CashoutCasino.Economy;
 
 namespace CashoutCasino.Weapon
 {
-	public partial class DualPistols : HitscanWeapon
+	public partial class DualPistols : ProjectileWeapon
 	{
-		[Export] public float alternateFireDelay = 0.05f;
+		private static readonly PackedScene DefaultBulletScene =
+			GD.Load<PackedScene>("res://Packed Scenes/Projectile/Bullet.tscn");
+
+		[Export] public Marker3D LeftMuzzle;
+		[Export] public Marker3D RightMuzzle;
+		[Export] public PackedScene bulletScene;
+		[Export] public float bulletSpeed = 88f;
 
 		private bool leftNext = true;
 
+		public override CurrencyEconomy.CostType FireCostType => CurrencyEconomy.CostType.ShootPistol;
+
+		protected override PackedScene ProjectileScene => bulletScene;
+		protected override float ProjectileSpeed => bulletSpeed;
+
 		public override void _Ready()
 		{
-			fireRate = 0.2f;
+			fireRate = 0.18f;
 			ammoCost = 1;
 			damagePerHit = 10f;
 			maxAmmo = 100;
-			TrailColor = new Color(1f, 0.6f, 0.1f, 1f);
+
+			bulletScene ??= DefaultBulletScene;
 			base._Ready();
 		}
 
-		public override Projectile.Projectile Fire(Vector3 direction, CashoutCasino.Character.Character owner)
+		protected override Marker3D GetShotMuzzle()
 		{
-			if (!CanFire()) return null;
-			lastFireTime = Time.GetTicksMsec();
-
-			float offsetAmount = 0.02f;
-			Vector3 offset = leftNext
-				? new Vector3(-offsetAmount, 0f, 0f)
-				: new Vector3(offsetAmount, 0f, 0f);
+			Marker3D muzzle = leftNext ? LeftMuzzle : RightMuzzle;
 			leftNext = !leftNext;
-
-			PerformRaycast((direction + offset).Normalized(), owner);
-			return null;
+			return muzzle;
 		}
 	}
 }

@@ -1,5 +1,5 @@
 using Godot;
-using System;
+using CashoutCasino.Economy;
 
 namespace CashoutCasino.Weapon
 {
@@ -8,26 +8,32 @@ namespace CashoutCasino.Weapon
 		[Export] public int pelletCount = 8;
 		[Export] public float spreadAngle = 12f;
 
-		private RandomNumberGenerator rng = new RandomNumberGenerator();
+		private readonly RandomNumberGenerator rng = new RandomNumberGenerator();
+
+		public override CurrencyEconomy.CostType FireCostType => CurrencyEconomy.CostType.ShootShotgun;
 
 		public override void _Ready()
 		{
-			fireRate = 0.8f;
+			fireRate = 0.65f;
 			ammoCost = 3;
 			damagePerHit = 12f;
 			maxAmmo = 40;
 			TrailColor = new Color(1f, 0.2f, 0.1f, 1f);
+
 			base._Ready();
 			rng.Randomize();
 		}
 
-		public override Projectile.Projectile Fire(Vector3 direction, CashoutCasino.Character.Character owner)
+		public override bool Fire(Vector3 direction, CashoutCasino.Character.Character owner)
 		{
-			if (!CanFire()) return null;
-			lastFireTime = Time.GetTicksMsec();
+			if (!TryStartFire(owner))
+				return false;
+
+			Vector3 rayOrigin = Muzzle != null
+				? Muzzle.GlobalPosition
+				: owner.GlobalPosition + Vector3.Up * 1.6f;
 
 			float spreadRad = Mathf.DegToRad(spreadAngle);
-
 			for (int i = 0; i < pelletCount; i++)
 			{
 				Vector3 pelletDir = direction
@@ -35,10 +41,10 @@ namespace CashoutCasino.Weapon
 					.Rotated(Vector3.Right, rng.RandfRange(-spreadRad, spreadRad))
 					.Normalized();
 
-				PerformRaycast(pelletDir, owner);
+				PerformRaycastFrom(rayOrigin, pelletDir, owner);
 			}
 
-			return null;
+			return true;
 		}
 	}
 }

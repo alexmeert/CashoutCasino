@@ -22,35 +22,50 @@ size = Vector3(0.04, 0.1, 0.06)
 [sub_resource type="StandardMaterial3D" id="Mat_Grip"]
 albedo_color = Color(0.1, 0.08, 0.07, 1)
 
-[node name="DualPistols" type="Node3D" unique_id=100188987]
+[node name="DualPistols" type="Node3D" unique_id=100188987 node_paths=PackedStringArray("LeftMuzzle", "RightMuzzle")]
 script = ExtResource("1")
+LeftMuzzle = NodePath("LeftMarker")
+RightMuzzle = NodePath("RightMarker")
+bulletSpeed = 150.0
 
 [node name="RightBody" type="MeshInstance3D" parent="." unique_id=1837035061]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26, -0.13, -0.28)
+cast_shadow = 0
 mesh = SubResource("BoxMesh_Body")
 surface_material_override/0 = SubResource("Mat_Body")
 
 [node name="LeftBarrel" type="MeshInstance3D" parent="." unique_id=1551476597]
 transform = Transform3D(0, -4.371139e-08, 1, -1, 0, 0, 0, -1, -4.371139e-08, -0.26, -0.11, -0.41)
+cast_shadow = 0
 mesh = SubResource("CylinderMesh_Barrel")
 surface_material_override/0 = SubResource("Mat_Barrel")
 
 [node name="LeftBody" type="MeshInstance3D" parent="." unique_id=1685571440]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26, -0.13, -0.28)
+cast_shadow = 0
 mesh = SubResource("BoxMesh_Body")
 surface_material_override/0 = SubResource("Mat_Body")
 
 [node name="LeftGrip" type="MeshInstance3D" parent="." unique_id=1774298908]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26, -0.21, -0.22)
+cast_shadow = 0
 mesh = SubResource("BoxMesh_Grip")
 surface_material_override/0 = SubResource("Mat_Grip")
 
 [node name="RightGrip" type="MeshInstance3D" parent="." unique_id=1450370555]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26, -0.21, -0.22)
+cast_shadow = 0
 mesh = SubResource("BoxMesh_Grip")
 surface_material_override/0 = SubResource("Mat_Grip")
 
 [node name="RightBarrel" type="MeshInstance3D" parent="." unique_id=1468087467]
 transform = Transform3D(0, -4.371139e-08, 1, -1, 0, 0, 0, -1, -4.371139e-08, 0.26, -0.11, -0.41)
+cast_shadow = 0
 mesh = SubResource("CylinderMesh_Barrel")
 surface_material_override/0 = SubResource("Mat_Barrel")
+
+[node name="RightMarker" type="Marker3D" parent="." unique_id=1399286944]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26008147, -0.10984782, -0.48608774)
+
+[node name="LeftMarker" type="Marker3D" parent="." unique_id=657206488]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25980663, -0.10984782, -0.48608774)

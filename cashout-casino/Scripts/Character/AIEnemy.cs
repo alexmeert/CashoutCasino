@@ -17,16 +17,9 @@ namespace CashoutCasino.Character
 			base._Ready();
 		}
 
-		public override void RequestAIDecision()
-		{
-			throw new NotImplementedException();
-		}
+		public override void RequestAIDecision() { }
 
-		public override void OnInputAction(string action)
-		{
-			// AI doesn't receive player input.
-			throw new NotImplementedException();
-		}
+		public override void OnInputAction(string action) { }
 
 		public override void _PhysicsProcess(double delta)
 		{
@@ -37,6 +30,12 @@ namespace CashoutCasino.Character
 				RequestAIDecision();
 				decisionTimer = decisionCooldown;
 			}
+		}
+
+		public void OnBulletHit()
+		{
+			TakeDamage(10); // Example damage value
+			GD.Print("AI Enemy hit by bullet! Current health: " + currentHealth);
 		}
 	}
 }
