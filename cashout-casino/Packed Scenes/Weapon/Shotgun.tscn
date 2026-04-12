@@ -30,6 +30,7 @@ albedo_color = Color(0.3, 0.18, 0.08, 1)
 
 [node name="Shotgun" type="Node3D" unique_id=1004360983 node_paths=PackedStringArray("Muzzle")]
 script = ExtResource("1")
+spreadAngle = 5.0
 Muzzle = NodePath("Marker3D")
 
 [node name="Body" type="MeshInstance3D" parent="." unique_id=639696301]
