@@ -36,6 +36,13 @@ font = SubResource("SystemFont_Main")
 font_size = 13
 font_color = Color(0.8, 0.8, 0.8, 0.8)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_HealthBg"]
+bg_color = Color(0.15, 0.15, 0.15, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_left = 3
+corner_radius_bottom_right = 3
+
 [node name="PlayerHud" type="CanvasLayer" unique_id=335599664]
 layer = 10
 script = ExtResource("1_5yeb8")
@@ -45,7 +52,7 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 16.0
-offset_top = -175.0
+offset_top = -165.0
 offset_right = 220.0
 offset_bottom = -118.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_Panel")
@@ -54,16 +61,20 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_Panel")
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_constants/separation = 2
+theme_override_constants/separation = 4
 
 [node name="HealthTitle" type="Label" parent="HealthPanel/VBox"]
 layout_mode = 2
 text = "HP"
 label_settings = SubResource("LabelSettings_HealthTitle")
 
-[node name="HealthBar" type="Label" parent="HealthPanel/VBox"]
+[node name="HealthBar" type="ProgressBar" parent="HealthPanel/VBox"]
 layout_mode = 2
-text = "██████████"
+custom_minimum_size = Vector2(0, 14)
+max_value = 100.0
+value = 100.0
+show_percentage = false
+theme_override_styles/background = SubResource("StyleBoxFlat_HealthBg")
 
 [node name="Panel" type="Panel" parent="."]
 anchors_preset = 2

@@ -6,42 +6,51 @@ namespace CashoutCasino.UI
 	{
 		[Export] public float hideAfterSeconds = 3f;
 
-		private Label3D bar;
-		private Label3D nameLabel;
+		private SubViewport viewport;
+		private ProgressBar progressBar;
+		private StyleBoxFlat fillStyle;
+		private MeshInstance3D quad;
+
 		private float hideTimer = 0f;
 		private bool visible3d = false;
 		private Camera3D localCamera;
 
-		private const int BAR_WIDTH = 10;
-
 		public override void _Ready()
 		{
-			bar = GetNode<Label3D>("Bar");
-			nameLabel = GetNodeOrNull<Label3D>("NameLabel");
+			viewport = GetNode<SubViewport>("SubViewport");
+			progressBar = GetNode<ProgressBar>("SubViewport/ProgressBar");
+			quad = GetNode<MeshInstance3D>("Quad");
 
-			bar.Visible = false;
-			if (nameLabel != null) nameLabel.Visible = false;
+			// Wire the SubViewport's rendered texture onto the quad
+			var mat = new StandardMaterial3D();
+			mat.ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded;
+			mat.BillboardMode = BaseMaterial3D.BillboardModeEnum.Enabled;
+			mat.NoDepthTest = true;
+			mat.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
+			mat.AlbedoTexture = viewport.GetTexture();
+			quad.MaterialOverride = mat;
+
+			// Grab the fill StyleBox so we can shift its color with health
+			fillStyle = progressBar.GetThemeStylebox("fill") as StyleBoxFlat;
+
+			quad.Visible = false;
 		}
 
 		public void ShowFor(float currentHealth, float maxHealth)
 		{
 			visible3d = true;
 			hideTimer = hideAfterSeconds;
-			bar.Visible = true;
-			if (nameLabel != null) nameLabel.Visible = true;
+			quad.Visible = true;
 			UpdateBar(currentHealth, maxHealth);
 		}
 
-		// Called on respawn to clear all state so ShowFor works fresh
 		public void Reset()
 		{
 			visible3d = false;
 			hideTimer = 0f;
-			bar.Visible = false;
-			if (nameLabel != null) nameLabel.Visible = false;
-			// Reset to full green so it looks correct on first hit after respawn
-			bar.Text = new string('█', BAR_WIDTH);
-			bar.Modulate = new Color(0.2f, 0.9f, 0.1f, 1f);
+			quad.Visible = false;
+			if (progressBar != null)
+				progressBar.Value = progressBar.MaxValue;
 		}
 
 		public void SetLocalCamera(Camera3D camera)
@@ -51,14 +60,17 @@ namespace CashoutCasino.UI
 
 		private void UpdateBar(float current, float max)
 		{
-			float ratio = Mathf.Clamp(current / max, 0f, 1f);
-			int filled = Mathf.RoundToInt(ratio * BAR_WIDTH);
-			int empty = BAR_WIDTH - filled;
+			progressBar.MaxValue = max;
+			progressBar.Value = current;
 
-			float r = Mathf.Lerp(1f, 0.1f, ratio);
-			float g = Mathf.Lerp(0.1f, 0.9f, ratio);
-			bar.Text = new string('█', filled) + new string('░', empty);
-			bar.Modulate = new Color(r, g, 0.1f, 1f);
+			// Shift fill color green -> red as health drops
+			if (fillStyle != null)
+			{
+				float ratio = Mathf.Clamp(current / max, 0f, 1f);
+				float r = Mathf.Lerp(1f, 0.1f, ratio);
+				float g = Mathf.Lerp(0.1f, 0.85f, ratio);
+				fillStyle.BgColor = new Color(r, g, 0.1f, 1f);
+			}
 		}
 
 		public override void _Process(double delta)
@@ -69,8 +81,7 @@ namespace CashoutCasino.UI
 			if (hideTimer <= 0f)
 			{
 				visible3d = false;
-				bar.Visible = false;
-				if (nameLabel != null) nameLabel.Visible = false;
+				quad.Visible = false;
 				return;
 			}
 

@@ -7,10 +7,8 @@ namespace CashoutCasino.UI
 		private Label weaponNameLabel;
 		private Label ammoLabel;
 		private Label currencyLabel;
-		private Label healthBarLabel;
-		private LabelSettings healthBarSettings;
-
-		private const int BAR_WIDTH = 10;
+		private ProgressBar healthBar;
+		private StyleBoxFlat healthFillStyle;
 
 		public Weapon.WeaponManager WeaponManager;
 
@@ -19,14 +17,18 @@ namespace CashoutCasino.UI
 			weaponNameLabel = GetNode<Label>("Panel/VBox/WeaponName");
 			ammoLabel = GetNode<Label>("Panel/VBox/Ammo");
 			currencyLabel = GetNode<Label>("Panel/VBox/Currency");
-			healthBarLabel = GetNodeOrNull<Label>("HealthPanel/VBox/HealthBar");
+			healthBar = GetNodeOrNull<ProgressBar>("HealthPanel/VBox/HealthBar");
 
-			if (healthBarLabel != null)
+			// Create a unique fill style so we can shift its color at runtime
+			if (healthBar != null)
 			{
-				healthBarSettings = new LabelSettings();
-				healthBarSettings.FontSize = 21;
-				healthBarSettings.FontColor = new Color(0.2f, 0.9f, 0.1f, 1f);
-				healthBarLabel.LabelSettings = healthBarSettings;
+				healthFillStyle = new StyleBoxFlat();
+				healthFillStyle.BgColor = new Color(0.2f, 0.85f, 0.1f, 1f);
+				healthFillStyle.CornerRadiusTopLeft = 3;
+				healthFillStyle.CornerRadiusTopRight = 3;
+				healthFillStyle.CornerRadiusBottomLeft = 3;
+				healthFillStyle.CornerRadiusBottomRight = 3;
+				healthBar.AddThemeStyleboxOverride("fill", healthFillStyle);
 			}
 		}
 
@@ -47,17 +49,15 @@ namespace CashoutCasino.UI
 
 		public void OnHealthChanged(float current, float max)
 		{
-			if (healthBarLabel == null || healthBarSettings == null) return;
+			if (healthBar == null || healthFillStyle == null) return;
+
+			healthBar.MaxValue = max;
+			healthBar.Value = current;
 
 			float ratio = Mathf.Clamp(current / max, 0f, 1f);
-			int filled = Mathf.RoundToInt(ratio * BAR_WIDTH);
-			int empty = BAR_WIDTH - filled;
-
-			healthBarLabel.Text = new string('█', filled) + new string('░', empty);
-
 			float r = Mathf.Lerp(1f, 0.1f, ratio);
-			float g = Mathf.Lerp(0.1f, 0.9f, ratio);
-			healthBarSettings.FontColor = new Color(r, g, 0.1f, 1f);
+			float g = Mathf.Lerp(0.1f, 0.85f, ratio);
+			healthFillStyle.BgColor = new Color(r, g, 0.1f, 1f);
 		}
 	}
 }
