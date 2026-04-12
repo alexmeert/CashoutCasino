@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 namespace CashoutCasino.Character
 {
@@ -19,8 +18,6 @@ namespace CashoutCasino.Character
 		protected bool isSprintingInput = false;
 		protected bool isCrouching = false;
 
-		// Reference to the world-space health bar above this character's head
-		// Set in _Ready by subclasses if a WorldHealthBar node exists
 		public UI.WorldHealthBar WorldHealthBar;
 
 		[Signal] public delegate void CurrencyChangedEventHandler(int newAmount);
@@ -40,16 +37,22 @@ namespace CashoutCasino.Character
 			currentHealth -= damage;
 			currentHealth = Mathf.Max(currentHealth, 0f);
 			animator?.PlayTakeDamage();
-			EmitSignal(nameof(HealthChanged), currentHealth, maxHealth);
+
+			// Call directly instead of EmitSignal to avoid Variant float/double mismatch
+			OnHealthChangedInternal(currentHealth, maxHealth);
+			EmitSignal(SignalName.HealthChanged, currentHealth, maxHealth);
 
 			if (currentHealth <= 0)
 				OnDeath(attacker);
 		}
 
+		// Override in subclasses that need immediate local response (e.g. Player -> HUD)
+		protected virtual void OnHealthChangedInternal(float current, float max) { }
+
 		public virtual void OnDeath(Character killer)
 		{
 			animator?.PlayDeath();
-			EmitSignal(nameof(Died), killer);
+			EmitSignal(SignalName.Died, killer);
 		}
 
 		public virtual void RequestMovement(Vector3 direction, bool isSprinting)
@@ -61,7 +64,7 @@ namespace CashoutCasino.Character
 		public virtual void ModifyCurrency(int amount)
 		{
 			currentCurrency += amount;
-			EmitSignal(nameof(CurrencyChanged), currentCurrency);
+			EmitSignal(SignalName.CurrencyChanged, currentCurrency);
 		}
 
 		public virtual bool CanAffordAction(Economy.CurrencyEconomy.CostType costType)

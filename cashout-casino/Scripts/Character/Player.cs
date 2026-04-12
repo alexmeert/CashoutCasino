@@ -9,7 +9,7 @@ namespace CashoutCasino.Character
 		[Export] public NodePath cameraHolderPath = "CameraHolder";
 		[Export] public NodePath collisionShapePath = "CollisionShape3D";
 		[Export] public NodePath weaponManagerPath = "CameraHolder/Camera3D/WeaponManager";
-		[Export] public NodePath hudPath = "PlayerHUD";
+		[Export] public NodePath hudPath = "PlayerHud";
 
 		[Export] public float jumpForce = 5f;
 		[Export] public float gravity = 20f;
@@ -49,11 +49,9 @@ namespace CashoutCasino.Character
 				{
 					hud.WeaponManager = wm;
 					CurrencyChanged += hud.OnCurrencyChanged;
-					HealthChanged += hud.OnHealthChanged;
 				}
 			}
 
-			// Hide own world health bar — you never see it above your own head
 			var whb = GetNodeOrNull<UI.WorldHealthBar>("WorldHealthBar");
 			if (whb != null)
 			{
@@ -65,11 +63,15 @@ namespace CashoutCasino.Character
 			wm?.SyncAmmoToAllWeapons(currentCurrency);
 			CurrencyChanged += OnCurrencyChangedSync;
 
-			// Fire initial values so HUD shows correct state on spawn
 			hud?.OnCurrencyChanged(currentCurrency);
 			hud?.OnHealthChanged(currentHealth, maxHealth);
 
 			Input.MouseMode = Input.MouseModeEnum.Captured;
+		}
+
+		protected override void OnHealthChangedInternal(float current, float max)
+		{
+			hud?.OnHealthChanged(current, max);
 		}
 
 		private void OnCurrencyChangedSync(int newAmount)

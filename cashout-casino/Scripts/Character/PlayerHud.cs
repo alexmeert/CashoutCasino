@@ -7,8 +7,10 @@ namespace CashoutCasino.UI
 		private Label weaponNameLabel;
 		private Label ammoLabel;
 		private Label currencyLabel;
-		private Label healthLabel;
-		private TextureProgressBar healthBar;
+		private Label healthBarLabel;
+		private LabelSettings healthBarSettings;
+
+		private const int BAR_WIDTH = 10;
 
 		public Weapon.WeaponManager WeaponManager;
 
@@ -17,8 +19,15 @@ namespace CashoutCasino.UI
 			weaponNameLabel = GetNode<Label>("Panel/VBox/WeaponName");
 			ammoLabel = GetNode<Label>("Panel/VBox/Ammo");
 			currencyLabel = GetNode<Label>("Panel/VBox/Currency");
-			healthLabel = GetNodeOrNull<Label>("HealthPanel/VBox/HealthLabel");
-			healthBar = GetNodeOrNull<TextureProgressBar>("HealthPanel/VBox/HealthBar");
+			healthBarLabel = GetNodeOrNull<Label>("HealthPanel/VBox/HealthBar");
+
+			if (healthBarLabel != null)
+			{
+				healthBarSettings = new LabelSettings();
+				healthBarSettings.FontSize = 21;
+				healthBarSettings.FontColor = new Color(0.2f, 0.9f, 0.1f, 1f);
+				healthBarLabel.LabelSettings = healthBarSettings;
+			}
 		}
 
 		public override void _Process(double delta)
@@ -38,14 +47,17 @@ namespace CashoutCasino.UI
 
 		public void OnHealthChanged(float current, float max)
 		{
-			if (healthLabel != null)
-				healthLabel.Text = $"HP  {Mathf.CeilToInt(current)} / {Mathf.CeilToInt(max)}";
+			if (healthBarLabel == null || healthBarSettings == null) return;
 
-			if (healthBar != null)
-			{
-				healthBar.MaxValue = max;
-				healthBar.Value = current;
-			}
+			float ratio = Mathf.Clamp(current / max, 0f, 1f);
+			int filled = Mathf.RoundToInt(ratio * BAR_WIDTH);
+			int empty = BAR_WIDTH - filled;
+
+			healthBarLabel.Text = new string('█', filled) + new string('░', empty);
+
+			float r = Mathf.Lerp(1f, 0.1f, ratio);
+			float g = Mathf.Lerp(0.1f, 0.9f, ratio);
+			healthBarSettings.FontColor = new Color(r, g, 0.1f, 1f);
 		}
 	}
 }

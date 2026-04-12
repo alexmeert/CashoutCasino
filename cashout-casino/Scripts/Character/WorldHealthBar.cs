@@ -2,13 +2,6 @@ using Godot;
 
 namespace CashoutCasino.UI
 {
-	/// <summary>
-	/// World-space health bar that floats above a character's head.
-	/// Rendered client-side only — only the player who shot this character
-	/// will call ShowFor() to make it visible on their screen.
-	/// Automatically faces the local camera each frame.
-	/// Fades out after a short duration if not refreshed.
-	/// </summary>
 	public partial class WorldHealthBar : Node3D
 	{
 		[Export] public float hideAfterSeconds = 3f;
@@ -19,7 +12,6 @@ namespace CashoutCasino.UI
 		private bool visible3d = false;
 		private Camera3D localCamera;
 
-		// Total bar width in characters
 		private const int BAR_WIDTH = 10;
 
 		public override void _Ready()
@@ -27,15 +19,10 @@ namespace CashoutCasino.UI
 			bar = GetNode<Label3D>("Bar");
 			nameLabel = GetNodeOrNull<Label3D>("NameLabel");
 
-			// Start hidden
 			bar.Visible = false;
 			if (nameLabel != null) nameLabel.Visible = false;
 		}
 
-		/// <summary>
-		/// Called by the local player when they hit this character.
-		/// Shows the bar and resets the hide timer.
-		/// </summary>
 		public void ShowFor(float currentHealth, float maxHealth)
 		{
 			visible3d = true;
@@ -43,6 +30,18 @@ namespace CashoutCasino.UI
 			bar.Visible = true;
 			if (nameLabel != null) nameLabel.Visible = true;
 			UpdateBar(currentHealth, maxHealth);
+		}
+
+		// Called on respawn to clear all state so ShowFor works fresh
+		public void Reset()
+		{
+			visible3d = false;
+			hideTimer = 0f;
+			bar.Visible = false;
+			if (nameLabel != null) nameLabel.Visible = false;
+			// Reset to full green so it looks correct on first hit after respawn
+			bar.Text = new string('█', BAR_WIDTH);
+			bar.Modulate = new Color(0.2f, 0.9f, 0.1f, 1f);
 		}
 
 		public void SetLocalCamera(Camera3D camera)
@@ -56,14 +55,9 @@ namespace CashoutCasino.UI
 			int filled = Mathf.RoundToInt(ratio * BAR_WIDTH);
 			int empty = BAR_WIDTH - filled;
 
-			// Use block characters: filled = █, empty = ░
-			string fill = new string('█', filled);
-			string unfill = new string('░', empty);
-
-			// Color shifts red as health drops
 			float r = Mathf.Lerp(1f, 0.1f, ratio);
 			float g = Mathf.Lerp(0.1f, 0.9f, ratio);
-			bar.Text = fill + unfill;
+			bar.Text = new string('█', filled) + new string('░', empty);
 			bar.Modulate = new Color(r, g, 0.1f, 1f);
 		}
 
@@ -71,7 +65,6 @@ namespace CashoutCasino.UI
 		{
 			if (!visible3d) return;
 
-			// Count down hide timer
 			hideTimer -= (float)delta;
 			if (hideTimer <= 0f)
 			{
@@ -81,15 +74,11 @@ namespace CashoutCasino.UI
 				return;
 			}
 
-			// Billboard — rotate to face the local camera
 			if (localCamera != null)
 			{
-				Vector3 camPos = localCamera.GlobalPosition;
-				Vector3 myPos = GlobalPosition;
-				Vector3 dir = (camPos - myPos).Normalized();
-
+				Vector3 dir = (localCamera.GlobalPosition - GlobalPosition).Normalized();
 				if (dir.LengthSquared() > 0.001f)
-					LookAt(camPos, Vector3.Up);
+					LookAt(localCamera.GlobalPosition, Vector3.Up);
 			}
 		}
 	}

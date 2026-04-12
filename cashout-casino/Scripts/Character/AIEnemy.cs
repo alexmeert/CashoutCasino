@@ -8,14 +8,20 @@ namespace CashoutCasino.Character
 		[Export] public float fireRate = 1.2f;
 		[Export] public float damagePerShot = 10f;
 		[Export] public float gravity = 20f;
+		[Export] public float respawnTime = 15f;
 
 		private float verticalVelocity = 0f;
 		private float fireTimer = 0f;
 		private Character target;
 
+		private Vector3 spawnPosition;
+		private bool isDead = false;
+
 		public override void _Ready()
 		{
 			base._Ready();
+
+			spawnPosition = GlobalPosition;
 
 			var whb = GetNodeOrNull<UI.WorldHealthBar>("WorldHealthBar");
 			if (whb != null)
@@ -24,6 +30,8 @@ namespace CashoutCasino.Character
 
 		public override void _PhysicsProcess(double delta)
 		{
+			if (isDead) return;
+
 			float dt = (float)delta;
 
 			if (IsOnFloor())
@@ -47,6 +55,40 @@ namespace CashoutCasino.Character
 			{
 				FireAtTarget();
 				fireTimer = fireRate;
+			}
+		}
+
+		public override void OnDeath(Character killer)
+		{
+			isDead = true;
+			Visible = false;
+			SetPhysicsProcess(false);
+			SetProcess(false);
+
+			// Hide the health bar on death
+			if (WorldHealthBar != null)
+				WorldHealthBar.Visible = false;
+
+			GetTree().CreateTimer(respawnTime).Timeout += Respawn;
+		}
+
+		private void Respawn()
+		{
+			currentHealth = maxHealth;
+			isDead = false;
+			verticalVelocity = 0f;
+			fireTimer = 0f;
+
+			GlobalPosition = spawnPosition;
+			Visible = true;
+			SetPhysicsProcess(true);
+			SetProcess(true);
+
+			// Reset the health bar so it can be shown again when hit
+			if (WorldHealthBar != null)
+			{
+				WorldHealthBar.Visible = true;
+				WorldHealthBar.Reset();
 			}
 		}
 
@@ -86,37 +128,23 @@ namespace CashoutCasino.Character
 			query.Exclude = new Godot.Collections.Array<Rid> { GetRid() };
 
 			var result = spaceState.IntersectRay(query);
+			Vector3 hitPoint = result.Count > 0 ? (Vector3)result["position"] : targetPos;
 
-			if (result.Count == 0)
+			if (result.Count > 0)
 			{
-				GD.Print("[AI] Ray hit nothing. Origin: " + origin + " Target: " + targetPos);
-				SpawnTrail(origin, targetPos);
-				return;
-			}
-
-			Node colliderNode = result["collider"].As<Node>();
-			GD.Print("[AI] Ray hit: " + colliderNode?.Name + " type: " + colliderNode?.GetType().Name);
-
-			// Walk up hierarchy to find Character
-			Node node = colliderNode;
-			bool damaged = false;
-			while (node != null)
-			{
-				GD.Print("[AI]   checking node: " + node.Name + " / " + node.GetType().Name);
-				if (node is Character hit && hit != this)
+				Node node = result["collider"].As<Node>();
+				while (node != null)
 				{
-					GD.Print("[AI] Dealing " + damagePerShot + " damage to " + hit.Name);
-					hit.TakeDamage(damagePerShot, this);
-					damaged = true;
-					break;
+					if (node is Character hit && hit != this)
+					{
+						hit.TakeDamage(damagePerShot, this);
+						break;
+					}
+					node = node.GetParent();
 				}
-				node = node.GetParent();
 			}
 
-			if (!damaged)
-				GD.Print("[AI] Hit something but found no Character in hierarchy: " + colliderNode?.Name);
-
-			SpawnTrail(origin, (Vector3)result["position"]);
+			SpawnTrail(origin, hitPoint);
 		}
 
 		private void SpawnTrail(Vector3 from, Vector3 to)
