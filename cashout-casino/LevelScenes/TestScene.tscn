@@ -26,9 +26,6 @@ size = Vector3(40, 1, 40)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
 albedo_color = Color(0.3, 0.3, 0.3, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_2"]
-size = Vector3(1, 2, 1)
-
 [node name="TestScene" type="Node3D" unique_id=1488087813]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=948161909]
@@ -53,13 +50,13 @@ surface_material_override/0 = SubResource("StandardMaterial3D_1")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 jumpForce = 7.0
 
-[node name="Box1" type="MeshInstance3D" parent="." unique_id=1699160257]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -5)
-mesh = SubResource("BoxMesh_2")
+[node name="Box1" type="CSGBox3D" parent="." unique_id=886297936]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.9907837, -5)
+size = Vector3(1, 2.9815674, 1)
 
-[node name="Box2" type="MeshInstance3D" parent="." unique_id=786038711]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 3)
-mesh = SubResource("BoxMesh_2")
+[node name="Box2" type="CSGBox3D" parent="." unique_id=2020695335]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.9907837, 1)
+size = Vector3(1, 2.9815674, 1)
 
 [node name="AiEnemy" parent="." unique_id=701028671 instance=ExtResource("2_d2gth")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.150295, 1, -15.74277)

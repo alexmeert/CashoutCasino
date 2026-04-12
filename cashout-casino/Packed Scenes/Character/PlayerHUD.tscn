@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cxjcub6cbua3d"]
 
-[ext_resource type="Script" uid="uid://c7gtlt8pfv81k" path="res://Scripts/Character/PlayerHud.cs" id="1_5yeb8"]
+[ext_resource type="Script" uid="uid://ciwoarq4k3maq" path="res://Scripts/Character/PlayerHud.cs" id="1_5yeb8"]
+[ext_resource type="Texture2D" uid="uid://dkpkxep64lqen" path="res://Packed Scenes/Character/crosshair.png" id="2_nb2hl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Panel"]
 content_margin_left = 12.0
@@ -64,3 +65,23 @@ label_settings = SubResource("LabelSettings_Ammo")
 layout_mode = 2
 text = "$100"
 label_settings = SubResource("LabelSettings_Currency")
+
+[node name="Reticle" type="Control" parent="." unique_id=1199711718]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Reticle" unique_id=690719545]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.13601731, 0.13601731)
+pivot_offset = Vector2(576, 324)
+texture = ExtResource("2_nb2hl")
+stretch_mode = 3
