@@ -1,7 +1,0 @@
-[gd_scene format=3 uid="uid://dm2aw0dkuln4b"]
-
-[ext_resource type="PackedScene" uid="uid://dtqga2gcy13ew" path="res://Assets/3D-Models/RouletteWheelDrumGun.fbx" id="1_33yjb"]
-
-[node name="GunModel" type="Node3D" unique_id=1850276097]
-
-[node name="RouletteWheelDrumGun" parent="." unique_id=610069367 instance=ExtResource("1_33yjb")]
