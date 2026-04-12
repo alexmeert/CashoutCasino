@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://jjmbwwxo3f14" path="res://Packed Scenes/Weapon/AssaultRifle.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://cs3lkmqn0ldf4" path="res://Packed Scenes/Weapon/DualPistols.tscn" id="4"]
 [ext_resource type="PackedScene" uid="uid://cn70t0now5k1c" path="res://Packed Scenes/Weapon/Shotgun.tscn" id="5"]
-[ext_resource type="PackedScene" path="res://Packed Scenes/Character/PlayerHUD.tscn" id="6_cl7pc"]
+[ext_resource type="PackedScene" uid="uid://cxjcub6cbua3d" path="res://Packed Scenes/Character/PlayerHUD.tscn" id="6_cl7pc"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.4
@@ -52,7 +52,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2114123, 0)
 script = ExtResource("2")
 
 [node name="AssaultRifle" parent="CameraHolder/Camera3D/WeaponManager" unique_id=2146712028 instance=ExtResource("3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1662817, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17920679, 1.0096756, -0.50785905)
 
 [node name="DualPistols" parent="CameraHolder/Camera3D/WeaponManager" unique_id=726762643 instance=ExtResource("4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1662817, 0)

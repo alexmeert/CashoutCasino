@@ -1,49 +1,15 @@
 [gd_scene format=3 uid="uid://jjmbwwxo3f14"]
 
 [ext_resource type="Script" uid="uid://db5nv3t24c6a0" path="res://Scripts/Weapon/AssaultRifle.cs" id="1"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_1"]
-size = Vector3(0.06, 0.08, 0.5)
-
-[sub_resource type="StandardMaterial3D" id="Mat_Body"]
-albedo_color = Color(0.15, 0.15, 0.15, 1)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_1"]
-top_radius = 0.018
-bottom_radius = 0.018
-height = 0.35
-
-[sub_resource type="StandardMaterial3D" id="Mat_Barrel"]
-albedo_color = Color(0.25, 0.25, 0.25, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_2"]
-size = Vector3(0.04, 0.1, 0.12)
-
-[sub_resource type="StandardMaterial3D" id="Mat_Mag"]
-albedo_color = Color(0.1, 0.1, 0.1, 1)
+[ext_resource type="PackedScene" uid="uid://dsexv3w5iefb7" path="res://Assets/3D-Models/RouletteWheelDrumGun.gltf" id="2_1wl0r"]
 
 [node name="AssaultRifle" type="Node3D" unique_id=293869399 node_paths=PackedStringArray("Muzzle")]
 script = ExtResource("1")
 bulletSpeed = 150.0
 Muzzle = NodePath("Marker3D")
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=1947081694]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -0.12, -0.35)
-cast_shadow = 0
-mesh = SubResource("BoxMesh_1")
-surface_material_override/0 = SubResource("Mat_Body")
-
-[node name="Barrel" type="MeshInstance3D" parent="." unique_id=1657391598]
-transform = Transform3D(0, -4.371139e-08, -1, -1, 0, 0, 0, 1, -4.371139e-08, 0.18, -0.1, -0.62)
-cast_shadow = 0
-mesh = SubResource("CylinderMesh_1")
-surface_material_override/0 = SubResource("Mat_Barrel")
-
-[node name="Magazine" type="MeshInstance3D" parent="." unique_id=1956609602]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -0.19, -0.3)
-cast_shadow = 0
-mesh = SubResource("BoxMesh_2")
-surface_material_override/0 = SubResource("Mat_Mag")
-
 [node name="Marker3D" type="Marker3D" parent="." unique_id=827857944]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18115896, -0.09873209, -0.80261123)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0003560409, 0.009950399, -0.66136855)
+
+[node name="DrumGun" parent="." unique_id=782660006 instance=ExtResource("2_1wl0r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1019648, 0)
