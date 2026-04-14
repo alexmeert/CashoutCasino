@@ -10,6 +10,8 @@ namespace CashoutCasino.Character
 		[Export] public NodePath collisionShapePath = "CollisionShape3D";
 		[Export] public NodePath weaponManagerPath = "CameraHolder/Camera3D/WeaponManager";
 		[Export] public NodePath hudPath = "PlayerHud";
+		[Export] public NodePath respawnScreenPath = "RespawnScreen";
+		[Export] public float respawnTime = 5f;
 
 		[Export] public float jumpForce = 5f;
 		[Export] public float gravity = 20f;
@@ -21,18 +23,25 @@ namespace CashoutCasino.Character
 		private CollisionShape3D collisionShape;
 		private Weapon.WeaponManager wm;
 		private UI.PlayerHud hud;
+		private UI.RespawnScreen respawnScreen;
+		private MeshInstance3D bodyMesh;
 
 		private float verticalVelocity = 0f;
 		private float cameraPitch = 0f;
 		private const float MAX_PITCH = 89f;
 
+		private Vector3 spawnPosition;
+
 		public override void _Ready()
 		{
 			base._Ready();
 
+			spawnPosition = GlobalPosition;
+
 			camera = GetNode<Camera3D>(cameraPath);
 			cameraHolder = GetNode<Node3D>(cameraHolderPath);
 			collisionShape = GetNode<CollisionShape3D>(collisionShapePath);
+			bodyMesh = GetNodeOrNull<MeshInstance3D>("MeshInstance3D");
 
 			if (HasNode(weaponManagerPath))
 			{
@@ -52,6 +61,9 @@ namespace CashoutCasino.Character
 				}
 			}
 
+			if (HasNode(respawnScreenPath))
+				respawnScreen = GetNode(respawnScreenPath) as UI.RespawnScreen;
+
 			var whb = GetNodeOrNull<UI.WorldHealthBar>("WorldHealthBar");
 			if (whb != null)
 			{
@@ -69,6 +81,41 @@ namespace CashoutCasino.Character
 			Input.MouseMode = Input.MouseModeEnum.Captured;
 		}
 
+		public override void OnDeath(Character killer)
+		{
+			base.OnDeath(killer); // sets isDead = true
+
+			SetPhysicsProcess(false);
+
+			// Make body semi-transparent so you can see your corpse
+			if (bodyMesh != null)
+			{
+				var mat = new StandardMaterial3D();
+				mat.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
+				mat.AlbedoColor = new Color(0.6f, 0.6f, 0.8f, 0.35f);
+				bodyMesh.MaterialOverride = mat;
+			}
+
+			respawnScreen?.StartCountdown(respawnTime, Respawn);
+		}
+
+		private void Respawn()
+		{
+			isDead = false;
+			currentHealth = maxHealth;
+			verticalVelocity = 0f;
+
+			GlobalPosition = spawnPosition;
+			SetPhysicsProcess(true);
+
+			// Restore original mesh appearance
+			if (bodyMesh != null)
+				bodyMesh.MaterialOverride = null;
+
+			hud?.OnHealthChanged(currentHealth, maxHealth);
+			Input.MouseMode = Input.MouseModeEnum.Captured;
+		}
+
 		protected override void OnHealthChangedInternal(float current, float max)
 		{
 			hud?.OnHealthChanged(current, max);
@@ -81,6 +128,8 @@ namespace CashoutCasino.Character
 
 		public override void _Input(InputEvent @event)
 		{
+			if (isDead) return;
+
 			if (@event is InputEventMouseMotion mouseMotion)
 			{
 				RotateY(Mathf.DegToRad(-mouseMotion.Relative.X * mouseSensitivity));
@@ -98,6 +147,8 @@ namespace CashoutCasino.Character
 
 		public override void _PhysicsProcess(double delta)
 		{
+			if (isDead) return;
+
 			float dt = (float)delta;
 
 			SetCrouch(Input.IsActionPressed("crouch"));

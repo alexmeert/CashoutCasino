@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cs3lkmqn0ldf4" path="res://Packed Scenes/Weapon/DualPistols.tscn" id="4"]
 [ext_resource type="PackedScene" uid="uid://cn70t0now5k1c" path="res://Packed Scenes/Weapon/Shotgun.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://cxjcub6cbua3d" path="res://Packed Scenes/Character/PlayerHUD.tscn" id="6_cl7pc"]
+[ext_resource type="PackedScene" uid="uid://dq00sm6udfidw" path="res://Packed Scenes/Character/RespawnScreen.tscn" id="7"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.4
@@ -22,6 +23,8 @@ height = 1.8
 script = ExtResource("1")
 
 [node name="PlayerHud" parent="." unique_id=335599664 instance=ExtResource("6_cl7pc")]
+
+[node name="RespawnScreen" parent="." instance=ExtResource("7")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=570789552]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)

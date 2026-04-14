@@ -17,6 +17,9 @@ namespace CashoutCasino.Character
 		protected Vector3 moveDirection = Vector3.Zero;
 		protected bool isSprintingInput = false;
 		protected bool isCrouching = false;
+		protected bool isDead = false;
+
+		public bool IsDead => isDead;
 
 		public UI.WorldHealthBar WorldHealthBar;
 
@@ -34,11 +37,12 @@ namespace CashoutCasino.Character
 
 		public virtual void TakeDamage(float damage, Character attacker = null)
 		{
+			if (isDead) return;
+
 			currentHealth -= damage;
 			currentHealth = Mathf.Max(currentHealth, 0f);
 			animator?.PlayTakeDamage();
 
-			// Call directly instead of EmitSignal to avoid Variant float/double mismatch
 			OnHealthChangedInternal(currentHealth, maxHealth);
 			EmitSignal(SignalName.HealthChanged, currentHealth, maxHealth);
 
@@ -46,11 +50,11 @@ namespace CashoutCasino.Character
 				OnDeath(attacker);
 		}
 
-		// Override in subclasses that need immediate local response (e.g. Player -> HUD)
 		protected virtual void OnHealthChangedInternal(float current, float max) { }
 
 		public virtual void OnDeath(Character killer)
 		{
+			isDead = true;
 			animator?.PlayDeath();
 			EmitSignal(SignalName.Died, killer);
 		}

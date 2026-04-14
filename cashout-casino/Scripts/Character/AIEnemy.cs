@@ -15,12 +15,10 @@ namespace CashoutCasino.Character
 		private Character target;
 
 		private Vector3 spawnPosition;
-		private bool isDead = false;
 
 		public override void _Ready()
 		{
 			base._Ready();
-
 			spawnPosition = GlobalPosition;
 
 			var whb = GetNodeOrNull<UI.WorldHealthBar>("WorldHealthBar");
@@ -60,12 +58,11 @@ namespace CashoutCasino.Character
 
 		public override void OnDeath(Character killer)
 		{
-			isDead = true;
+			base.OnDeath(killer);
 			Visible = false;
 			SetPhysicsProcess(false);
 			SetProcess(false);
 
-			// Hide the health bar on death
 			if (WorldHealthBar != null)
 				WorldHealthBar.Visible = false;
 
@@ -74,8 +71,8 @@ namespace CashoutCasino.Character
 
 		private void Respawn()
 		{
-			currentHealth = maxHealth;
 			isDead = false;
+			currentHealth = maxHealth;
 			verticalVelocity = 0f;
 			fireTimer = 0f;
 
@@ -84,7 +81,6 @@ namespace CashoutCasino.Character
 			SetPhysicsProcess(true);
 			SetProcess(true);
 
-			// Reset the health bar so it can be shown again when hit
 			if (WorldHealthBar != null)
 			{
 				WorldHealthBar.Visible = true;
@@ -99,7 +95,7 @@ namespace CashoutCasino.Character
 
 			foreach (Node node in GetTree().GetNodesInGroup("Player"))
 			{
-				if (node is Character c)
+				if (node is Character c && !c.IsDead)
 				{
 					float distSq = GlobalPosition.DistanceSquaredTo(c.GlobalPosition);
 					if (distSq < closest)
