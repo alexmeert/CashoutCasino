@@ -59,6 +59,11 @@ namespace CashoutCasino.Character
 		public override void OnDeath(Character killer)
 		{
 			base.OnDeath(killer);
+
+			// Reward the killer with currency (= ammo) if they are a player
+			if (killer != null)
+				Economy.CurrencyEconomy.ApplyCurrencyGain(killer, Economy.CurrencyEconomy.ElimType.Body);
+
 			Visible = false;
 			SetPhysicsProcess(false);
 			SetProcess(false);
