@@ -30,7 +30,7 @@ namespace CashoutCasino.UI
 			mat.AlbedoTexture = viewport.GetTexture();
 			quad.MaterialOverride = mat;
 
-			// Grab the fill StyleBox so we can shift its color with health
+			// Grab the fill StyleBox to shift its color with health
 			fillStyle = progressBar.GetThemeStylebox("fill") as StyleBoxFlat;
 
 			quad.Visible = false;

@@ -85,6 +85,9 @@ namespace CashoutCasino.Character
 		{
 			base.OnDeath(killer); // sets isDead = true
 
+			// Lose the same amount you gain for a kill
+			ModifyCurrency(-Economy.CurrencyEconomy.BODY_ELIM);
+
 			SetPhysicsProcess(false);
 
 			// Make body semi-transparent so you can see your corpse
