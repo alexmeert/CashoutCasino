@@ -18,6 +18,10 @@ namespace CashoutCasino.Character
 		[Export] public float standHeight = 1.8f;
 		[Export] public float crouchHeight = 1.0f;
 
+		// Regen settings
+		[Export] public float regenDelay = 15f;    // seconds of no damage before regen starts
+		[Export] public float regenRate  = 10f;    // HP per second once regen kicks in
+
 		private Camera3D camera;
 		private Node3D cameraHolder;
 		private CollisionShape3D collisionShape;
@@ -31,20 +35,21 @@ namespace CashoutCasino.Character
 		private const float MAX_PITCH = 89f;
 
 		private Vector3 spawnPosition;
-
-		// ATM debt — added to currency for ammo but counted as a score penalty
 		private int atmDebt = 0;
+
+		// Regen state
+		private float timeSinceLastDamage = 0f;
+		private bool regenActive = false;
 
 		public override void _Ready()
 		{
 			base._Ready();
 
-			spawnPosition = GlobalPosition;
-
-			camera        = GetNode<Camera3D>(cameraPath);
-			cameraHolder  = GetNode<Node3D>(cameraHolderPath);
+			spawnPosition  = GlobalPosition;
+			camera         = GetNode<Camera3D>(cameraPath);
+			cameraHolder   = GetNode<Node3D>(cameraHolderPath);
 			collisionShape = GetNode<CollisionShape3D>(collisionShapePath);
-			bodyMesh      = GetNodeOrNull<MeshInstance3D>("MeshInstance3D");
+			bodyMesh       = GetNodeOrNull<MeshInstance3D>("MeshInstance3D");
 
 			if (HasNode(weaponManagerPath))
 			{
@@ -85,9 +90,6 @@ namespace CashoutCasino.Character
 			Input.MouseMode = Input.MouseModeEnum.Captured;
 		}
 
-		/// <summary>
-		/// Called by ATM — adds currency (ammo) but tracks it as score debt.
-		/// </summary>
 		public void AddAtmDebt(int amount)
 		{
 			atmDebt += amount;
@@ -96,17 +98,24 @@ namespace CashoutCasino.Character
 		}
 
 		public int GetAtmDebt() => atmDebt;
-
-		/// <summary>
-		/// Final score = currentCurrency - atmDebt
-		/// </summary>
 		public int GetFinalScore() => currentCurrency - atmDebt;
+
+		public override void TakeDamage(float damage, Character attacker = null)
+		{
+			// Reset regen timer on any hit
+			timeSinceLastDamage = 0f;
+			regenActive = false;
+			base.TakeDamage(damage, attacker);
+		}
 
 		public override void OnDeath(Character killer)
 		{
 			base.OnDeath(killer);
 			ModifyCurrency(-Economy.CurrencyEconomy.BODY_ELIM);
 			SetPhysicsProcess(false);
+
+			timeSinceLastDamage = 0f;
+			regenActive = false;
 
 			if (bodyMesh != null)
 			{
@@ -122,8 +131,10 @@ namespace CashoutCasino.Character
 		private void Respawn()
 		{
 			isDead = false;
-			currentHealth = maxHealth;
+			currentHealth    = maxHealth;
 			verticalVelocity = 0f;
+			timeSinceLastDamage = 0f;
+			regenActive = false;
 
 			GlobalPosition = spawnPosition;
 			SetPhysicsProcess(true);
@@ -161,6 +172,22 @@ namespace CashoutCasino.Character
 			{
 				if (keyEvent.Keycode == Key.Escape)
 					Input.MouseMode = Input.MouseModeEnum.Visible;
+			}
+		}
+
+		public override void _Process(double delta)
+		{
+			if (isDead) return;
+			if (currentHealth >= maxHealth) return;
+
+			float dt = (float)delta;
+			timeSinceLastDamage += dt;
+
+			if (timeSinceLastDamage >= regenDelay)
+			{
+				regenActive = true;
+				currentHealth = Mathf.Min(currentHealth + regenRate * dt, maxHealth);
+				OnHealthChangedInternal(currentHealth, maxHealth);
 			}
 		}
 
