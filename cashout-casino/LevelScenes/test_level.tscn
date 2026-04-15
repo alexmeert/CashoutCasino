@@ -3,6 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://bfbwvqh3x1oaf" path="res://Assets/2D-Textures-Assets/seamless_pattern_16x16px_SpriteSheet_ 464.png" id="1_pxjhl"]
 [ext_resource type="PackedScene" uid="uid://coscxp08lodnw" path="res://Packed Scenes/Character/Player.tscn" id="2_aistc"]
 [ext_resource type="Texture2D" uid="uid://ded85ss0jo3y0" path="res://Assets/2D-Textures-Assets/seamless_pattern_16x16px_SpriteSheet_ 255.png" id="3_14b8f"]
+[ext_resource type="PackedScene" path="res://Packed Scenes/Character/AIEnemy.tscn" id="3_uj3dl"]
+[ext_resource type="Texture2D" uid="uid://x2sngaa2lutv" path="res://Assets/2D-Textures-Assets/seamless_pattern_16x16px_SpriteSheet_ 84.png" id="4_ti5k4"]
+[ext_resource type="PackedScene" uid="uid://qrwe6n5i3pgq" path="res://Assets/3D-Models/SlotmachineTexture.gltf" id="6_t2fvq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_14b8f"]
 albedo_texture = ExtResource("1_pxjhl")
@@ -19,24 +22,46 @@ albedo_texture = ExtResource("3_14b8f")
 uv1_scale = Vector3(16, 16, 16)
 texture_filter = 0
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uj3dl"]
+albedo_texture = ExtResource("4_ti5k4")
+uv1_scale = Vector3(100, 100, 100)
+texture_filter = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_t2fvq"]
+material = SubResource("StandardMaterial3D_uj3dl")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qbljm"]
+
 [node name="TestLevel" type="Node3D" unique_id=2133213211]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=415471842]
-transform = Transform3D(-0.013935578, -0.61235535, 0.79045993, -0.010793966, 0.7905827, 0.6122602, -0.99984473, 2.7935338e-09, -0.01762697, -9.106668, 30.323872, 0)
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1840151156]
+transform = Transform3D(1, 0, 0, 0, 0.002897194, 0.9999958, 0, -0.9999958, 0.002897194, -1.6208954, 9.1055765, 0)
+light_energy = 4.351
+spot_range = 4096.0
+spot_attenuation = 0.19
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1777617772]
+[node name="SpotLight3D2" type="SpotLight3D" parent="." unique_id=1059319273]
+transform = Transform3D(1, 0, 0, 0, 0.024711277, 0.9996947, 0, -0.9996947, 0.024711277, -46.835022, 9.131957, 0.6672549)
+light_energy = 4.351
+spot_range = 4096.0
+spot_attenuation = 0.19
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1040461278]
+[node name="Floor" type="StaticBody3D" parent="." unique_id=1777617772]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1040461278]
 transform = Transform3D(218.32289, 0, 0, 0, 0.12423009, 0, 0, 0, 205.61522, 0, 0, 0)
 mesh = SubResource("BoxMesh_14b8f")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1689571088]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1689571088]
 transform = Transform3D(221.98895, 0, 0, 0, 1, 0, 0, 0, 209.36993, 0, 0, 0)
 shape = SubResource("BoxShape3D_aistc")
 
 [node name="Player" parent="." unique_id=920529542 instance=ExtResource("2_aistc")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -52.17347, 0.2979808, 0.15208435)
 jumpForce = 7.0
+
+[node name="AiEnemy" parent="." unique_id=701028671 instance=ExtResource("3_uj3dl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.150295, 1, -15.74277)
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=176069694]
 transform = Transform3D(-0.81106544, 0, -0.58495873, 0, 1, 0, 0.58495873, 0, -0.81106544, -40.389446, 5, -31.749775)
@@ -70,3 +95,20 @@ material = SubResource("StandardMaterial3D_ti5k4")
 transform = Transform3D(1, 0, -2.9802322e-08, 0, 1, 0, 2.9802322e-08, 0, 1, 0, 0, 0)
 size = Vector3(40, 10, 0.5)
 material = SubResource("StandardMaterial3D_ti5k4")
+
+[node name="Ceiling" type="StaticBody3D" parent="." unique_id=864352896]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ceiling" unique_id=1081346235]
+transform = Transform3D(81.3644, 0, 0, 0, 0.4166646, 0, 0, 0, 96.20988, -26.15836, 10.258024, 0)
+mesh = SubResource("BoxMesh_t2fvq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling" unique_id=563105001]
+transform = Transform3D(82.80503, 0, 0, 0, 1, 0, 0, 0, 95.53949, -26.323906, 10.365407, 0)
+shape = SubResource("BoxShape3D_qbljm")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1932448773]
+transform = Transform3D(-0.023465214, -0.92367905, 0.3824479, -0.056566257, 0.3831671, 0.92194533, -0.99812305, 0, -0.061240163, -7.8961716, 18.545952, 0)
+light_energy = 0.5
+
+[node name="blockbench_export" parent="." unique_id=1558035587 instance=ExtResource("6_t2fvq")]
+transform = Transform3D(0.7534601, 0, -0.6574936, 0, 1, 0, 0.6574936, 0, 0.7534601, -53.85, 0.06364725, 3.398)
