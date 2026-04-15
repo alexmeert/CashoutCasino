@@ -32,16 +32,19 @@ namespace CashoutCasino.Character
 
 		private Vector3 spawnPosition;
 
+		// ATM debt — added to currency for ammo but counted as a score penalty
+		private int atmDebt = 0;
+
 		public override void _Ready()
 		{
 			base._Ready();
 
 			spawnPosition = GlobalPosition;
 
-			camera = GetNode<Camera3D>(cameraPath);
-			cameraHolder = GetNode<Node3D>(cameraHolderPath);
+			camera        = GetNode<Camera3D>(cameraPath);
+			cameraHolder  = GetNode<Node3D>(cameraHolderPath);
 			collisionShape = GetNode<CollisionShape3D>(collisionShapePath);
-			bodyMesh = GetNodeOrNull<MeshInstance3D>("MeshInstance3D");
+			bodyMesh      = GetNodeOrNull<MeshInstance3D>("MeshInstance3D");
 
 			if (HasNode(weaponManagerPath))
 			{
@@ -77,25 +80,39 @@ namespace CashoutCasino.Character
 
 			hud?.OnCurrencyChanged(currentCurrency);
 			hud?.OnHealthChanged(currentHealth, maxHealth);
+			hud?.OnAtmDebtChanged(atmDebt);
 
 			Input.MouseMode = Input.MouseModeEnum.Captured;
 		}
 
+		/// <summary>
+		/// Called by ATM — adds currency (ammo) but tracks it as score debt.
+		/// </summary>
+		public void AddAtmDebt(int amount)
+		{
+			atmDebt += amount;
+			ModifyCurrency(amount);
+			hud?.OnAtmDebtChanged(atmDebt);
+		}
+
+		public int GetAtmDebt() => atmDebt;
+
+		/// <summary>
+		/// Final score = currentCurrency - atmDebt
+		/// </summary>
+		public int GetFinalScore() => currentCurrency - atmDebt;
+
 		public override void OnDeath(Character killer)
 		{
-			base.OnDeath(killer); // sets isDead = true
-
-			// Lose the same amount you gain for a kill
+			base.OnDeath(killer);
 			ModifyCurrency(-Economy.CurrencyEconomy.BODY_ELIM);
-
 			SetPhysicsProcess(false);
 
-			// Make body semi-transparent so you can see your corpse
 			if (bodyMesh != null)
 			{
 				var mat = new StandardMaterial3D();
 				mat.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
-				mat.AlbedoColor = new Color(0.6f, 0.6f, 0.8f, 0.35f);
+				mat.AlbedoColor  = new Color(0.6f, 0.6f, 0.8f, 0.35f);
 				bodyMesh.MaterialOverride = mat;
 			}
 
@@ -111,7 +128,6 @@ namespace CashoutCasino.Character
 			GlobalPosition = spawnPosition;
 			SetPhysicsProcess(true);
 
-			// Restore original mesh appearance
 			if (bodyMesh != null)
 				bodyMesh.MaterialOverride = null;
 
@@ -157,14 +173,10 @@ namespace CashoutCasino.Character
 			SetCrouch(Input.IsActionPressed("crouch"));
 
 			Vector3 inputDir = Vector3.Zero;
-			if (Input.IsActionPressed("move_forward"))
-				inputDir -= Transform.Basis.Z;
-			if (Input.IsActionPressed("move_backward"))
-				inputDir += Transform.Basis.Z;
-			if (Input.IsActionPressed("move_left"))
-				inputDir -= Transform.Basis.X;
-			if (Input.IsActionPressed("move_right"))
-				inputDir += Transform.Basis.X;
+			if (Input.IsActionPressed("move_forward"))  inputDir -= Transform.Basis.Z;
+			if (Input.IsActionPressed("move_backward")) inputDir += Transform.Basis.Z;
+			if (Input.IsActionPressed("move_left"))     inputDir -= Transform.Basis.X;
+			if (Input.IsActionPressed("move_right"))    inputDir += Transform.Basis.X;
 
 			inputDir = inputDir.Normalized();
 			bool sprinting = Input.IsActionPressed("sprint") && !isCrouching;
@@ -189,18 +201,15 @@ namespace CashoutCasino.Character
 
 			if (wm == null) return;
 
-			bool fireHeld = Input.IsActionPressed("fire");
+			bool fireHeld    = Input.IsActionPressed("fire");
 			bool firePressed = Input.IsActionJustPressed("fire");
-			bool wantFire = wm.CurrentWeaponHoldToFire() ? fireHeld : firePressed;
+			bool wantFire    = wm.CurrentWeaponHoldToFire() ? fireHeld : firePressed;
 			if (wantFire)
 				wm.FireCurrentWeapon(-camera.GlobalTransform.Basis.Z, this);
 
-			if (Input.IsActionJustPressed("weapon_1"))
-				wm.SwitchWeapon(0);
-			if (Input.IsActionJustPressed("weapon_2"))
-				wm.SwitchWeapon(1);
-			if (Input.IsActionJustPressed("weapon_3"))
-				wm.SwitchWeapon(2);
+			if (Input.IsActionJustPressed("weapon_1")) wm.SwitchWeapon(0);
+			if (Input.IsActionJustPressed("weapon_2")) wm.SwitchWeapon(1);
+			if (Input.IsActionJustPressed("weapon_3")) wm.SwitchWeapon(2);
 		}
 
 		private void SetCrouch(bool crouch)
@@ -211,7 +220,7 @@ namespace CashoutCasino.Character
 				float targetHeight = crouch ? crouchHeight : standHeight;
 				capsule.Height = targetHeight;
 				collisionShape.Position = new Vector3(0f, targetHeight / 2f, 0f);
-				cameraHolder.Position = new Vector3(0f, targetHeight - 0.15f, 0f);
+				cameraHolder.Position   = new Vector3(0f, targetHeight - 0.15f, 0f);
 			}
 		}
 

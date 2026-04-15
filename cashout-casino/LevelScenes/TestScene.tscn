@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://cqy0pqnry148c"]
 
 [ext_resource type="PackedScene" uid="uid://coscxp08lodnw" path="res://Packed Scenes/Character/Player.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://xkbyyooa24mv" path="res://Packed Scenes/Level/ATMMachine.tscn" id="1_otfp1"]
 [ext_resource type="PackedScene" path="res://Packed Scenes/Character/AIEnemy.tscn" id="2_d2gth"]
+[ext_resource type="PackedScene" uid="uid://cc31bm3yl5i5r" path="res://Packed Scenes/Level/SlotMachine.tscn" id="3_7f6qr"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ernkg"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -30,6 +32,9 @@ albedo_color = Color(0.3, 0.3, 0.3, 1)
 albedo_color = Color(1, 0.56078434, 0, 1)
 
 [node name="TestScene" type="Node3D" unique_id=1488087813]
+
+[node name="ATMMachine" parent="." unique_id=130021698 instance=ExtResource("1_otfp1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.59534, 0, 3.6200686)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=948161909]
 environment = SubResource("Environment_7f6qr")
@@ -90,3 +95,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 0, -17)
 
 [node name="P4Spawn" type="Marker3D" parent="." unique_id=386777217]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 0, 17)
+
+[node name="SlotMachine" parent="." unique_id=1275681976 instance=ExtResource("3_7f6qr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.469803, 0, 4.1388063)
