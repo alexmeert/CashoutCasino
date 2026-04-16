@@ -196,9 +196,10 @@ public partial class GameMaster : Node
 			// before RPCs are sent to the now-replicated node.
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-			// Tell the owning client to claim authority on their player replica.
+			// Broadcast authority to ALL peers so every copy sets the correct authority.
+			// This makes MultiplayerSynchronizer delta sync work on all clients.
 			if (characterNode.HasMethod("ClaimAuthority"))
-				characterNode.RpcId(ownerId, "ClaimAuthority");
+				characterNode.Rpc("ClaimAuthority", ownerId);
 
 			var pc = characterNode.GetNodeOrNull<PlayerCharacter>("PlayerCharacter");
 			if (pc != null)

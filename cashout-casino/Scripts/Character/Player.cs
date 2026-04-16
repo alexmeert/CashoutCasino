@@ -94,14 +94,16 @@ namespace CashoutCasino.Character
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.Authority,
-			CallLocal = false,
+			CallLocal = true,
 			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-		public void ClaimAuthority()
+		public void ClaimAuthority(long ownerId)
 		{
-			// Server told us this player belongs to us — claim authority locally.
-			SetMultiplayerAuthority(Multiplayer.GetUniqueId());
-			GD.Print($"[Player] ClaimAuthority: peer {Multiplayer.GetUniqueId()} owns {Name}");
-			SetupLocalAuthority();
+			// All peers run this so every copy of this player has the correct authority set.
+			// This is required for MultiplayerSynchronizer to know who sends deltas.
+			SetMultiplayerAuthority((int)ownerId);
+			GD.Print($"[Player] ClaimAuthority: peer {ownerId} owns {Name} (I am {Multiplayer.GetUniqueId()})");
+			if (IsMultiplayerAuthority())
+				SetupLocalAuthority();
 		}
 
 		private void SetupLocalAuthority()
