@@ -46,8 +46,15 @@ namespace CashoutCasino.UI
 			label.AddThemeFontSizeOverride("font_size", 16);
 			label.AddThemeColorOverride("font_color", color);
 			label.VerticalAlignment = VerticalAlignment.Center;
+
+			
+			var font = GD.Load<FontFile>("res://Assets/upheaval/upheavtt.ttf");
+			label.AddThemeFontOverride("font", font);
+
 			row.AddChild(label);
 		}
+		
+		
 
 		private static Color ScoreColor(int score) => score switch
 		{

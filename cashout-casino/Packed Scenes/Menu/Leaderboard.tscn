@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://m3sudksspt1s"]
 
 [ext_resource type="Script" uid="uid://blds6koihqda4" path="res://Scripts/Menu/Leaderboard.cs" id="1_pk2cl"]
+[ext_resource type="FontFile" uid="uid://ubdv0skyrbjb" path="res://Assets/upheaval/upheavtt.ttf" id="2_c05wl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.05, 0.05, 0.08, 0.92)
@@ -48,6 +49,7 @@ theme_override_constants/separation = 8
 [node name="Title" type="Label" parent="Panel/MarginContainer/VBox" unique_id=1274809293]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.85, 0.6, 1)
+theme_override_fonts/font = ExtResource("2_c05wl")
 theme_override_font_sizes/font_size = 20
 text = "LEADERBOARD"
 horizontal_alignment = 1
@@ -60,6 +62,7 @@ theme_override_constants/separation = 0
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.5, 0.6, 1)
+theme_override_fonts/font = ExtResource("2_c05wl")
 theme_override_font_sizes/font_size = 13
 text = "PLAYER"
 
@@ -67,6 +70,7 @@ text = "PLAYER"
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.5, 0.6, 1)
+theme_override_fonts/font = ExtResource("2_c05wl")
 theme_override_font_sizes/font_size = 13
 text = "SCORE"
 
@@ -74,6 +78,7 @@ text = "SCORE"
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.5, 0.6, 1)
+theme_override_fonts/font = ExtResource("2_c05wl")
 theme_override_font_sizes/font_size = 13
 text = "KILLS"
 
@@ -81,6 +86,7 @@ text = "KILLS"
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.5, 0.6, 1)
+theme_override_fonts/font = ExtResource("2_c05wl")
 theme_override_font_sizes/font_size = 13
 text = "DEATHS"
 
