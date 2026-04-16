@@ -83,7 +83,8 @@ namespace CashoutCasino.Weapon
 			var trail = new BulletTrail();
 			trail.TrailColor = TrailColor;
 			trail.Init(from, to);
-			owner.GetTree().CurrentScene.AddChild(trail);
+			// Add to owner's parent so it lives in the same 3D space as the player.
+			(owner.GetParent() ?? owner.GetTree().CurrentScene).AddChild(trail);
 		}
 
 		public override void _Ready()
