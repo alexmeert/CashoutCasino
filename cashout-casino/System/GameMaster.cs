@@ -6,12 +6,13 @@ public partial class GameMaster : Node
 {
 	[Export] public bool GameStarted;
 	[Export] public bool GameFinished;
-	[Export] public NetworkCore NpmSpawner;
-	[Export] public NetworkCore LevelSpawner;
+	[Export] public MultiplayerSpawner NpmSpawner;
+	[Export] public MultiplayerSpawner LevelSpawner;
 	[Export] public Label _serverStatus;
 	[Export] public Label _playersReady;
 	[Export] public Button _hostButton;
 	[Export] public Button _clientButton;
+	[Export] public CanvasLayer _lobbyCanvasLayer;
 
 	// LevelSpawner spawnable scenes (match the order in the Godot inspector):
 	// 0 = Character.tscn
@@ -27,10 +28,16 @@ public partial class GameMaster : Node
 	public override void _Ready()
 	{
 		base._Ready();
-		// Also trigger GameCycle when the server is created via command-line args
-		// (e.g. headless WAN lobby game server), not just when the Host button is pressed.
-		GenericCore.Instance.ServerCreated += (_info) => OnServerStarted();
 		_lobbyBackground = GetParent().GetNodeOrNull<ColorRect>("ColorRect");
+
+		// Subscribe to ServerCreated for future calls (e.g. Host button press).
+		GenericCore.Instance.ServerCreated += (_info) => OnServerStarted();
+
+		// If GenericCore already called CreateLocalGame() before we subscribed
+		// (happens with --GAMESERVER cmd arg: GenericCore._Ready fires before ours),
+		// start the game cycle now.
+		if (GenericCore.Instance.IsServer)
+			CallDeferred(MethodName.OnServerStarted);
 	}
 
 	// LobbyStreamlined._Process() forces all CanvasItem children of GenericCore visible
@@ -109,12 +116,14 @@ public partial class GameMaster : Node
 
 		if (_serverStatus != null) _serverStatus.Visible = false;
 		if (_playersReady != null) _playersReady.Visible = false;
+		if (_lobbyBackground != null) _lobbyBackground.Visible = false;
 
 		if (GenericCore.Instance.IsServer)
 			SpawnLevelAndCharacters();
 
-		_clientButton.Visible = false;
-		_hostButton.Visible = false;
+		if (_clientButton != null) _clientButton.Visible = false;
+		if (_hostButton != null) _hostButton.Visible = false;
+		if (_lobbyCanvasLayer != null) _lobbyCanvasLayer.Visible = false;
 	}
 
 	// Spawns the level, finds spawn points, then spawns all player characters
@@ -122,7 +131,7 @@ public partial class GameMaster : Node
 	{
 		GD.Print("[GameMaster] Spawning level...");
 
-		var levelNode = LevelSpawner.NetCreateObject(LevelSceneIndex, Vector3.Zero, Quaternion.Identity, 1L);
+		var levelNode = ((NetworkCore)LevelSpawner).NetCreateObject(LevelSceneIndex, Vector3.Zero, Quaternion.Identity, 1L);
 		if (levelNode == null)
 		{
 			GD.PrintErr("[GameMaster] Level spawn failed!");
@@ -176,7 +185,7 @@ public partial class GameMaster : Node
 			GD.Print($"[GameMaster]   weaponClass = {npm.WeaponClassSelection}");
 			GD.Print($"[GameMaster]   spawnPos    = {spawnPos}");
 
-			var characterNode = LevelSpawner.NetCreateObject(CharacterSceneIndex, spawnPos, Quaternion.Identity, ownerId);
+			var characterNode = ((NetworkCore)LevelSpawner).NetCreateObject(CharacterSceneIndex, spawnPos, Quaternion.Identity, ownerId);
 			if (characterNode == null)
 			{
 				GD.PrintErr($"[GameMaster] Character spawn failed for player {i + 1}!");
@@ -184,8 +193,12 @@ public partial class GameMaster : Node
 			}
 
 			// Wait a frame so the MultiplayerSpawner flushes this spawn to all peers
-			// before the InitializeCharacter RPC is sent.
+			// before RPCs are sent to the now-replicated node.
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+
+			// Tell the owning client to claim authority on their player replica.
+			if (characterNode.HasMethod("ClaimAuthority"))
+				characterNode.RpcId(ownerId, "ClaimAuthority");
 
 			var pc = characterNode.GetNodeOrNull<PlayerCharacter>("PlayerCharacter");
 			if (pc != null)

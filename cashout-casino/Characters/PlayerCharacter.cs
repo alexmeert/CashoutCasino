@@ -24,7 +24,7 @@ public partial class PlayerCharacter : Node3D
 	}
 
 	// Runs on ALL (server + clients)
-	[Rpc(MultiplayerApi.RpcMode.Authority,
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer,
 		 CallLocal = true,
 		 TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void ApplyCharacterData(string playerName, Color color, Vector3 spawnPos)

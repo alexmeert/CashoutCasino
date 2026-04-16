@@ -89,7 +89,34 @@ namespace CashoutCasino.Character
 			hud?.OnHealthChanged(currentHealth, maxHealth);
 			hud?.OnAtmDebtChanged(atmDebt);
 
-			Input.MouseMode = Input.MouseModeEnum.Captured;
+			// Authority setup happens via ClaimAuthority RPC sent by the server.
+			// Do NOT call SetupLocalAuthority here — authority isn't set yet at _Ready time.
+		}
+
+		[Rpc(MultiplayerApi.RpcMode.Authority,
+			CallLocal = false,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		public void ClaimAuthority()
+		{
+			// Server told us this player belongs to us — claim authority locally.
+			SetMultiplayerAuthority(Multiplayer.GetUniqueId());
+			GD.Print($"[Player] ClaimAuthority: peer {Multiplayer.GetUniqueId()} owns {Name}");
+			SetupLocalAuthority();
+		}
+
+		private void SetupLocalAuthority()
+		{
+			if (IsMultiplayerAuthority())
+			{
+				Input.MouseMode = Input.MouseModeEnum.Captured;
+				camera.Current = true;
+			}
+			else
+			{
+				camera.Current = false;
+				if (HasNode(hudPath)) GetNode(hudPath).ProcessMode = ProcessModeEnum.Disabled;
+				if (HasNode(respawnScreenPath)) GetNode(respawnScreenPath).ProcessMode = ProcessModeEnum.Disabled;
+			}
 		}
 
 		public void AddAtmDebt(int amount)
@@ -149,7 +176,9 @@ namespace CashoutCasino.Character
 				playerCharacter.MyMesh.MaterialOverride = null;
 
 			hud?.OnHealthChanged(currentHealth, maxHealth);
-			Input.MouseMode = Input.MouseModeEnum.Captured;
+			// Re-capture mouse for the local player on respawn.
+			if (IsMultiplayerAuthority())
+				Input.MouseMode = Input.MouseModeEnum.Captured;
 		}
 
 		protected override void OnHealthChangedInternal(float current, float max)
@@ -164,6 +193,7 @@ namespace CashoutCasino.Character
 
 		public override void _Input(InputEvent @event)
 		{
+			if (!IsMultiplayerAuthority()) return;
 			if (isDead) return;
 
 			if (@event is InputEventMouseMotion mouseMotion)
@@ -199,6 +229,7 @@ namespace CashoutCasino.Character
 
 		public override void _PhysicsProcess(double delta)
 		{
+			if (!IsMultiplayerAuthority()) return;
 			if (isDead) return;
 
 			float dt = (float)delta;

@@ -113,7 +113,7 @@ public partial class NetworkedCharacter : CharacterBody2D
 		// I should be on the server
 		if(GenericCore.Instance.IsServer)
 		{
-			var t = GenericCore.Instance.MainNetworkCore.NetCreateObject
+			var t = ((NetworkCore)GenericCore.Instance.MainNetworkCore).NetCreateObject
 				(2,
 				new Vector3(this.GlobalPosition.X, GlobalPosition.Y, 0),
 				Quaternion.Identity,
@@ -135,4 +135,3 @@ public partial class NetworkedCharacter : CharacterBody2D
 	
 	
 }
- 

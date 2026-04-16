@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" uid="uid://b1sk2ef46dyjv" path="res://Scripts/Character/AIEnemy.cs" id="1_aienemy"]
 [ext_resource type="PackedScene" uid="uid://qn5livmjvmfh" path="res://Packed Scenes/Character/WorldHealthBar.tscn" id="2"]
@@ -18,6 +18,19 @@ height = 1.8
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hit"]
 radius = 0.5
 height = 1.9
+
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_enemy"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:visible")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+
 
 [node name="AiEnemy" type="CharacterBody3D" unique_id=701028671 groups=["Enemy"]]
 script = ExtResource("1_aienemy")
@@ -43,3 +56,6 @@ shape = SubResource("CapsuleShape3D_hit")
 
 [node name="WorldHealthBar" parent="." instance=ExtResource("2")]
 position = Vector3(0, 2.2, 0)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_enemy")

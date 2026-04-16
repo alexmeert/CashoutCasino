@@ -13,7 +13,6 @@ namespace CashoutCasino.Character
 		private float verticalVelocity = 0f;
 		private float fireTimer = 0f;
 		private Character target;
-
 		private Vector3 spawnPosition;
 
 		public override void _Ready()
@@ -28,6 +27,8 @@ namespace CashoutCasino.Character
 
 		public override void _PhysicsProcess(double delta)
 		{
+			// Only the server runs AI logic
+			if (!Multiplayer.IsServer()) return;
 			if (isDead) return;
 
 			float dt = (float)delta;
@@ -56,36 +57,65 @@ namespace CashoutCasino.Character
 			}
 		}
 
+		public override void TakeDamage(float damage, Character attacker = null)
+		{
+			// Only server applies damage
+			if (!Multiplayer.IsServer()) return;
+			base.TakeDamage(damage, attacker);
+			// Sync health to all clients
+			Rpc(MethodName.SyncHealth, currentHealth);
+		}
+
+		[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void SyncHealth(float health)
+		{
+			currentHealth = health;
+			OnHealthChangedInternal(currentHealth, maxHealth);
+			if (WorldHealthBar != null)
+				WorldHealthBar.ShowFor(currentHealth, maxHealth);
+		}
+
 		public override void OnDeath(Character killer)
 		{
 			base.OnDeath(killer);
 
-			// Reward the killer with currency (= ammo) if they are a player
-			if (killer != null)
-				Economy.CurrencyEconomy.ApplyCurrencyGain(killer, Economy.CurrencyEconomy.ElimType.Body);
+			if (Multiplayer.IsServer())
+			{
+				if (killer != null)
+					Economy.CurrencyEconomy.ApplyCurrencyGain(killer, Economy.CurrencyEconomy.ElimType.Body);
+				// Tell all clients to hide and disable
+				Rpc(MethodName.SyncDeath);
+				GetTree().CreateTimer(respawnTime).Timeout += () => {
+					if (IsInstanceValid(this)) Rpc(MethodName.SyncRespawn);
+				};
+			}
+		}
 
+		[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = true,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void SyncDeath()
+		{
+			isDead = true;
 			Visible = false;
 			SetPhysicsProcess(false);
 			SetProcess(false);
-
 			if (WorldHealthBar != null)
 				WorldHealthBar.Visible = false;
-
-			GetTree().CreateTimer(respawnTime).Timeout += Respawn;
 		}
 
-		private void Respawn()
+		[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = true,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void SyncRespawn()
 		{
 			isDead = false;
 			currentHealth = maxHealth;
 			verticalVelocity = 0f;
 			fireTimer = 0f;
-
 			GlobalPosition = spawnPosition;
 			Visible = true;
 			SetPhysicsProcess(true);
 			SetProcess(true);
-
 			if (WorldHealthBar != null)
 			{
 				WorldHealthBar.Visible = true;
@@ -138,6 +168,7 @@ namespace CashoutCasino.Character
 				{
 					if (node is Character hit && hit != this)
 					{
+						// Server calls TakeDamage directly (already server-side)
 						hit.TakeDamage(damagePerShot, this);
 						break;
 					}
