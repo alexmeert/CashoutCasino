@@ -1,0 +1,118 @@
+63f7b34db8d8cdea90c76aacccf841ec
+::res://::1776309493
+export_presets.cfg::TextFile::-1::1776307211::0::1::::<><><>0<>0<><>::
+icon.svg::CompressedTexture2D::3911115670285050184::1776307211::1776307211::1::::<><><>0<>0<>a7883f38ca2438542943272ce7246f00<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
+::res://Assets/::1776309468
+::res://Assets/2D-Textures-Assets/::1776309468
+seamless_pattern_16x16px_SpriteSheet_ 84.png::CompressedTexture2D::1671198039401556851::1776194910::1776309507::1::::<><><>0<>0<>16dd0ffe8dd86177e614b488e1f5c8fc<>res://.godot/imported/seamless_pattern_16x16px_SpriteSheet_ 84.png-9258e3343cded575f197d5400a09a3a4.s3tc.ctex::
+seamless_pattern_16x16px_SpriteSheet_ 88.png::CompressedTexture2D::5609015917271254346::1776245488::1776309507::1::::<><><>0<>0<>6001cc59e5be79a7cffefeb45f144b17<>res://.godot/imported/seamless_pattern_16x16px_SpriteSheet_ 88.png-308a909e49dfaa12ef62e4e1c6d5d690.s3tc.ctex::
+seamless_pattern_16x16px_SpriteSheet_ 255.png::CompressedTexture2D::7448268767847330393::1776194910::1776309507::1::::<><><>0<>0<>42896778397147caff9d74dbbb3624e3<>res://.godot/imported/seamless_pattern_16x16px_SpriteSheet_ 255.png-73f6e93121292e6a9e7e9a8f51bc98e8.s3tc.ctex::
+seamless_pattern_16x16px_SpriteSheet_ 464.png::CompressedTexture2D::2740803407641386685::1776194910::1776309507::1::::<><><>0<>0<>a276227aecd18e4a59be65c4ac16c031<>res://.godot/imported/seamless_pattern_16x16px_SpriteSheet_ 464.png-4874aebefdb9b51c825f46f5995596db.s3tc.ctex::
+::res://Assets/3D-Models/::1776309468
+ATM-Machine.gltf::PackedScene::1794234628838696291::1776194910::1776309508::1::::<><><>0<>0<>8cf712c05de562d6c965472d58278fca<>res://.godot/imported/ATM-Machine.gltf-28226b2f959b953bcfa9f2a6b9fbf32a.scn::uid://vhev4lfx27be::::res://Assets/3D-Models/ATM-Machine_0.png
+ATM-Machine_0.png::CompressedTexture2D::1488698270749181006::1776194910::1776309507::1::::<><><>0<>0<>cb41422ed21fdd252474525c63070a54<>res://.godot/imported/ATM-Machine_0.png-ef4f73808db135204bccc2b33a6125f7.s3tc.ctex::
+CC-Chair.gltf::PackedScene::4986208033517254192::1776245488::1776309508::1::::<><><>0<>0<>fd98f95a81cede4bc89d295b8ed1a27c<>res://.godot/imported/CC-Chair.gltf-5eaec2a368790656344c9bff16ce30dd.scn::uid://cbpfcs83cehac::::res://Assets/3D-Models/CC-Chair_0.png
+CC-Chair_0.png::CompressedTexture2D::4874304031560651422::1776245488::1776309507::1::::<><><>0<>0<>902605b6ec2683af4f17903e4414ab40<>res://.godot/imported/CC-Chair_0.png-4be5283de37afb6bbe3b4061c54950aa.s3tc.ctex::
+CrapsTable.gltf::PackedScene::8523744816169326702::1776245488::1776309507::1::::<><><>0<>0<>002d63ac59917c7e62c5df2419d391d8<>res://.godot/imported/CrapsTable.gltf-8d7b72e5ec4cecd6ebf49eaa1a181027.scn::uid://dy1raimsy5f8u::::res://Assets/3D-Models/CrapsTable_0.png
+CrapsTable_0.png::CompressedTexture2D::8898500748450214330::1776245488::1776309507::1::::<><><>0<>0<>71ac97f0fb0312751dee769ae9c5307a<>res://.godot/imported/CrapsTable_0.png-8e60dfb51c1ec4f310fed48a2f89ab8f.s3tc.ctex::
+DiceShotgun.gltf::PackedScene::5418370845328076775::1776187632::1776309508::1::::<><><>0<>0<>f7a5353e8f14472ee00bf1b76666dd0c<>res://.godot/imported/DiceShotgun.gltf-c5e1e0d2a72c4badda6f1611b93569dd.scn::uid://bhue6y85nfkg1::::res://Assets/3D-Models/DiceShotgun_0.png
+DiceShotgun_0.png::CompressedTexture2D::2919329684742233478::1776187632::1776309507::1::::<><><>0<>0<>ba44e7907df3b312c2bd2aa5b25d9594<>res://.godot/imported/DiceShotgun_0.png-56592d9a58d65a6eb93c479a7c9f88c4.s3tc.ctex::
+LoaferCouch.gltf::PackedScene::7020720087854716017::1776245488::1776309508::1::::<><><>0<>0<>25631d4abab72568ac4c9f59969ca89c<>res://.godot/imported/LoaferCouch.gltf-5daba6c3bccf0458bfcc09b5c876e6ba.scn::uid://d13na077mpd7m::::res://Assets/3D-Models/LoaferCouch_0.png
+LoaferCouch_0.png::CompressedTexture2D::9042765247675841552::1776245488::1776309507::1::::<><><>0<>0<>4d2a64cc2a298fc6ced51961f2916154<>res://.godot/imported/LoaferCouch_0.png-526f2145885082dbeab7d406037ff180.s3tc.ctex::
+ManualMeltdownMachine.gltf::PackedScene::4933558548992579315::1776245488::1776309508::1::::<><><>0<>0<>b4b8013f3080826530037f540a9b1d29<>res://.godot/imported/ManualMeltdownMachine.gltf-7dc4424ec006f3a31e4e92183c26fba5.scn::uid://booknhhmakcj0::::res://Assets/3D-Models/ManualMeltdownMachine_0.png
+ManualMeltdownMachine_0.png::CompressedTexture2D::3398596547453522275::1776245488::1776309507::1::::<><><>0<>0<>3ebfbaa08f0294081338a7ed17d26f3c<>res://.godot/imported/ManualMeltdownMachine_0.png-0a95650402ef8cd4c5d25cf7e621c1f4.s3tc.ctex::
+PokerChipDualPistols.gltf::PackedScene::7982190988890026781::1776187632::1776309508::1::::<><><>0<>0<>d72ccc7970a0f4805ddbce2dd3d29169<>res://.godot/imported/PokerChipDualPistols.gltf-7a2d3527fd54f867484b287f68ce9c3e.scn::uid://cf0mko5sk0fy4::::res://Assets/3D-Models/PokerChipDualPistols_0.png
+PokerChipDualPistols_0.png::CompressedTexture2D::5176142273783329673::1776187632::1776309507::1::::<><><>0<>0<>d150e0428893bc60c4c9dd7ac828ca91<>res://.godot/imported/PokerChipDualPistols_0.png-baff12c945acfcbe9ed8f30f6b0b66b3.s3tc.ctex::
+RouletteWheel.gltf::PackedScene::198790226869274875::1776245488::1776309508::1::::<><><>0<>0<>848472fa416798611e73b74a880c7559<>res://.godot/imported/RouletteWheel.gltf-8cace5061c00eb59a9ae6b84be22d23d.scn::uid://bm15ruwxganen::::res://Assets/3D-Models/RouletteWheel_0.png
+RouletteWheelDrumGun.gltf::PackedScene::8432354246099174326::1776105884::1776309508::1::::<><><>0<>0<>03ee6411fe9824803fab3de2503204b9<>res://.godot/imported/RouletteWheelDrumGun.gltf-48b28ef4ac7c4518685ef21e0720b33e.scn::uid://bbcl8p3xwque8::::res://Assets/3D-Models/RouletteWheelDrumGun_0.png
+RouletteWheelDrumGun_0.png::CompressedTexture2D::2461465933138387769::1776105884::1776309507::1::::<><><>0<>0<>1222afce24c62c7098392192808e02df<>res://.godot/imported/RouletteWheelDrumGun_0.png-683a2e1fc93426ff7ebb5809a3fea63d.s3tc.ctex::
+RouletteWheel_0.png::CompressedTexture2D::3284213582740168969::1776245488::1776309507::1::::<><><>0<>0<>6dd4cbe0645441883d8353b036167afc<>res://.godot/imported/RouletteWheel_0.png-612ff71d434ada1fb17199d3ee4e9473.s3tc.ctex::
+SlotmachineTexture.gltf::PackedScene::1159460486725199480::1776187642::1776309508::1::::<><><>0<>0<>74333f1a9f9d2d7aaf04354953c2c037<>res://.godot/imported/SlotmachineTexture.gltf-3e38fe6019ba1336165fe70fde324bc0.scn::uid://dhcrm0msrnbd5::::res://Assets/3D-Models/SlotmachineTexture_0.png
+SlotmachineTexture_0.png::CompressedTexture2D::7655767662920012224::1776187642::1776309507::1::::<><><>0<>0<>cb95f8386a0fcfe8a555a1c404b43d91<>res://.godot/imported/SlotmachineTexture_0.png-12f0a23c3ef176839c423e533f55b7c6.s3tc.ctex::
+::res://Character/::1776307211
+low_poly_base_mesh-530_tri.glb::PackedScene::6966809893268032368::1776307211::1776307211::1::::<><><>0<>0<>4474b53ee123fd96cda7281f7d681ce4<>res://.godot/imported/low_poly_base_mesh-530_tri.glb-d8aa89b4bfc70458b8373e6fa7b4e2be.scn::
+NetworkedCharacter.cs::CSharpScript::7482308856010180055::1776307211::0::1::::<>CharacterBody2D<><>0<>0<><>::
+::res://Characters/::1776307211
+Outline.gdshader::Shader::2635714444350419858::1776307211::0::1::::<><><>0<>0<><>::
+Player.tscn::PackedScene::5655867992147597184::1776307211::0::1::::<><><>0<>0<><>::uid://885ytostwjll::::res://Characters/PlayerCharacter.cs
+PlayerAnimations.glb::PackedScene::4961959465152398938::1776307211::1776307211::1::::<><><>0<>0<>26e302a48a7b180767818c517d391faf<>res://.godot/imported/PlayerAnimations.glb-9e384aa59880bf36018bedf5a6e20c4d.scn::
+PlayerCharacter.cs::CSharpScript::2386221695190770757::1776307211::0::1::::<>Node3D<><>0<>0<><>::
+::res://Levels3D/::1776307211
+Level.tscn::PackedScene::1737152552614688941::1776307211::0::1::::<><><>0<>0<><>::
+::res://LevelScenes/::1776309493
+TestScene.tscn::PackedScene::5946953504681480456::1776198534::0::1::::<><><>0<>0<><>::uid://coscxp08lodnw::::res://Packed Scenes/Character/Player.tscn<>uid://xkbyyooa24mv::::res://Packed Scenes/Level/ATMMachine.tscn<>res://Packed Scenes/Character/AIEnemy.tscn<>uid://cc31bm3yl5i5r::::res://Packed Scenes/Level/SlotMachine.tscn
+test_level.tscn::PackedScene::7056335556535055511::1776306802::0::1::::<><><>0<>0<><>::uid://bfbwvqh3x1oaf::::res://Assets/2D-Textures-Assets/seamless_pattern_16x16px_SpriteSheet_ 464.png<>uid://coscxp08lodnw::::res://Packed Scenes/Character/Player.tscn<>uid://ded85ss0jo3y0::::res://Assets/2D-Textures-Assets/seamless_pattern_16x16px_SpriteSheet_ 255.png<>res://Packed Scenes/Character/AIEnemy.tscn<>uid://x2sngaa2lutv::::res://Assets/2D-Textures-Assets/seamless_pattern_16x16px_SpriteSheet_ 84.png<>uid://qrwe6n5i3pgq::::res://Assets/3D-Models/SlotmachineTexture.gltf<>uid://0te1uhoxru56::::res://Assets/3D-Models/ATM-Machine.gltf<>uid://ccj38uyad338r::::res://Assets/3D-Models/ManualMeltdownMachine.gltf<>uid://cdbmeagylct6g::::res://Assets/3D-Models/CC-Chair.gltf<>uid://c3kbtfx848gt::::res://Assets/3D-Models/RouletteWheel.gltf<>uid://c7a5h7vlrn4g0::::res://Assets/3D-Models/LoaferCouch.gltf<>uid://cl6bw4uvdtxag::::res://Assets/2D-Textures-Assets/seamless_pattern_16x16px_SpriteSheet_ 88.png<>uid://dto73jstysu2y::::res://Assets/3D-Models/CrapsTable.gltf<>uid://xkbyyooa24mv::::res://Packed Scenes/Level/ATMMachine.tscn<>uid://cc31bm3yl5i5r::::res://Packed Scenes/Level/SlotMachine.tscn
+::res://MainScene/::1776307211
+game_root.tscn::PackedScene::2785674357713613887::1776307211::0::1::::<><><>0<>0<><>::uid://b6l62hns0p8n3::::res://NetworkCore/GenericCore.cs<>uid://b2fb80xs807f4::::res://NetworkCore/NetworkCore.cs<>uid://b4ksjok2k4rhy::::res://System/GameMaster.cs
+::res://NetworkCore/::1776307211
+GenericCore.cs::CSharpScript::4586913823575737698::1776307211::0::1::::GenericCore<>Node<><>0<>1<><>::
+NetID.cs::CSharpScript::1715088881585169865::1776307211::0::1::::NetID<>MultiplayerSynchronizer<><>0<>1<><>::
+NetworkCore.cs::CSharpScript::4291962348359114015::1776307211::0::1::::NetworkCore<>MultiplayerSpawner<><>0<>1<><>::
+::res://NetworkCore/WanLobbySystem/::1776307211
+generic_lobby_system.tscn::PackedScene::8574856427470804168::1776307211::0::1::::<><><>0<>0<><>::uid://buq7bi58l3fu1::::res://NetworkCore/WanLobbySystem/BetterLobby/LobbyStreamlined.cs<>uid://b2fb80xs807f4::::res://NetworkCore/NetworkCore.cs<>uid://bfxnwdbaagl2n::::res://MainScene/game_root.tscn
+LobbySystemAgent.cs::CSharpScript::4354540640916368191::1776307211::0::1::::<>Control<><>0<>0<><>::
+lobby_system_agent.tscn::PackedScene::6103445861058810390::1776307211::0::1::::<><><>0<>0<><>::uid://b3bmwbi4tj8it::::res://NetworkCore/WanLobbySystem/LobbySystemAgent.cs
+WanLobbySys.cs::CSharpScript::2239189795463147751::1776307211::0::1::::<>Node<><>0<>0<><>::
+::res://NetworkCore/WanLobbySystem/BetterLobby/::1776307211
+LobbyStreamlined.cs::CSharpScript::3825172798127246214::1776307211::0::1::::LobbyStreamlined<>Node<><>0<>0<><>::
+streamlinedLobby.tscn::PackedScene::3556304998916341077::1776307211::0::1::::<><><>0<>0<><>::uid://buq7bi58l3fu1::::res://NetworkCore/WanLobbySystem/BetterLobby/LobbyStreamlined.cs
+::res://npm/::1776307211
+UserNpm.cs::CSharpScript::3708683990222936759::1776307211::0::1::::<>Control<><>0<>0<><>::
+user_npm.tscn::PackedScene::8975138826598829269::1776307211::0::1::::<><><>0<>0<><>::uid://bs3rqo5o8vn1x::::res://npm/UserNpm.cs<>uid://yo2i7m3b6pph::::res://NetworkCore/NetID.cs
+::res://Packed Scenes/::1776309423
+::res://Packed Scenes/Character/::1776309423
+AIEnemy.tscn::PackedScene::-1::1776105884::0::1::::<><><>0<>0<><>::uid://b1sk2ef46dyjv::::res://Scripts/Character/AIEnemy.cs<>uid://qn5livmjvmfh::::res://Packed Scenes/Character/WorldHealthBar.tscn
+crosshair.png::CompressedTexture2D::7892764631671170589::1776105884::1776309505::1::::<><><>0<>0<>e769bc302f03f74d72901440eeb7d0c0<>res://.godot/imported/crosshair.png-48901b568ea3fff4979269f358610197.ctex::
+Player.tscn::PackedScene::4267854646197162726::1776301417::0::1::::<><><>0<>0<><>::uid://cxj1y7wlgugvl::::res://Scripts/Character/Player.cs<>uid://74q1uh0jxy77::::res://Scripts/Weapon/WeaponManager.cs<>uid://jjmbwwxo3f14::::res://Packed Scenes/Weapon/AssaultRifle.tscn<>uid://cs3lkmqn0ldf4::::res://Packed Scenes/Weapon/DualPistols.tscn<>uid://cn70t0now5k1c::::res://Packed Scenes/Weapon/Shotgun.tscn<>uid://dq4kmgk564ws::::res://Packed Scenes/Character/PlayerHUD.tscn<>uid://dq00sm6udfidw::::res://Packed Scenes/Character/RespawnScreen.tscn<>uid://885ytostwjll::::res://Characters/PlayerCharacter.cs
+PlayerHUD.tscn::PackedScene::245375865753055242::1776198534::0::1::::<><><>0<>0<><>::uid://ciwoarq4k3maq::::res://Scripts/Character/PlayerHud.cs<>uid://dkpkxep64lqen::::res://Packed Scenes/Character/crosshair.png
+RespawnScreen.tscn::PackedScene::8335443741330827444::1776107256::0::1::::<><><>0<>0<><>::uid://hsyvlo2m6vco::::res://Scripts/Character/RespawnScreen.cs<>res://Scripts/Character/RingDrawer.cs
+WorldHealthBar.tscn::PackedScene::4292851644270979936::1776105884::0::1::::<><><>0<>0<><>::uid://cauf6cx0jlomm::::res://Scripts/Character/WorldHealthBar.cs
+::res://Packed Scenes/Level/::1776309423
+ATMMachine.tscn::PackedScene::1635092040086682937::1776198534::0::1::::<><><>0<>0<><>::uid://dx4ct5cmj1iqe::::res://Scripts/Level/ATMMachine.cs<>uid://0te1uhoxru56::::res://Assets/3D-Models/ATM-Machine.gltf
+SlotMachine.tscn::PackedScene::4972602734022838221::1776198534::0::1::::<><><>0<>0<><>::uid://bxuntvus4axom::::res://Scripts/Level/SlotMachine.cs<>uid://qrwe6n5i3pgq::::res://Assets/3D-Models/SlotmachineTexture.gltf
+::res://Packed Scenes/Menu/::1776309423
+CountdownTimer.tscn::PackedScene::3442756558416562356::1776194602::0::1::::<><><>0<>0<><>::uid://cpa3kee7wmuab::::res://Scripts/Menu/CountdownTimer.cs
+::res://Packed Scenes/Projectile/::1776309423
+Bullet.tscn::PackedScene::1366293638096593509::1776105884::0::1::::<><><>0<>0<><>::uid://d4h8k2naxqbwp::::res://Scripts/Projectile/BulletProjectile.cs
+::res://Packed Scenes/Weapon/::1776309423
+AssaultRifle.tscn::PackedScene::651010572800162885::1776105884::0::1::::<><><>0<>0<><>::uid://db5nv3t24c6a0::::res://Scripts/Weapon/AssaultRifle.cs<>uid://dsexv3w5iefb7::::res://Assets/3D-Models/RouletteWheelDrumGun.gltf
+DualPistols.tscn::PackedScene::6094729530465516123::1776188834::0::1::::<><><>0<>0<><>::uid://sut6qlacnwvh::::res://Scripts/Weapon/DualPistols.cs<>uid://dlyvrwnqupi1r::::res://Assets/3D-Models/PokerChipDualPistols.gltf
+Shotgun.tscn::PackedScene::5752909611546788462::1776189618::0::1::::<><><>0<>0<><>::uid://bvr8jj3d8i701::::res://Scripts/Weapon/Shotgun.cs<>uid://cjgx1njk4ekgd::::res://Assets/3D-Models/DiceShotgun.gltf
+::res://Scripts/::1776309163
+::res://Scripts/Character/::1776309163
+AIcontroller.cs::CSharpScript::5133907975927120043::1775408966::0::1::::<><><>0<>0<><>::
+AIEnemy.cs::CSharpScript::4249145023394738191::1776187650::0::1::::<><><>0<>0<><>::
+Character.cs::CSharpScript::4103814612536686920::1776107256::0::1::::<><><>0<>0<><>::
+CharacterAnimator.cs::CSharpScript::6575720485330818364::1775408644::0::1::::<><><>0<>0<><>::
+Player.cs::CSharpScript::6407387386954633677::1776286114::0::1::::<><><>0<>0<><>::
+PlayerHud.cs::CSharpScript::5380619383924434912::1776198534::0::1::::<><><>0<>0<><>::
+RespawnScreen.cs::CSharpScript::529976015165849278::1776107256::0::1::::<><><>0<>0<><>::
+RingDrawer.cs::CSharpScript::8560126909814566727::1776107256::0::1::::<><><>0<>0<><>::
+WorldHealthBar.cs::CSharpScript::4814488008767845156::1776187650::0::1::::<><><>0<>0<><>::
+::res://Scripts/Economy/::1776309163
+CurrencyEconomy.cs::CSharpScript::5643818899113393744::1776198534::0::1::::<><><>0<>0<><>::
+::res://Scripts/Level/::1776309163
+ATMMachine.cs::CSharpScript::8833629353039904420::1776198534::0::1::::<><><>0<>0<><>::
+SlotMachine.cs::CSharpScript::4042876028182258260::1776198534::0::1::::<><><>0<>0<><>::
+::res://Scripts/Menu/::1776309163
+CountdownTimer.cs::CSharpScript::5827392173449643793::1776191170::0::1::::<><><>0<>0<><>::
+::res://Scripts/Projectile/::1776309163
+BulletProjectile.cs::CSharpScript::9211212117805280815::1776105884::0::1::::<><><>0<>0<><>::
+DiceProjectile.cs::CSharpScript::3735292065547769458::1775406374::0::1::::<><><>0<>0<><>::
+GrenadeProjectile.cs::CSharpScript::8773146065470288618::1775408970::0::1::::<><><>0<>0<><>::
+Projectile.cs::CSharpScript::386018520812868375::1776105884::0::1::::<><><>0<>0<><>::
+::res://Scripts/Weapon/::1776309163
+AssaultRifle.cs::CSharpScript::7292210551187808277::1776105884::0::1::::<><><>0<>0<><>::
+BulletTrail.cs::CSharpScript::9164914134926851044::1775748922::0::1::::<><><>0<>0<><>::
+DualPistols.cs::CSharpScript::1305896580409053681::1776105884::0::1::::<><><>0<>0<><>::
+Grenade.cs::CSharpScript::2295436586891035051::1776105884::0::1::::<><><>0<>0<><>::
+HitscanWeapon.cs::CSharpScript::2811869548351876310::1776301177::0::1::::<><><>0<>0<><>::
+MeleeWeapon.cs::CSharpScript::6686924800714429258::1776105884::0::1::::<><><>0<>0<><>::
+ProjectileWeapon.cs::CSharpScript::5822620841528640054::1776105884::0::1::::<><><>0<>0<><>::
+Shotgun.cs::CSharpScript::3897501070962667292::1776105884::0::1::::<><><>0<>0<><>::
+SlotMachineArm.cs::CSharpScript::1432018813883801750::1776105884::0::1::::<><><>0<>0<><>::
+ThrowableWeapon.cs::CSharpScript::747529585703400967::1776105884::0::1::::<><><>0<>0<><>::
+Weapon.cs::CSharpScript::6809492632822827489::1776105884::0::1::::<><><>0<>0<><>::
+WeaponManager.cs::CSharpScript::2306928916240039784::1776105884::0::1::::<><><>0<>0<><>::
+::res://System/::1776307211
+GameMaster.cs::CSharpScript::4443650656767804082::1776307211::0::1::::<>Node<><>0<>0<><>::

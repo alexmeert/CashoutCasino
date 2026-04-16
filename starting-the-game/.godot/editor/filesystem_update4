@@ -1,0 +1,10 @@
+res://MainScene/game_root.tscn
+res://Characters/Outline.gdshader
+res://NetworkCore/WanLobbySystem/BetterLobby/LobbyStreamlined.cs
+res://Characters/PlayerCharacter.cs
+res://npm/UserNpm.cs
+res://System/GameMaster.cs
+res://NetworkCore/NetworkCore.cs
+res://NetworkCore/NetID.cs
+res://NetworkCore/GenericCore.cs
+res://Characters/Player.tscn

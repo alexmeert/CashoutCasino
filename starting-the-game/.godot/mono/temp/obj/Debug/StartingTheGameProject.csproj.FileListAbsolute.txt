@@ -1,0 +1,119 @@
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\bin\Debug\StartingTheGameProject.deps.json
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\bin\Debug\StartingTheGameProject.runtimeconfig.json
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\bin\Debug\StartingTheGameProject.dll
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\bin\Debug\StartingTheGameProject.pdb
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\bin\Debug\GodotSharp.dll
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\obj\Debug\StartingTheGameProject.csproj.AssemblyReference.cache
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\obj\Debug\StartingTheGameProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\obj\Debug\StartingTheGameProject.AssemblyInfoInputs.cache
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\obj\Debug\StartingTheGameProject.AssemblyInfo.cs
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\obj\Debug\StartingTheGameProject.csproj.CoreCompileInputs.cache
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\obj\Debug\Starting.2E56F528.Up2Date
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\obj\Debug\StartingTheGameProject.dll
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\obj\Debug\refint\StartingTheGameProject.dll
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\obj\Debug\StartingTheGameProject.pdb
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\obj\Debug\StartingTheGameProject.genruntimeconfig.cache
+C:\Users\alexm\downloads\LobbyTemplate\LobbyTemplate\starting-the-game-project\.godot\mono\temp\obj\Debug\ref\StartingTheGameProject.dll
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\bin\Debug\StartingTheGameProject.deps.json
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\bin\Debug\StartingTheGameProject.runtimeconfig.json
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\bin\Debug\StartingTheGameProject.dll
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\bin\Debug\StartingTheGameProject.pdb
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\bin\Debug\GodotSharp.dll
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\obj\Debug\StartingTheGameProject.csproj.AssemblyReference.cache
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\obj\Debug\StartingTheGameProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\obj\Debug\StartingTheGameProject.AssemblyInfoInputs.cache
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\obj\Debug\StartingTheGameProject.AssemblyInfo.cs
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\obj\Debug\StartingTheGameProject.csproj.CoreCompileInputs.cache
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\obj\Debug\Starting.2E56F528.Up2Date
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\obj\Debug\StartingTheGameProject.dll
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\obj\Debug\refint\StartingTheGameProject.dll
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\obj\Debug\StartingTheGameProject.pdb
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\obj\Debug\StartingTheGameProject.genruntimeconfig.cache
+C:\Users\VNico\OneDrive\Documents\game-with-syncs-working\.godot\mono\temp\obj\Debug\ref\StartingTheGameProject.dll
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\bin\Debug\StartingTheGameProject.deps.json
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\bin\Debug\StartingTheGameProject.runtimeconfig.json
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\bin\Debug\StartingTheGameProject.dll
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\bin\Debug\StartingTheGameProject.pdb
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\bin\Debug\GodotSharp.dll
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.csproj.AssemblyReference.cache
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.AssemblyInfoInputs.cache
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.AssemblyInfo.cs
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.csproj.CoreCompileInputs.cache
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\obj\Debug\Starting.2E56F528.Up2Date
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.dll
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\obj\Debug\refint\StartingTheGameProject.dll
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.pdb
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.genruntimeconfig.cache
+C:\Users\VNico\OneDrive\Documents\phase-1-done\.godot\mono\temp\obj\Debug\ref\StartingTheGameProject.dll
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\bin\Debug\StartingTheGameProject.deps.json
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\bin\Debug\StartingTheGameProject.runtimeconfig.json
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\bin\Debug\StartingTheGameProject.dll
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\bin\Debug\StartingTheGameProject.pdb
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\bin\Debug\GodotSharp.dll
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.csproj.AssemblyReference.cache
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.AssemblyInfoInputs.cache
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.AssemblyInfo.cs
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.csproj.CoreCompileInputs.cache
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\obj\Debug\Starting.2E56F528.Up2Date
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.dll
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\obj\Debug\refint\StartingTheGameProject.dll
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.pdb
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\obj\Debug\StartingTheGameProject.genruntimeconfig.cache
+C:\Users\alexm\downloads\StartingTheGameFIN\phase-1-done\.godot\mono\temp\obj\Debug\ref\StartingTheGameProject.dll
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\bin\Debug\StartingTheGameProject.deps.json
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\bin\Debug\StartingTheGameProject.runtimeconfig.json
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\bin\Debug\StartingTheGameProject.dll
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\bin\Debug\StartingTheGameProject.pdb
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\bin\Debug\GodotSharp.dll
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.csproj.AssemblyReference.cache
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.AssemblyInfoInputs.cache
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.AssemblyInfo.cs
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.csproj.CoreCompileInputs.cache
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\Starting.2E56F528.Up2Date
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.dll
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\refint\StartingTheGameProject.dll
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.pdb
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.genruntimeconfig.cache
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\ref\StartingTheGameProject.dll
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.csproj.AssemblyReference.cache
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.AssemblyInfoInputs.cache
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.AssemblyInfo.cs
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.csproj.CoreCompileInputs.cache
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.dll
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\refint\StartingTheGameProject.dll
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.pdb
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\bin\Debug\StartingTheGameProject.deps.json
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\bin\Debug\StartingTheGameProject.runtimeconfig.json
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\bin\Debug\StartingTheGameProject.dll
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\bin\Debug\StartingTheGameProject.pdb
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\bin\Debug\GodotSharp.dll
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\Starting.2E56F528.Up2Date
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\StartingTheGameProject.genruntimeconfig.cache
+C:\Users\alexm\Downloads\MeertStartingTheGameAssignment (3)\MeertStartingTheGameAssignment\StartingTheGame\.godot\mono\temp\obj\Debug\ref\StartingTheGameProject.dll
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\bin\Debug\StartingTheGameProject.deps.json
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\bin\Debug\StartingTheGameProject.runtimeconfig.json
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\bin\Debug\StartingTheGameProject.dll
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\bin\Debug\StartingTheGameProject.pdb
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\bin\Debug\GodotSharp.dll
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\obj\Debug\StartingTheGameProject.csproj.AssemblyReference.cache
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\obj\Debug\StartingTheGameProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\obj\Debug\StartingTheGameProject.AssemblyInfoInputs.cache
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\obj\Debug\StartingTheGameProject.AssemblyInfo.cs
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\obj\Debug\StartingTheGameProject.csproj.CoreCompileInputs.cache
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\obj\Debug\Starting.2E56F528.Up2Date
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\obj\Debug\StartingTheGameProject.dll
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\obj\Debug\refint\StartingTheGameProject.dll
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\obj\Debug\StartingTheGameProject.pdb
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\obj\Debug\StartingTheGameProject.genruntimeconfig.cache
+C:\Users\VNico\OneDrive\Documents\starting-the-game\.godot\mono\temp\obj\Debug\ref\StartingTheGameProject.dll
