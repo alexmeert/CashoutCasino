@@ -30,6 +30,14 @@ namespace CashoutCasino.Character
 		private UI.RespawnScreen respawnScreen;
 		// PlayerCharacter handles the animated model (replaces capsule MeshInstance3D)
 		private PlayerCharacter playerCharacter;
+		[Export] public AnimationPlayer FpAnimPlayer;
+		[Export] public Weapon.WeaponManager FpWeaponManager;
+
+		private Node3D _armature;
+		private Node3D _fpPlayer;
+		private bool _wasFpFiring = false;
+		private bool _fpAnimLocked = false;
+		private bool _pistolsUseRight = false;
 
 		private float verticalVelocity = 0f;
 		private float cameraPitch = 0f;
@@ -56,6 +64,14 @@ namespace CashoutCasino.Character
 			collisionShape = GetNode<CollisionShape3D>(collisionShapePath);
 			// Grab the animated PlayerCharacter node instead of a raw MeshInstance3D
 			playerCharacter = GetNodeOrNull<PlayerCharacter>("PlayerCharacter");
+			_armature  = GetNodeOrNull<Node3D>("Armature");
+			_fpPlayer  = GetNodeOrNull<Node3D>("FirstPersonPlayer");
+
+			// FirstPersonPlayer is a CharacterBody3D; its inner CollisionShape3D must not
+			// participate in physics or it will interfere with the outer Player body.
+			var fpCollision = _fpPlayer?.GetNodeOrNull<CollisionShape3D>("CollisionShape3D");
+			if (fpCollision != null) fpCollision.Disabled = true;
+
 
 			if (HasNode(weaponManagerPath))
 			{
@@ -124,6 +140,22 @@ namespace CashoutCasino.Character
 					hud.SetAsLocalInstance();
 					hud.OwnerPlayer = this;
 				}
+				// Hide third-person weapons; FP weapons handle the local view.
+				if (wm != null) wm.Visible = false;
+				// Local player sees first-person view only.
+				if (_armature != null) _armature.Visible = false;
+				if (_fpPlayer != null)
+				{
+					// Reparent into camera-local space so weapons follow the view without
+					// rotating around the wrong pivot when pitching up/down.
+					_fpPlayer.Reparent(camera, false);
+					_fpPlayer.Position = new Vector3(0f, -1.5f, 0f);
+					_fpPlayer.Rotation = Vector3.Zero;
+					_fpPlayer.Visible  = true;
+				}
+				FpWeaponManager?.Setup();
+				if (FpAnimPlayer != null)
+					FpAnimPlayer.AnimationFinished += OnFpAnimFinished;
 			}
 			else
 			{
@@ -140,6 +172,9 @@ namespace CashoutCasino.Character
 					respawnScreen.Visible = false;
 					respawnScreen.ProcessMode = ProcessModeEnum.Disabled;
 				}
+				// Remote players see the third-person character; hide first-person arms.
+				if (_armature != null)  _armature.Visible  = true;
+				if (_fpPlayer != null)  _fpPlayer.Visible  = false;
 			}
 		}
 
@@ -254,6 +289,7 @@ namespace CashoutCasino.Character
 				_spectateTarget = FindPlayerByDisplayName(_lastKillerName);
 				hud?.ShowDeathUI();
 				if (wm != null) wm.Visible = false;
+				if (_fpPlayer != null) _fpPlayer.Visible = false;
 				respawnScreen?.StartCountdown(respawnTime, DoRespawn, _lastKillerName);
 			}
 			if (Multiplayer.IsServer())
@@ -293,7 +329,8 @@ namespace CashoutCasino.Character
 				cameraHolder.Position = new Vector3(0f, standHeight - 0.15f, 0f);
 				cameraHolder.Rotation = Vector3.Zero;
 				cameraPitch = 0f;
-				if (wm != null) wm.Visible = true;
+				if (wm != null) wm.Visible = false;   // FP weapons handle local view
+				if (_fpPlayer != null) _fpPlayer.Visible = true;
 				hud?.ShowAliveUI();
 				hud?.OnHealthChanged(currentHealth, maxHealth);
 				Input.MouseMode = Input.MouseModeEnum.Captured;
@@ -406,9 +443,11 @@ namespace CashoutCasino.Character
 			if (wantFire)
 				wm.FireCurrentWeapon(-camera.GlobalTransform.Basis.Z, this);
 
-			if (Input.IsActionJustPressed("weapon_1")) wm.SwitchWeapon(0);
-			if (Input.IsActionJustPressed("weapon_2")) wm.SwitchWeapon(1);
-			if (Input.IsActionJustPressed("weapon_3")) wm.SwitchWeapon(2);
+			if (Input.IsActionJustPressed("weapon_1")) { wm.SwitchWeapon(0); FpWeaponManager?.SwitchWeapon(0); }
+			if (Input.IsActionJustPressed("weapon_2")) { wm.SwitchWeapon(1); FpWeaponManager?.SwitchWeapon(1); }
+			if (Input.IsActionJustPressed("weapon_3")) { wm.SwitchWeapon(2); FpWeaponManager?.SwitchWeapon(2); }
+
+			UpdateFpAnim(wantFire);
 		}
 
 		private void SetCrouch(bool crouch)
@@ -456,6 +495,60 @@ namespace CashoutCasino.Character
 			var behind = _spectateTarget.GlobalTransform.Basis.Z.Normalized() * 4f + Vector3.Up * 1.2f;
 			cameraHolder.GlobalPosition = cameraHolder.GlobalPosition.Lerp(targetCenter + behind, (float)delta * 6f);
 			cameraHolder.LookAt(targetCenter);
+		}
+
+		private string GetWeaponPrefix() => wm?.GetCurrentWeaponKind() switch
+		{
+			Weapon.WeaponKind.Shotgun => "Shotgun",
+			Weapon.WeaponKind.Pistol  => "Pistols",
+			_                         => "Rifle",
+		};
+
+		private void UpdateFpAnim(bool firing)
+		{
+			if (FpAnimPlayer == null) return;
+
+			// Shotgun and pistols lock until their shoot animation completes.
+			if (_fpAnimLocked) return;
+
+			string prefix = GetWeaponPrefix();
+			string target;
+
+			if (firing)
+			{
+				if (prefix == "Pistols")
+					target = _pistolsUseRight ? "PistolsShootRight" : "PistolsShootLeft";
+				else
+					target = $"{prefix}Shoot";
+
+				// Lock out input for single-shot weapons so the anim plays fully.
+				if (prefix == "Shotgun" || prefix == "Pistols")
+					_fpAnimLocked = true;
+			}
+			else
+			{
+				bool moving = new Vector2(Velocity.X, Velocity.Z).LengthSquared() > 0.1f;
+				target = moving ? $"{prefix}Run" : $"{prefix}Idle";
+			}
+
+			_wasFpFiring = firing;
+
+			if (!FpAnimPlayer.HasAnimation(target)) return;
+			if (FpAnimPlayer.CurrentAnimation == target && FpAnimPlayer.IsPlaying()) return;
+			FpAnimPlayer.Play(target);
+		}
+
+		private void OnFpAnimFinished(StringName animName)
+		{
+			if (animName.ToString().StartsWith("Pistols"))
+				_pistolsUseRight = !_pistolsUseRight;
+			_fpAnimLocked = false;
+			// Return to idle or run once the locked animation finishes.
+			string prefix = GetWeaponPrefix();
+			bool moving = new Vector2(Velocity.X, Velocity.Z).LengthSquared() > 0.1f;
+			string next = moving ? $"{prefix}Run" : $"{prefix}Idle";
+			if (FpAnimPlayer != null && FpAnimPlayer.HasAnimation(next))
+				FpAnimPlayer.Play(next);
 		}
 
 		public override void RequestAIDecision() { }
