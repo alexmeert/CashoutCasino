@@ -131,61 +131,94 @@ namespace CashoutCasino.Character
 		public int GetAtmDebt() => atmDebt;
 		public int GetFinalScore() => currentCurrency - atmDebt;
 
+		// Shooter's client calls this — routes to server for authoritative damage.
 		public override void TakeDamage(float damage, Character attacker = null)
 		{
-			// Reset regen timer on any hit
-			timeSinceLastDamage = 0f;
-			regenActive = false;
-			base.TakeDamage(damage, attacker);
+			if (Multiplayer.IsServer())
+				ServerApplyDamage(damage);
+			else
+				RpcId(1, MethodName.ServerApplyDamage, damage);
 		}
 
-		public override void OnDeath(Character killer)
+		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void ServerApplyDamage(float damage)
 		{
-			base.OnDeath(killer);
-			ModifyCurrency(-Economy.CurrencyEconomy.BODY_ELIM);
-			SetPhysicsProcess(false);
-
+			if (!Multiplayer.IsServer() || isDead) return;
 			timeSinceLastDamage = 0f;
 			regenActive = false;
+			currentHealth = Mathf.Max(currentHealth - damage, 0f);
+			Rpc(MethodName.SyncHealth, currentHealth);
+			if (currentHealth <= 0f)
+				Rpc(MethodName.SyncDeath, spawnPosition);
+		}
 
-			// Make the player model semi-transparent on death
-			if (playerCharacter != null)
+		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void SyncHealth(float health)
+		{
+			currentHealth = health;
+			timeSinceLastDamage = 0f;
+			regenActive = false;
+			if (IsMultiplayerAuthority()) hud?.OnHealthChanged(currentHealth, maxHealth);
+		}
+
+		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void SyncDeath(Vector3 respawnPos)
+		{
+			isDead = true;
+			SetPhysicsProcess(false);
+			spawnPosition = respawnPos;
+			if (playerCharacter?.MyMesh != null)
 			{
 				var mat = new StandardMaterial3D();
 				mat.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
 				mat.AlbedoColor = new Color(0.6f, 0.6f, 0.8f, 0.35f);
-				// Apply to the mesh inside the armature hierarchy
-				var mesh = playerCharacter.MyMesh;
-				if (mesh != null) mesh.MaterialOverride = mat;
+				playerCharacter.MyMesh.MaterialOverride = mat;
 			}
-
-			respawnScreen?.StartCountdown(respawnTime, Respawn);
+			if (IsMultiplayerAuthority())
+				respawnScreen?.StartCountdown(respawnTime, DoRespawn);
+			if (Multiplayer.IsServer())
+				GetTree().CreateTimer(respawnTime).Timeout += () => { if (IsInstanceValid(this)) Rpc(MethodName.SyncRespawnAll); };
 		}
 
-		private void Respawn()
+		private void DoRespawn() => RpcId(1, MethodName.RequestRespawn);
+
+		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void RequestRespawn()
+		{
+			if (Multiplayer.IsServer()) Rpc(MethodName.SyncRespawnAll);
+		}
+
+		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void SyncRespawnAll()
 		{
 			isDead = false;
-			currentHealth    = maxHealth;
+			currentHealth = maxHealth;
 			verticalVelocity = 0f;
 			timeSinceLastDamage = 0f;
 			regenActive = false;
-
 			GlobalPosition = spawnPosition;
 			SetPhysicsProcess(true);
-
-			// Restore default material on respawn
-			if (playerCharacter?.MyMesh != null)
-				playerCharacter.MyMesh.MaterialOverride = null;
-
-			hud?.OnHealthChanged(currentHealth, maxHealth);
-			// Re-capture mouse for the local player on respawn.
+			// Restore player color (don't set null — that clears their color).
+			var pc = GetNodeOrNull<PlayerCharacter>("PlayerCharacter");
+			if (pc?.MyMesh != null)
+				pc.MyMesh.MaterialOverride = pc.MyColor.A > 0
+					? new StandardMaterial3D { AlbedoColor = pc.MyColor }
+					: null;
 			if (IsMultiplayerAuthority())
+			{
+				hud?.OnHealthChanged(currentHealth, maxHealth);
 				Input.MouseMode = Input.MouseModeEnum.Captured;
+			}
 		}
 
 		protected override void OnHealthChangedInternal(float current, float max)
 		{
-			hud?.OnHealthChanged(current, max);
+			if (IsMultiplayerAuthority()) hud?.OnHealthChanged(current, max);
 		}
 
 		private void OnCurrencyChangedSync(int newAmount)

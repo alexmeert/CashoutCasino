@@ -7,6 +7,7 @@ public partial class PlayerCharacter : Node3D
 	[Export] public MeshInstance3D MyMesh;
 	[Export] public NetID MyNetID;
 	[Export] public Label3D NameLabel;
+	public Color MyColor;
 
 	public override void _Ready()
 	{
@@ -42,7 +43,10 @@ public partial class PlayerCharacter : Node3D
 
 		// Apply the color to the existing capsule mesh by overriding its material
 		if (MyMesh != null)
+		{
+			MyColor = color;
 			MyMesh.MaterialOverride = new StandardMaterial3D { AlbedoColor = color };
+		}
 		else
 			GD.PrintErr("[PlayerCharacter] MyMesh is null — wire the MeshInstance3D export in the Godot inspector!");
 

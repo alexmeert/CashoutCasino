@@ -32,7 +32,8 @@ namespace CashoutCasino.Weapon
 				? (Vector3)result["position"]
 				: target;
 
-			if (result.Count > 0 && result["collider"].As<Node>() is CashoutCasino.Character.Character hit)
+			if (result.Count > 0 && result["collider"].As<Node>() is CashoutCasino.Character.Character hit
+				&& hit != owner)
 			{
 				hit.TakeDamage(damagePerHit, owner);
 
