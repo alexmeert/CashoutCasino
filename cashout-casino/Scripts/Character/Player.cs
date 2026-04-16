@@ -251,6 +251,18 @@ namespace CashoutCasino.Character
 		private void OnCurrencyChangedSync(int newAmount)
 		{
 			wm?.SyncAmmoToAllWeapons(newAmount);
+			// If running on server, push the new value to the owning client.
+			if (Multiplayer.IsServer() && !IsMultiplayerAuthority())
+				RpcId(GetMultiplayerAuthority(), MethodName.SyncCurrency, newAmount);
+		}
+
+		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void SyncCurrency(int amount)
+		{
+			currentCurrency = amount;
+			hud?.OnCurrencyChanged(currentCurrency);
+			wm?.SyncAmmoToAllWeapons(currentCurrency);
 		}
 
 		public override void _Input(InputEvent @event)

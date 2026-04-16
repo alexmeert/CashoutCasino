@@ -59,10 +59,34 @@ namespace CashoutCasino.Character
 
 		public override void TakeDamage(float damage, Character attacker = null)
 		{
-			// Only server applies damage
-			if (!Multiplayer.IsServer()) return;
+			// Route to server — if already on server apply directly, otherwise RPC.
+			if (Multiplayer.IsServer())
+			{
+				base.TakeDamage(damage, attacker);
+				Rpc(MethodName.SyncHealth, currentHealth);
+			}
+			else
+			{
+				// Pass attacker peer ID so server can credit the kill.
+				long attackerPeerId = attacker != null ? attacker.GetMultiplayerAuthority() : 0;
+				RpcId(1, MethodName.ServerApplyDamage, damage, attackerPeerId);
+			}
+		}
+
+		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void ServerApplyDamage(float damage, long attackerPeerId)
+		{
+			if (!Multiplayer.IsServer() || isDead) return;
+			// Resolve attacker node from peer ID so OnDeath can credit the kill.
+			Character attacker = null;
+			if (attackerPeerId > 0)
+			{
+				foreach (var node in GetTree().GetNodesInGroup("Player"))
+					if (node is Character c && c.GetMultiplayerAuthority() == attackerPeerId)
+					{ attacker = c; break; }
+			}
 			base.TakeDamage(damage, attacker);
-			// Sync health to all clients
 			Rpc(MethodName.SyncHealth, currentHealth);
 		}
 
@@ -182,11 +206,18 @@ namespace CashoutCasino.Character
 		private void SpawnTrail(Vector3 from, Vector3 to)
 		{
 			if (from.DistanceTo(to) < 0.5f) return;
+			// Broadcast trail to all clients so everyone sees the bullet.
+			Rpc(MethodName.SpawnTrailOnAllPeers, from, to);
+		}
 
+		[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = true,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+		private void SpawnTrailOnAllPeers(Vector3 from, Vector3 to)
+		{
 			var trail = new Weapon.BulletTrail();
 			trail.TrailColor = new Color(1f, 0.3f, 0.0f, 1f);
 			trail.Init(from, to);
-			GetTree().CurrentScene.AddChild(trail);
+			(GetParent() ?? GetTree().CurrentScene).AddChild(trail);
 		}
 
 		public override void RequestAIDecision() { }
