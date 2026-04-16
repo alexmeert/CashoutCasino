@@ -10,6 +10,7 @@ namespace CashoutCasino.Weapon
 
 		private readonly RandomNumberGenerator rng = new RandomNumberGenerator();
 
+		public override WeaponKind Kind => WeaponKind.Shotgun;
 		public override CurrencyEconomy.CostType FireCostType => CurrencyEconomy.CostType.ShootShotgun;
 
 		public override void _Ready()

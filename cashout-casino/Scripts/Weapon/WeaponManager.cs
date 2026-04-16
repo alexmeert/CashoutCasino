@@ -110,9 +110,8 @@ namespace CashoutCasino.Weapon
 			return GetCurrentWeapon()?.GetAmmoCount() ?? 0;
 		}
 
-		public string GetCurrentWeaponName()
-		{
-			return GetCurrentWeapon()?.Name ?? "None";
-		}
+		public string GetCurrentWeaponName() => GetCurrentWeapon()?.Name ?? "None";
+
+		public WeaponKind GetCurrentWeaponKind() => GetCurrentWeapon()?.Kind ?? WeaponKind.Other;
 	}
 }

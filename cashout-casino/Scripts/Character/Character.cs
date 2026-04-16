@@ -79,6 +79,8 @@ namespace CashoutCasino.Character
 		public int GetCurrency() => currentCurrency;
 		public float GetHealth() => currentHealth;
 		public float GetMaxHealth() => maxHealth;
+		public virtual string GetDisplayName() => Name;
+		public Weapon.WeaponKind GetCurrentWeaponKind() => weaponManager?.GetCurrentWeaponKind() ?? Weapon.WeaponKind.Other;
 
 		public override void _PhysicsProcess(double delta)
 		{

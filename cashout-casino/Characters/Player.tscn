@@ -9,12 +9,24 @@
 [ext_resource type="PackedScene" uid="uid://dq00sm6udfidw" path="res://Packed Scenes/Character/RespawnScreen.tscn" id="7"]
 [ext_resource type="Script" uid="uid://885ytostwjll" path="res://Characters/PlayerCharacter.cs" id="8_chara"]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_player"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:visible")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
-radius = 0.4
-height = 1.8
+radius = 0.23144531
+height = 1.7344726
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hit"]
-height = 1.9
+radius = 0.32177734
+height = 1.7957032
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d6q10"]
 
@@ -3173,19 +3185,6 @@ _data = {
 &"Run": SubResource("Animation_qhb0e")
 }
 
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_player"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = true
-properties/0/replication_mode = 2
-properties/1/path = NodePath(".:rotation")
-properties/1/spawn = true
-properties/1/replication_mode = 2
-properties/2/path = NodePath(".:visible")
-properties/2/spawn = true
-properties/2/replication_mode = 2
-
-
 [node name="Player" type="CharacterBody3D" unique_id=920529542 groups=["Player"]]
 script = ExtResource("1")
 
@@ -3196,10 +3195,9 @@ replication_config = SubResource("SceneReplicationConfig_player")
 visible = false
 
 [node name="RespawnScreen" parent="." unique_id=2113589798 instance=ExtResource("7")]
-visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=570789552]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8672363, 0)
 shape = SubResource("CapsuleShape3D_1")
 
 [node name="Hitbox" type="Area3D" parent="." unique_id=1287168015]
@@ -3209,6 +3207,7 @@ collision_mask = 0
 monitoring = false
 
 [node name="HitboxShape" type="CollisionShape3D" parent="Hitbox" unique_id=2040711886]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0521484, 0)
 shape = SubResource("CapsuleShape3D_hit")
 
 [node name="NameLabel" type="Label3D" parent="." unique_id=1346936320]
@@ -3225,23 +3224,25 @@ NameLabel = NodePath("../NameLabel")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CameraHolder" unique_id=180508122]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.43858767, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16725957, -0.14992869)
 
 [node name="WeaponManager" type="Node3D" parent="CameraHolder/Camera3D" unique_id=143208665]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2114123, 0)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.7131607, -0.15189469)
 script = ExtResource("2")
 
 [node name="AssaultRifle" parent="CameraHolder/Camera3D/WeaponManager" unique_id=2146712028 instance=ExtResource("3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17920679, 1.0096756, -0.50785905)
+visible = false
 
 [node name="DualPistols" parent="CameraHolder/Camera3D/WeaponManager" unique_id=726762643 instance=ExtResource("4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1662817, 0)
+visible = false
 
 [node name="Shotgun" parent="CameraHolder/Camera3D/WeaponManager" unique_id=521789765 instance=ExtResource("5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1662817, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1662816, -0.009454191)
 
 [node name="Armature" type="Node3D" parent="." unique_id=946939126]
-transform = Transform3D(0.005, 0, 0, 0, -2.1855694e-10, -0.005, 0, 0.005, -2.1855694e-10, 0, 0, 0)
+transform = Transform3D(-0.003, -2.6226832e-10, 1.1464113e-17, 0, -1.3113417e-10, -0.003, 2.6226832e-10, -0.003, 1.3113417e-10, 0, 0, 0)
 
 [node name="Skeleton3D" type="Skeleton3D" parent="Armature" unique_id=957948463]
 bones/0/name = "mixamorig_Hips"
@@ -3479,7 +3480,6 @@ bones/32/scale = Vector3(1.0000001, 0.9999999, 0.99999994)
 [node name="BASE_Low Poly Man" type="MeshInstance3D" parent="Armature/Skeleton3D" unique_id=35916661]
 mesh = SubResource("ArrayMesh_t8hoq")
 skin = SubResource("Skin_oo13o")
-skeleton = NodePath("..")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2130392242]
 libraries/ = SubResource("AnimationLibrary_nwlvs")

@@ -11,6 +11,7 @@ namespace CashoutCasino.Weapon
 		[Export] public PackedScene bulletScene;
 		[Export] public float bulletSpeed = 95f;
 
+		public override WeaponKind Kind => WeaponKind.Rifle;
 		public override CurrencyEconomy.CostType FireCostType => CurrencyEconomy.CostType.ShootAR;
 		public override bool HoldToFire => true;
 

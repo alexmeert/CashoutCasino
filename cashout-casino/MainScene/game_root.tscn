@@ -76,7 +76,6 @@ text = "Client"
 _spawnable_scenes = PackedStringArray("uid://b12m7brj7s7hi", "uid://c7se2y6gwwwuh")
 spawn_path = NodePath("..")
 script = ExtResource("2_o70cg")
-SpawnInexZeroOnConnect = false
 
 [node name="GameMaster" type="Node" parent="." unique_id=490744433 node_paths=PackedStringArray("NpmSpawner", "LevelSpawner", "_serverStatus", "_playersReady", "_hostButton", "_clientButton", "_lobbyCanvasLayer")]
 script = ExtResource("3_o70cg")
