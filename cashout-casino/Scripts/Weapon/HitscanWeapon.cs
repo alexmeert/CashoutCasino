@@ -24,24 +24,52 @@ namespace CashoutCasino.Weapon
 			var spaceState = owner.GetWorld3D().DirectSpaceState;
 			Vector3 target = origin + direction * range;
 
-			var query = PhysicsRayQueryParameters3D.Create(origin, target);
-			query.Exclude = new Godot.Collections.Array<Rid> { owner.GetRid() };
+			CashoutCasino.Character.Character hitCharacter = null;
+			bool isHeadshot = false;
+			Vector3 hitPoint = target;
 
-			var result = spaceState.IntersectRay(query);
-			Vector3 hitPoint = result.Count > 0
-				? (Vector3)result["position"]
-				: target;
+			// Pass 1: check dedicated hitbox areas (layer 2) for headshot detection
+			var hitboxQuery = PhysicsRayQueryParameters3D.Create(origin, target);
+			hitboxQuery.CollideWithAreas = true;
+			hitboxQuery.CollideWithBodies = false;
+			hitboxQuery.CollisionMask = 2;
+			var hitboxResult = spaceState.IntersectRay(hitboxQuery);
 
-			if (result.Count > 0 && result["collider"].As<Node>() is CashoutCasino.Character.Character hit
-				&& hit != owner)
+			if (hitboxResult.Count > 0
+				&& hitboxResult["collider"].As<Node>() is Area3D area
+				&& area.Name == "Hitbox"
+				&& area.GetParent() is CashoutCasino.Character.Character hc
+				&& hc != owner)
 			{
-				hit.TakeDamage(damagePerHit, owner);
+				hitCharacter = hc;
+				isHeadshot = (int)hitboxResult["shape"] == 0; // HeadHitbox is first child
+				hitPoint = (Vector3)hitboxResult["position"];
+			}
 
-				// Show the health bar only on the shooter's local screen
-				if (hit.WorldHealthBar != null)
+			// Pass 2: fall back to body collision (layer 1) if hitbox missed
+			if (hitCharacter == null)
+			{
+				var bodyQuery = PhysicsRayQueryParameters3D.Create(origin, target);
+				bodyQuery.Exclude = new Godot.Collections.Array<Rid> { owner.GetRid() };
+				var bodyResult = spaceState.IntersectRay(bodyQuery);
+
+				if (bodyResult.Count > 0)
 				{
-					hit.WorldHealthBar.SetLocalCamera(FireCamera);
-					hit.WorldHealthBar.ShowFor(hit.GetHealth(), hit.GetMaxHealth());
+					hitPoint = (Vector3)bodyResult["position"];
+					if (bodyResult["collider"].As<Node>() is CashoutCasino.Character.Character hit && hit != owner)
+						hitCharacter = hit;
+				}
+			}
+
+			if (hitCharacter != null)
+			{
+				float damage = isHeadshot ? damagePerHit * 2f : damagePerHit;
+				hitCharacter.TakeDamage(damage, owner, isHeadshot);
+
+				if (hitCharacter.WorldHealthBar != null)
+				{
+					hitCharacter.WorldHealthBar.SetLocalCamera(FireCamera);
+					hitCharacter.WorldHealthBar.ShowFor(hitCharacter.GetHealth(), hitCharacter.GetMaxHealth());
 				}
 			}
 

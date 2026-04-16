@@ -35,7 +35,7 @@ namespace CashoutCasino.Character
 		public abstract void OnInputAction(string action);
 		public abstract void RequestAIDecision();
 
-		public virtual void TakeDamage(float damage, Character attacker = null)
+		public virtual void TakeDamage(float damage, Character attacker = null, bool isHeadshot = false)
 		{
 			if (isDead) return;
 

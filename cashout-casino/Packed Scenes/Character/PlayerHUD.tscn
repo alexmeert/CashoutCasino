@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b3nkncah18jhq" path="res://Assets/KillfeedIcons/rifle.png" id="2_pdn4l"]
 [ext_resource type="Texture2D" uid="uid://cdww08t1w2wpk" path="res://Assets/KillfeedIcons/shotgun.png" id="3_fb8j3"]
 [ext_resource type="Texture2D" uid="uid://2hv5jys2v8w1" path="res://Assets/KillfeedIcons/pistol.png" id="4_wgfcp"]
+[ext_resource type="Texture2D" uid="uid://c3bjpgrptauqm" path="res://Assets/KillfeedIcons/head.png" id="5_fb8j3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Panel"]
 content_margin_left = 12.0
@@ -50,6 +51,7 @@ script = ExtResource("1_5yeb8")
 RifleIcon = ExtResource("2_pdn4l")
 ShotgunIcon = ExtResource("3_fb8j3")
 PistolIcon = ExtResource("4_wgfcp")
+HeadshotIcon = ExtResource("5_fb8j3")
 
 [node name="HealthPanel" type="Panel" parent="." unique_id=591257236]
 anchors_preset = 2
@@ -100,6 +102,7 @@ theme_override_constants/separation = 2
 
 [node name="WeaponName" type="Label" parent="PlayerHUDPanel/VBox" unique_id=890463849]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_euwb4")
 text = "Assault Rifle"
 label_settings = SubResource("LabelSettings_WeaponName")
@@ -107,6 +110,7 @@ horizontal_alignment = 1
 
 [node name="Ammo" type="Label" parent="PlayerHUDPanel/VBox" unique_id=1560645271]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_euwb4")
 text = "100 / 100"
 label_settings = SubResource("LabelSettings_Ammo")
@@ -114,6 +118,7 @@ horizontal_alignment = 1
 
 [node name="Currency" type="Label" parent="PlayerHUDPanel/VBox" unique_id=1541214477]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_euwb4")
 text = "$100"
 label_settings = SubResource("LabelSettings_Currency")
@@ -122,6 +127,7 @@ horizontal_alignment = 1
 [node name="AtmDebt" type="Label" parent="PlayerHUDPanel/VBox" unique_id=2023039502]
 visible = false
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_euwb4")
 text = "-$50 (ATM)"
 label_settings = SubResource("LabelSettings_AtmDebt")
@@ -155,6 +161,15 @@ mouse_filter = 2
 texture = ExtResource("2_nb2hl")
 expand_mode = 2
 
+[node name="DamageOverlay" type="ColorRect" parent="." unique_id=998877665]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.8, 0, 0, 0)
+
 [node name="KillFeedContainer" type="VBoxContainer" parent="." unique_id=833547975]
 anchors_preset = 1
 anchor_left = 1.0
@@ -165,3 +180,4 @@ offset_right = -10.0
 offset_bottom = 10.0
 grow_horizontal = 0
 theme_override_constants/separation = 4
+alignment = 1

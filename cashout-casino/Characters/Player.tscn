@@ -22,11 +22,14 @@ properties/2/replication_mode = 2
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.23144531
-height = 1.7344726
+height = 1.4766114
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7pihf"]
+radius = 0.24485002
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hit"]
-radius = 0.32177734
-height = 1.7957032
+radius = 0.38134766
+height = 1.5338867
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d6q10"]
 
@@ -3197,7 +3200,7 @@ visible = false
 [node name="RespawnScreen" parent="." unique_id=2113589798 instance=ExtResource("7")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=570789552]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8672363, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7383057, 0)
 shape = SubResource("CapsuleShape3D_1")
 
 [node name="Hitbox" type="Area3D" parent="." unique_id=1287168015]
@@ -3206,8 +3209,12 @@ collision_layer = 2
 collision_mask = 0
 monitoring = false
 
-[node name="HitboxShape" type="CollisionShape3D" parent="Hitbox" unique_id=2040711886]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0521484, 0)
+[node name="HeadHitbox" type="CollisionShape3D" parent="Hitbox" unique_id=994568163]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00793533, 0.70246506, -0.099343464)
+shape = SubResource("SphereShape3D_7pihf")
+
+[node name="BodyHitbox" type="CollisionShape3D" parent="Hitbox" unique_id=2040711886]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.18305665, -0.053648055)
 shape = SubResource("CapsuleShape3D_hit")
 
 [node name="NameLabel" type="Label3D" parent="." unique_id=1346936320]

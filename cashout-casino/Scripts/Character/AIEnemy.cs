@@ -57,11 +57,11 @@ namespace CashoutCasino.Character
 			}
 		}
 
-		public override void TakeDamage(float damage, Character attacker = null)
+		public override void TakeDamage(float damage, Character attacker = null, bool isHeadshot = false)
 		{
 			// Only server applies damage
 			if (!Multiplayer.IsServer()) return;
-			base.TakeDamage(damage, attacker);
+			base.TakeDamage(damage, attacker, isHeadshot);
 			// Sync health to all clients
 			Rpc(MethodName.SyncHealth, currentHealth);
 		}

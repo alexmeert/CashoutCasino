@@ -25,9 +25,9 @@ namespace CashoutCasino.Projectile
 
 		public abstract void OnHit(Node3D hitTarget);
 
-		public virtual float ApplyDamage(CashoutCasino.Character.Character target)
+		public virtual float ApplyDamage(CashoutCasino.Character.Character target, bool isHeadshot = false)
 		{
-			target.TakeDamage(baseDamage, owner);
+			target.TakeDamage(baseDamage, owner, isHeadshot);
 			return baseDamage;
 		}
 
