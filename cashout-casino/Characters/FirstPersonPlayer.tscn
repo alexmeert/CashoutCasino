@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://b3hkeyd5220ax"]
+
+[ext_resource type="PackedScene" uid="uid://bl1nio5m21jdt" path="res://Assets/3D-Models/scene.gltf" id="1_muc1x"]
+[ext_resource type="Script" uid="uid://74q1uh0jxy77" path="res://Scripts/Weapon/WeaponManager.cs" id="2_cayv7"]
+[ext_resource type="PackedScene" uid="uid://jjmbwwxo3f14" path="res://Packed Scenes/Weapon/AssaultRifle.tscn" id="3_nfqe0"]
+[ext_resource type="PackedScene" uid="uid://cs3lkmqn0ldf4" path="res://Packed Scenes/Weapon/DualPistols.tscn" id="4_0skwq"]
+[ext_resource type="PackedScene" uid="uid://cn70t0now5k1c" path="res://Packed Scenes/Weapon/Shotgun.tscn" id="5_1b2qk"]
+
+[node name="FirstPersonPlayer" type="CharacterBody3D" unique_id=1653549429]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=760489150]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02191791, 1, 0)
+
+[node name="Arms" type="Node3D" parent="." unique_id=669421130]
+transform = Transform3D(1, 0, 0, 0, 0.6227605, -0.7824126, 0, 0.7824126, 0.6227605, -0.10509211, 0.32648635, -0.87313366)
+
+[node name="RightArm" parent="Arms" unique_id=1897318380 instance=ExtResource("1_muc1x")]
+transform = Transform3D(-0.013175589, 0.012591098, -0.008238207, 0.010217852, 0.015525218, 0.007386712, 0.011045344, 0.00065737544, -0.016660385, 0.19795732, 0.5289359, 0.23122299)
+
+[node name="LeftArm" parent="Arms" unique_id=795772381 instance=ExtResource("1_muc1x")]
+transform = Transform3D(0.0090311915, -0.015919778, 0.008062163, 0.01383465, 0.011953613, 0.008106436, 0.0112712225, -0.0019163243, -0.016409993, 0.17902492, 0.716699, 0.39018652)
+
+[node name="WeaponManager" type="Node3D" parent="." unique_id=2097851969]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.4144349, -0.0895814)
+script = ExtResource("2_cayv7")
+
+[node name="AssaultRifle" parent="WeaponManager" unique_id=293869399 instance=ExtResource("3_nfqe0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17920679, 1.0096756, -0.50785905)
+
+[node name="DualPistols" parent="WeaponManager" unique_id=100188987 instance=ExtResource("4_0skwq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1662817, 0)
+visible = false
+
+[node name="Shotgun" parent="WeaponManager" unique_id=1004360983 instance=ExtResource("5_1b2qk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1662816, -0.009454191)
+visible = false

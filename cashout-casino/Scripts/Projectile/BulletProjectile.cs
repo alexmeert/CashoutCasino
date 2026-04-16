@@ -10,23 +10,23 @@ namespace CashoutCasino.Projectile
 			Monitoring = true;
 			Monitorable = false;
 
-			// Use AreaEntered to detect the dedicated hitbox Area3D on characters.
-			// This is separate from the CharacterBody3D movement collider so there
-			// is no conflict with floor/wall detection.
-			AreaEntered += OnAreaEntered;
+			// AreaShapeEntered gives us the exact shape index (0=head, 1=body) within the Hitbox area.
+			AreaShapeEntered += OnAreaShapeEntered;
 
 			// Keep BodyEntered as a fallback for non-character physics bodies (walls etc.)
 			BodyEntered += OnBodyEntered;
 		}
 
-		private void OnAreaEntered(Area3D area)
+		private void OnAreaShapeEntered(Rid areaRid, Area3D area, long areaShapeIndex, long localShapeIndex)
 		{
-			// The hitbox Area3D is a child of the Character — walk up to find it
 			Node parent = area.GetParent();
 			if (parent is CashoutCasino.Character.Character c)
 			{
 				if (owner != null && c == owner) return;
-				HitCharacter(c);
+				// areaShapeIndex 0 = HeadHitbox (first CollisionShape3D child of Hitbox)
+				// areaShapeIndex 1 = BodyHitbox
+				bool isHeadshot = areaShapeIndex == 0;
+				HitCharacter(c, isHeadshot);
 			}
 		}
 
@@ -46,9 +46,10 @@ namespace CashoutCasino.Projectile
 			Despawn();
 		}
 
-		private void HitCharacter(CashoutCasino.Character.Character c)
+		private void HitCharacter(CashoutCasino.Character.Character c, bool isHeadshot = false)
 		{
-			ApplyDamage(c);
+			float damage = isHeadshot ? baseDamage * 2f : baseDamage;
+			c.TakeDamage(damage, owner, isHeadshot);
 
 			if (c.WorldHealthBar != null)
 			{

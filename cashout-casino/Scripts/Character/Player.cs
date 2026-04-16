@@ -42,6 +42,10 @@ namespace CashoutCasino.Character
 		private float timeSinceLastDamage = 0f;
 		private bool regenActive = false;
 
+		// Spectate / kill-cam state
+		private string _lastKillerName = "";
+		private Player _spectateTarget;
+
 		public override void _Ready()
 		{
 			base._Ready();
@@ -89,6 +93,8 @@ namespace CashoutCasino.Character
 			hud?.OnHealthChanged(currentHealth, maxHealth);
 			hud?.OnAtmDebtChanged(atmDebt);
 
+			AddToGroup("Players");
+
 			// Authority setup happens via ClaimAuthority RPC sent by the server.
 			// Do NOT call SetupLocalAuthority here — authority isn't set yet at _Ready time.
 		}
@@ -116,6 +122,7 @@ namespace CashoutCasino.Character
 				{
 					hud.Visible = true;
 					hud.SetAsLocalInstance();
+					hud.OwnerPlayer = this;
 				}
 			}
 			else
@@ -146,20 +153,39 @@ namespace CashoutCasino.Character
 		public int GetAtmDebt() => atmDebt;
 		public int GetFinalScore() => currentCurrency - atmDebt;
 
-		// Shooter's client calls this — routes to server for authoritative damage.
-		public override void TakeDamage(float damage, Character attacker = null)
+		public void ApplyKillReward(int amount)
 		{
-			string killerName = attacker?.GetDisplayName() ?? "";
-			string weaponKind = attacker?.GetCurrentWeaponKind().ToString() ?? "Other";
-			if (Multiplayer.IsServer())
-				ServerApplyDamage(damage, killerName, weaponKind);
-			else
-				RpcId(1, MethodName.ServerApplyDamage, damage, killerName, weaponKind);
+			if (!Multiplayer.IsServer()) return;
+			ModifyCurrency(amount);
+			Rpc(nameof(SyncCurrencyToClient), currentCurrency);
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false,
 			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-		private void ServerApplyDamage(float damage, string killerName, string weaponKind)
+		private void SyncCurrencyToClient(int newAmount)
+		{
+			currentCurrency = newAmount;
+			if (IsMultiplayerAuthority())
+			{
+				EmitSignal(SignalName.CurrencyChanged, currentCurrency);
+				wm?.SyncAmmoToAllWeapons(currentCurrency);
+			}
+		}
+
+		// Shooter's client calls this — routes to server for authoritative damage.
+		public override void TakeDamage(float damage, Character attacker = null, bool isHeadshot = false)
+		{
+			string killerName = attacker?.GetDisplayName() ?? "";
+			string weaponKind = attacker?.GetCurrentWeaponKind().ToString() ?? "Other";
+			if (Multiplayer.IsServer())
+				ServerApplyDamage(damage, killerName, weaponKind, isHeadshot);
+			else
+				RpcId(1, MethodName.ServerApplyDamage, damage, killerName, weaponKind, isHeadshot);
+		}
+
+		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void ServerApplyDamage(float damage, string killerName, string weaponKind, bool isHeadshot)
 		{
 			if (!Multiplayer.IsServer() || isDead) return;
 			timeSinceLastDamage = 0f;
@@ -168,16 +194,30 @@ namespace CashoutCasino.Character
 			Rpc(MethodName.SyncHealth, currentHealth);
 			if (currentHealth <= 0f)
 			{
-				Rpc(nameof(SyncKillFeed), killerName, weaponKind, GetDisplayName());
+				var elimType = isHeadshot
+					? Economy.CurrencyEconomy.ElimType.Head
+					: Economy.CurrencyEconomy.ElimType.Body;
+				int reward = isHeadshot
+					? Economy.CurrencyEconomy.HEAD_ELIM
+					: Economy.CurrencyEconomy.BODY_ELIM;
+				foreach (var node in GetTree().GetNodesInGroup("Players"))
+					if (node is Player killer && killer != this && killer.GetDisplayName() == killerName)
+					{
+						killer.ApplyKillReward(reward);
+						break;
+					}
+				Rpc(nameof(SyncKillFeed), killerName, weaponKind, GetDisplayName(), reward, isHeadshot);
 				Rpc(MethodName.SyncDeath, spawnPosition);
 			}
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true,
 			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-		private void SyncKillFeed(string killerName, string weaponKind, string victimName)
+		private void SyncKillFeed(string killerName, string weaponKind, string victimName, int rewardAmount, bool isHeadshot)
 		{
-			UI.PlayerHud.LocalInstance?.AddKillEntry(killerName, weaponKind, victimName);
+			UI.PlayerHud.LocalInstance?.AddKillEntry(killerName, weaponKind, victimName, rewardAmount, isHeadshot);
+			if (IsMultiplayerAuthority())
+				_lastKillerName = killerName;
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true,
@@ -187,7 +227,12 @@ namespace CashoutCasino.Character
 			currentHealth = health;
 			timeSinceLastDamage = 0f;
 			regenActive = false;
-			if (IsMultiplayerAuthority()) hud?.OnHealthChanged(currentHealth, maxHealth);
+			if (IsMultiplayerAuthority())
+			{
+				hud?.OnHealthChanged(currentHealth, maxHealth);
+				hud?.OnDamageTaken();
+				TriggerCameraShake();
+			}
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true,
@@ -205,7 +250,12 @@ namespace CashoutCasino.Character
 				playerCharacter.MyMesh.MaterialOverride = mat;
 			}
 			if (IsMultiplayerAuthority())
-				respawnScreen?.StartCountdown(respawnTime, DoRespawn);
+			{
+				_spectateTarget = FindPlayerByDisplayName(_lastKillerName);
+				hud?.ShowDeathUI();
+				if (wm != null) wm.Visible = false;
+				respawnScreen?.StartCountdown(respawnTime, DoRespawn, _lastKillerName);
+			}
 			if (Multiplayer.IsServer())
 				GetTree().CreateTimer(respawnTime).Timeout += () => { if (IsInstanceValid(this)) Rpc(MethodName.SyncRespawnAll); };
 		}
@@ -238,6 +288,13 @@ namespace CashoutCasino.Character
 					: null;
 			if (IsMultiplayerAuthority())
 			{
+				_spectateTarget = null;
+				_lastKillerName = "";
+				cameraHolder.Position = new Vector3(0f, standHeight - 0.15f, 0f);
+				cameraHolder.Rotation = Vector3.Zero;
+				cameraPitch = 0f;
+				if (wm != null) wm.Visible = true;
+				hud?.ShowAliveUI();
 				hud?.OnHealthChanged(currentHealth, maxHealth);
 				Input.MouseMode = Input.MouseModeEnum.Captured;
 			}
@@ -287,7 +344,11 @@ namespace CashoutCasino.Character
 
 		public override void _Process(double delta)
 		{
-			if (isDead) return;
+			if (isDead)
+			{
+				if (IsMultiplayerAuthority()) UpdateSpectateCam(delta);
+				return;
+			}
 			if (currentHealth >= maxHealth) return;
 
 			float dt = (float)delta;
@@ -363,6 +424,39 @@ namespace CashoutCasino.Character
 		}
 
 		public override string GetDisplayName() => playerCharacter?.PlayerName is { Length: > 0 } n ? n : Name;
+
+		private Player FindPlayerByDisplayName(string displayName)
+		{
+			if (string.IsNullOrEmpty(displayName)) return null;
+			foreach (var node in GetTree().GetNodesInGroup("Players"))
+				if (node is Player p && p != this && p.GetDisplayName() == displayName)
+					return p;
+			return null;
+		}
+
+		private void TriggerCameraShake()
+		{
+			if (cameraHolder == null) return;
+			var origin = cameraHolder.Position;
+			var rng = new RandomNumberGenerator();
+			rng.Randomize();
+			var tween = cameraHolder.CreateTween();
+			for (int i = 0; i < 4; i++)
+			{
+				var offset = new Vector3(rng.RandfRange(-0.06f, 0.06f), rng.RandfRange(-0.06f, 0.06f), 0f);
+				tween.TweenProperty(cameraHolder, "position", origin + offset, 0.04);
+			}
+			tween.TweenProperty(cameraHolder, "position", origin, 0.04);
+		}
+
+		private void UpdateSpectateCam(double delta)
+		{
+			if (_spectateTarget == null || !IsInstanceValid(_spectateTarget)) return;
+			var targetCenter = _spectateTarget.GlobalPosition + Vector3.Up * 1.4f;
+			var behind = _spectateTarget.GlobalTransform.Basis.Z.Normalized() * 4f + Vector3.Up * 1.2f;
+			cameraHolder.GlobalPosition = cameraHolder.GlobalPosition.Lerp(targetCenter + behind, (float)delta * 6f);
+			cameraHolder.LookAt(targetCenter);
+		}
 
 		public override void RequestAIDecision() { }
 		public override void OnInputAction(string action) { }

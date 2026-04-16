@@ -57,7 +57,7 @@ namespace CashoutCasino.Character
 			}
 		}
 
-		public override void TakeDamage(float damage, Character attacker = null)
+		public override void TakeDamage(float damage, Character attacker = null, bool isHeadshot = false)
 		{
 			// Route to server — if already on server apply directly, otherwise RPC.
 			if (Multiplayer.IsServer())

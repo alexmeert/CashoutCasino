@@ -5,10 +5,12 @@ namespace CashoutCasino.UI
 	public partial class PlayerHud : CanvasLayer
 	{
 		public static PlayerHud LocalInstance { get; private set; }
+		public Character.Player OwnerPlayer { get; set; }
 
 		[Export] public Texture2D RifleIcon;
 		[Export] public Texture2D ShotgunIcon;
 		[Export] public Texture2D PistolIcon;
+		[Export] public Texture2D HeadshotIcon;
 
 		private Label weaponNameLabel;
 		private Label ammoLabel;
@@ -17,6 +19,10 @@ namespace CashoutCasino.UI
 		private ProgressBar healthBar;
 		private StyleBoxFlat healthFillStyle;
 		private VBoxContainer killFeedContainer;
+		private ColorRect damageOverlay;
+		private Control healthPanel;
+		private Control weaponPanel;
+		private Control reticle;
 
 		private static readonly Font KillFeedFont =
 			GD.Load<Font>("res://Assets/upheaval/upheavtt.ttf");
@@ -31,6 +37,10 @@ namespace CashoutCasino.UI
 			atmDebtLabel    = GetNodeOrNull<Label>("PlayerHUDPanel/VBox/AtmDebt");
 			healthBar       = GetNodeOrNull<ProgressBar>("HealthPanel/VBox/HealthBar");
 			killFeedContainer = GetNodeOrNull<VBoxContainer>("KillFeedContainer");
+			damageOverlay     = GetNodeOrNull<ColorRect>("DamageOverlay");
+			healthPanel       = GetNodeOrNull<Control>("HealthPanel");
+			weaponPanel       = GetNodeOrNull<Control>("PlayerHUDPanel");
+			reticle           = GetNodeOrNull<Control>("Reticle");
 
 			if (healthBar != null)
 			{
@@ -81,6 +91,28 @@ namespace CashoutCasino.UI
 			atmDebtLabel.Visible = true;
 		}
 
+		public void ShowDeathUI()
+		{
+			if (healthPanel != null) healthPanel.Visible = false;
+			if (weaponPanel != null) weaponPanel.Visible = false;
+			if (reticle    != null) reticle.Visible    = false;
+		}
+
+		public void ShowAliveUI()
+		{
+			if (healthPanel != null) healthPanel.Visible = true;
+			if (weaponPanel != null) weaponPanel.Visible = true;
+			if (reticle    != null) reticle.Visible    = true;
+		}
+
+		public void OnDamageTaken()
+		{
+			if (damageOverlay == null) return;
+			damageOverlay.Color = new Color(0.8f, 0f, 0f, 0.45f);
+			var tween = damageOverlay.CreateTween();
+			tween.TweenProperty(damageOverlay, "color:a", 0.0, 0.4);
+		}
+
 		public void OnHealthChanged(float current, float max)
 		{
 			if (healthBar == null || healthFillStyle == null) return;
@@ -94,24 +126,82 @@ namespace CashoutCasino.UI
 			healthFillStyle.BgColor = new Color(r, g, 0.1f, 1f);
 		}
 
-		public void AddKillEntry(string killerName, string weaponKind, string victimName)
+		public void AddKillEntry(string killerName, string weaponKind, string victimName, int rewardAmount = 0, bool isHeadshot = false)
 		{
 			if (killFeedContainer == null) return;
 
-			var row = new HBoxContainer();
-			row.Modulate = new Color(1, 1, 1, 1);
-			row.AddThemeConstantOverride("separation", 6);
+			bool isOwnKill = killerName.Length > 0 && killerName == (OwnerPlayer?.GetDisplayName() ?? "");
 
+			var container = new PanelContainer();
+			container.Modulate = new Color(1, 1, 1, 1);
+
+			var bg = new StyleBoxFlat();
+			if (isOwnKill)
+			{
+				bg.BgColor = new Color(0.7f, 0.05f, 0.05f, 0.55f);
+				bg.BorderColor = new Color(1f, 0.15f, 0.15f, 1f);
+				bg.BorderWidthLeft = bg.BorderWidthRight = bg.BorderWidthTop = bg.BorderWidthBottom = 2;
+			}
+			else
+			{
+				bg.BgColor = new Color(0f, 0f, 0f, 0.45f);
+				bg.BorderWidthLeft = bg.BorderWidthRight = bg.BorderWidthTop = bg.BorderWidthBottom = 0;
+			}
+			bg.CornerRadiusTopLeft = bg.CornerRadiusTopRight = bg.CornerRadiusBottomLeft = bg.CornerRadiusBottomRight = 4;
+			bg.ContentMarginLeft = bg.ContentMarginRight = 8;
+			bg.ContentMarginTop = bg.ContentMarginBottom = 4;
+			container.AddThemeStyleboxOverride("panel", bg);
+
+			var row = new HBoxContainer();
+			row.AddThemeConstantOverride("separation", 8);
+			row.Alignment = HBoxContainer.AlignmentMode.Center;
 			row.AddChild(MakeNameLabel(killerName, new Color(1f, 1f, 1f, 1f)));
 			row.AddChild(MakeWeaponWidget(weaponKind));
+			if (isHeadshot)
+				row.AddChild(MakeWeaponWidget("Headshot"));
 			row.AddChild(MakeNameLabel(victimName, new Color(1f, 0.25f, 0.25f, 1f)));
+			container.AddChild(row);
 
-			killFeedContainer.AddChild(row);
+			killFeedContainer.AddChild(container);
 
-			var tween = row.CreateTween();
-			tween.TweenInterval(3.5);
-			tween.TweenProperty(row, "modulate:a", 0.0, 0.5);
-			tween.TweenCallback(Callable.From(row.QueueFree));
+			if (isOwnKill && rewardAmount > 0)
+				ShowKillRewardPopup(rewardAmount);
+
+			var tween = container.CreateTween();
+			tween.TweenInterval(4.0);
+			tween.TweenProperty(container, "modulate:a", 0.0, 0.6);
+			tween.TweenCallback(Callable.From(container.QueueFree));
+		}
+
+		public void ShowKillRewardPopup(int amount)
+		{
+			var lbl = new Label();
+			lbl.Text = $"+${amount}  KILL";
+			var settings = new LabelSettings();
+			settings.FontSize = 32;
+			settings.FontColor = new Color(0.25f, 1f, 0.35f, 1f);
+			settings.OutlineSize = 3;
+			settings.OutlineColor = new Color(0f, 0f, 0f, 0.8f);
+			if (KillFeedFont != null) settings.Font = KillFeedFont;
+			lbl.LabelSettings = settings;
+			lbl.HorizontalAlignment = HorizontalAlignment.Center;
+			lbl.AnchorLeft = lbl.AnchorRight = 0.5f;
+			lbl.AnchorTop = lbl.AnchorBottom = 0.5f;
+			lbl.GrowHorizontal = Control.GrowDirection.Both;
+			lbl.GrowVertical = Control.GrowDirection.Both;
+			lbl.OffsetLeft = -150f;
+			lbl.OffsetRight = 150f;
+			lbl.OffsetTop = 60f;
+			lbl.OffsetBottom = 100f;
+			AddChild(lbl);
+
+			var tween = lbl.CreateTween();
+			tween.SetParallel(true);
+			tween.TweenProperty(lbl, "offset_top", -40f, 0.8).SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
+			tween.TweenProperty(lbl, "offset_bottom", 0f, 0.8).SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
+			tween.TweenProperty(lbl, "modulate:a", 0.0, 0.8).SetDelay(0.4);
+			tween.SetParallel(false);
+			tween.TweenCallback(Callable.From(lbl.QueueFree));
 		}
 
 		private Label MakeNameLabel(string text, Color color)
@@ -119,7 +209,7 @@ namespace CashoutCasino.UI
 			var lbl = new Label();
 			lbl.Text = text.Length > 0 ? text : "Unknown";
 			var settings = new LabelSettings();
-			settings.FontSize = 14;
+			settings.FontSize = 18;
 			settings.FontColor = color;
 			if (KillFeedFont != null) settings.Font = KillFeedFont;
 			lbl.LabelSettings = settings;
@@ -131,17 +221,18 @@ namespace CashoutCasino.UI
 		{
 			Texture2D icon = weaponKind switch
 			{
-				"Rifle"   => RifleIcon,
-				"Shotgun" => ShotgunIcon,
-				"Pistol"  => PistolIcon,
-				_         => null,
+				"Rifle"    => RifleIcon,
+				"Shotgun"  => ShotgunIcon,
+				"Pistol"   => PistolIcon,
+				"Headshot" => HeadshotIcon,
+				_          => null,
 			};
 
 			if (icon != null)
 			{
 				var tex = new TextureRect();
 				tex.Texture = icon;
-				tex.CustomMinimumSize = new Vector2(24, 24);
+				tex.CustomMinimumSize = new Vector2(32, 32);
 				tex.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
 				tex.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
 				return tex;

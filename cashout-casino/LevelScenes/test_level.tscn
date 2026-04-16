@@ -707,7 +707,7 @@ transform = Transform3D(0.85207963, 0, -0.6135294, 0, 0.7177619, 0, 0.6019898, 0
 [node name="StoolChair48" parent="GamesArea" unique_id=1907356510 instance=ExtResource("9_r2ksb")]
 transform = Transform3D(0.99988157, 0, 0.015393187, 0, 1, 0, -0.015393187, 0, 0.99988157, -22.935535, 0.079651475, 30.798029)
 
-[node name="CuckCouch" parent="." unique_id=646395561 instance=ExtResource("11_bew14")]
+[node name="CuckCouch" parent="GamesArea" unique_id=646395561 instance=ExtResource("11_bew14")]
 transform = Transform3D(1.5492132, 0, -0.07634126, 0, 1.3279372, 0, 0.09448226, 0, 1.2517552, -24.635561, 0.06507492, 40.02493)
 
 [node name="ATMMachine" parent="." unique_id=130021698 instance=ExtResource("14_lfd87")]
