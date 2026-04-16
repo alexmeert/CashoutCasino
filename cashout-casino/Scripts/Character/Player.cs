@@ -112,8 +112,11 @@ namespace CashoutCasino.Character
 			{
 				Input.MouseMode = Input.MouseModeEnum.Captured;
 				camera.Current = true;
-				// Show only the HUD — respawn screen manages its own visibility.
-				if (hud != null) hud.Visible = true;
+				if (hud != null)
+				{
+					hud.Visible = true;
+					hud.SetAsLocalInstance();
+				}
 			}
 			else
 			{
@@ -146,15 +149,17 @@ namespace CashoutCasino.Character
 		// Shooter's client calls this — routes to server for authoritative damage.
 		public override void TakeDamage(float damage, Character attacker = null)
 		{
+			string killerName = attacker?.GetDisplayName() ?? "";
+			string weaponKind = attacker?.GetCurrentWeaponKind().ToString() ?? "Other";
 			if (Multiplayer.IsServer())
-				ServerApplyDamage(damage);
+				ServerApplyDamage(damage, killerName, weaponKind);
 			else
-				RpcId(1, MethodName.ServerApplyDamage, damage);
+				RpcId(1, MethodName.ServerApplyDamage, damage, killerName, weaponKind);
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false,
 			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-		private void ServerApplyDamage(float damage)
+		private void ServerApplyDamage(float damage, string killerName, string weaponKind)
 		{
 			if (!Multiplayer.IsServer() || isDead) return;
 			timeSinceLastDamage = 0f;
@@ -162,7 +167,17 @@ namespace CashoutCasino.Character
 			currentHealth = Mathf.Max(currentHealth - damage, 0f);
 			Rpc(MethodName.SyncHealth, currentHealth);
 			if (currentHealth <= 0f)
+			{
+				Rpc(nameof(SyncKillFeed), killerName, weaponKind, GetDisplayName());
 				Rpc(MethodName.SyncDeath, spawnPosition);
+			}
+		}
+
+		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void SyncKillFeed(string killerName, string weaponKind, string victimName)
+		{
+			UI.PlayerHud.LocalInstance?.AddKillEntry(killerName, weaponKind, victimName);
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true,
@@ -334,6 +349,8 @@ namespace CashoutCasino.Character
 				cameraHolder.Position   = new Vector3(0f, targetHeight - 0.15f, 0f);
 			}
 		}
+
+		public override string GetDisplayName() => playerCharacter?.PlayerName is { Length: > 0 } n ? n : Name;
 
 		public override void RequestAIDecision() { }
 		public override void OnInputAction(string action) { }

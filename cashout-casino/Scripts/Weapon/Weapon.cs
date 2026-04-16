@@ -3,8 +3,12 @@ using CashoutCasino.Economy;
 
 namespace CashoutCasino.Weapon
 {
+	public enum WeaponKind { Rifle, Shotgun, Pistol, Other }
+
 	public abstract partial class Weapon : Node3D
 	{
+		public virtual WeaponKind Kind => WeaponKind.Other;
+
 		public Camera3D FireCamera;
 
 		[Export] public Marker3D Muzzle;

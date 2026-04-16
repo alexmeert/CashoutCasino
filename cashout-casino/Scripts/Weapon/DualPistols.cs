@@ -15,6 +15,7 @@ namespace CashoutCasino.Weapon
 
 		private bool leftNext = true;
 
+		public override WeaponKind Kind => WeaponKind.Pistol;
 		public override CurrencyEconomy.CostType FireCostType => CurrencyEconomy.CostType.ShootPistol;
 
 		protected override PackedScene ProjectileScene => bulletScene;
