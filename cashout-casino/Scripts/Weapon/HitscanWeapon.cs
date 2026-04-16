@@ -8,7 +8,7 @@ namespace CashoutCasino.Weapon
 
 		public Color TrailColor = new Color(1f, 0.95f, 0.6f, 1f);
 
-		public Camera3D FireCamera;
+		public new Camera3D FireCamera;
 
 		protected void PerformRaycast(Vector3 direction, CashoutCasino.Character.Character owner)
 		{

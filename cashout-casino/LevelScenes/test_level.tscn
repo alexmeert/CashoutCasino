@@ -729,3 +729,15 @@ transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0,
 
 [node name="SlotMachine10" parent="." unique_id=379871960 instance=ExtResource("15_4koev")]
 transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0, 1.5219555, -50.69704, 0.07334679, 23.069914)
+
+[node name="P1Start" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+
+[node name="P2Start" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 2)
+
+[node name="P3Start" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
+
+[node name="P4Start" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)

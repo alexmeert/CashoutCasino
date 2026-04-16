@@ -1,16 +1,15 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 
 public partial class UserNpm : Control
 {
 	[Export] public string PlayerName;
-	[Export] public int Team;
-	[Export] public int WeaponClass;
+	[Export] public int ColorSelection;
+	[Export] public int WeaponClassSelection;
 	
 	[Export] public TextEdit MyName;
-	[Export] public ColorRect MyBG;
-	[Export] OptionButton TeamOptionButton;
+	[Export] public ColorRect MyNPMBackground;
+	[Export] OptionButton ColorOptionButton;
 	[Export] OptionButton WeaponClassOptionButton;
 	[Export] Label ReadyLabel;
 	[Export] CheckBox ReadyCheckBox;
@@ -29,24 +28,20 @@ public partial class UserNpm : Control
 	
 	public async void SlowStart()
 	{
-		// Wait longer for all nodes to initialize
-		await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
+		//Wait in case the NetworkID didn't get set yet
+		await ToSignal(GetTree().CreateTimer(0.2f), SceneTreeTimer.SignalName.Timeout);
 		IsReady = false;
 		
 		// Set default color to white
-		MyColor = new Color(1, 1, 1, 1);
+		MyColor = new Color(1, 1, 1, 1); // White
+		ColorOptionButton.Selected = -1;
+		WeaponClassOptionButton.Selected = -1;
 		
-		if(!MyNetID.IsLocal)
-		{
+		if(!MyNetID.IsLocal){
+			//A player has just hidden their ItemsList and made they're name uneditable
 			MyName.Editable = false;
-			TeamOptionButton.Disabled = true;
+			ColorOptionButton.Disabled = true;
 			WeaponClassOptionButton.Disabled = true;
-		}
-		else
-		{
-			// Delay color update RPC
-			await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
-			UpdateAvailableColors();
 		}
 	}
 	
@@ -56,120 +51,69 @@ public partial class UserNpm : Control
 		
 		if(!MyNetID.IsLocal)
 		{
+			
 			// Only update remote player's UI from synced data
 			MyName.Text = PlayerName;
-			MyBG.Color = MyColor;
-			TeamOptionButton.Selected = Team;
-			WeaponClassOptionButton.Selected = WeaponClass;
+			MyNPMBackground.Color = MyColor;
+			ColorOptionButton.Selected = ColorSelection;
+			WeaponClassOptionButton.Selected = WeaponClassSelection;
 			ReadyCheckBox.ButtonPressed = IsReady;
+		}
+		else
+		{
+			ReadyCheckBox.Disabled = !CanBeReady();
 		}
 	}
 
-	//Ask the server to change the team
-	public void OnTeamChange(int n)
+	//Ask the server to change the color
+	public void OnColorChange(int n)
 	{
-		GD.Print($"OnTeamChange called! n={n}");
-		if(MyNetID.IsLocal)
-		{
-			Rpc(MethodName.TeamChangeRPC, n);
+		GD.Print($"OnColorChange called! n={n}");
+		//Only the local player should be asking the player to change their color
+		//Prevents the local player from controlling other players' colors
+		//Solves the issue of why player can control all PCs in a scene
+		if(MyNetID.IsLocal){
+			Rpc(MethodName.ColorChangeRPC, n);
 		}
 	}
 	
-	//Change the team of a player
+	//Change the color of a player
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal=false, TransferMode=MultiplayerPeer.TransferModeEnum.Reliable)]
-	public void TeamChangeRPC(int n)
-	{
-		GD.Print($"TeamChangeRPC called with n={n}");
+	public void ColorChangeRPC(int n){
+		GD.Print($"ColorChangeRPC called with n={n}");
 		GD.Print($"IsServer: {GenericCore.Instance.IsServer}");
 		
 		if(GenericCore.Instance.IsServer)
 		{
-			// Get the peer ID of who sent this RPC
-			int requestingPeerId = Multiplayer.GetRemoteSenderId();
-			
-			// Check if color is already taken by another player
-			if (IsColorTaken(n, requestingPeerId))
-			{
-				GD.Print($"Color {n} is already taken!");
-				return;
+			//Why not use Multiplayer.IsServer? Because that'll work if it's not connected to anything
+			ColorSelection = n;
+			switch(n){
+				case 0: //Red
+					MyNPMBackground.Color = new Color(1,0,0,1);
+					break;
+				case 1: //Green
+					MyNPMBackground.Color = new Color(0,1,0,1);
+					break;
+				case 2: //Blue
+					MyNPMBackground.Color = new Color(0,0,1,1);
+					break;
+				case 3: // Yellow
+					MyNPMBackground.Color = new Color(1,1,0,1);
+					break;
+				case 4: // Purple
+					MyNPMBackground.Color = new Color(1,0,1,1);
+					break;
+				case 5: // Orange
+					MyNPMBackground.Color = new Color(1,0.5f,0,1);
+					break;
+				default:
+					MyNPMBackground.Color = new Color(1,1,1,1);
+					break;
 			}
-
-			Team = n;
-			ApplyTeamColor(n);
+			MyColor = MyNPMBackground.Color;
 			GD.Print($"Server set MyColor to: {MyColor}");
-			
-			// Tell all clients to update available colors
-			Rpc(MethodName.UpdateAvailableColors);
-		}
-	}
-
-	private bool IsColorTaken(int colorIndex, int requestingPeerId)
-	{
-		// Get all UserNpm panels in the scene
-		var npmPanels = GetTree().GetNodesInGroup("NPM");
-		
-		foreach (UserNpm npm in npmPanels)
-		{
-			// Skip the requesting player
-			if (npm.MyNetID.OwnerId == requestingPeerId)
-				continue;
-			
-			// Check if another player has this color
-			if (npm.Team == colorIndex)
-				return true;
-		}
-		
-		return false;
-	}
-	
-	private void ApplyTeamColor(int colorIndex)
-	{
-		switch(colorIndex)
-		{
-			case 0: //Red
-				MyBG.Color = new Color(1, 0, 0, 1);
-				break;
-			case 1: //Green
-				MyBG.Color = new Color(0, 1, 0, 1);
-				break;
-			case 2: //Blue
-				MyBG.Color = new Color(0, 0, 1, 1);
-				break;
-			case 3: //Yellow
-				MyBG.Color = new Color(1, 1, 0, 1);
-				break;
-			case 4: //Purple
-				MyBG.Color = new Color(1, 0, 1, 1);
-				break;
-			case 5: //Orange
-				MyBG.Color = new Color(1, 0.5f, 0, 1);
-				break;
-			default:
-				break;
-		}
-		MyColor = MyBG.Color;
-	}
-	
-	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal=true, TransferMode=MultiplayerPeer.TransferModeEnum.Unreliable)]
-	public void UpdateAvailableColors()
-	{
-		if (TeamOptionButton == null)
-			return;
-
-		// Get all taken colors
-		var takenColors = new HashSet<int>();
-		var npmPanels = GetTree().GetNodesInGroup("NPM");
-		
-		foreach (UserNpm npm in npmPanels)
-		{
-			takenColors.Add(npm.Team);
-		}
-
-		// Disable taken colors in the dropdown
-		for (int i = 0; i < TeamOptionButton.ItemCount; i++)
-		{
-			bool isTaken = takenColors.Contains(i);
-			TeamOptionButton.SetItemDisabled(i, isTaken);
+			//Should just synchronize across all players
+			//Don't forget to synchronize the color rect!
 		}
 	}
 	
@@ -177,49 +121,33 @@ public partial class UserNpm : Control
 	{
 		if(MyNetID.IsLocal)
 		{
-			GD.Print($"Local player changing WeaponClass to: {n}");
+			GD.Print($"Remote player updating UI - Weapon Class value is: {WeaponClassSelection}");
 			Rpc(MethodName.WeaponClassChangeRPC, n);
 		}
 	}
 	
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal=false, TransferMode=MultiplayerPeer.TransferModeEnum.Reliable)]
-	public void WeaponClassChangeRPC(int n)
-	{
-		GD.Print($"WeaponClassChangeRPC called with n={n}");
-		
+	public void WeaponClassChangeRPC(int n){
 		if(GenericCore.Instance.IsServer)
 		{
-			GD.Print($"Server setting WeaponClass from {WeaponClass} to {n}");
-			WeaponClass = n;
-			GD.Print($"WeaponClass is now: {WeaponClass}");
-			
-			// Broadcast the change to all clients
-			Rpc(MethodName.SyncWeaponClass, n);
+			GD.Print($"Server setting Weapon Class from {WeaponClassSelection} to {n}");
+			WeaponClassSelection = n;
+			GD.Print($"Weapon Class is now: {WeaponClassSelection}");
 		}
-	}
-	
-	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal=true, TransferMode=MultiplayerPeer.TransferModeEnum.Reliable)]
-	public void SyncWeaponClass(int newWeaponClass)
-	{
-		GD.Print($"SyncWeaponClass: updating WeaponClass to {newWeaponClass}");
-		WeaponClass = newWeaponClass;
 	}
 	
 	//Ask the server to change our name
 	public void OnNameChange()
 	{
-		if(MyNetID.IsLocal)
-		{
+		if(MyNetID.IsLocal){
 			Rpc(MethodName.NameChangeRPC, MyName.Text);
 		}
 	}
 	
 	//Change the name of a client
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal=false, TransferMode=MultiplayerPeer.TransferModeEnum.Reliable)]
-	public void NameChangeRPC(string Text)
-	{
-		if(GenericCore.Instance.IsServer)
-		{
+	public void NameChangeRPC(string Text){
+		if(GenericCore.Instance.IsServer){
 			PlayerName = Text;
 			MyName.Text = Text;
 		}
@@ -243,5 +171,15 @@ public partial class UserNpm : Control
 			return;
 		}
 		IsReady = Change;
+	}
+	
+	// Returns true if the player has selected a valid name, color, and sprite
+	private bool CanBeReady()
+	{
+		bool hasName = !string.IsNullOrWhiteSpace(MyName.Text);
+		bool hasColor = ColorOptionButton.Selected != -1; 
+		bool hasSprite = WeaponClassOptionButton.Selected != -1;
+
+		return hasName && hasColor && hasSprite;
 	}
 }

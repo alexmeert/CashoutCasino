@@ -18,33 +18,40 @@ namespace CashoutCasino.Character
 		[Export] public float standHeight = 1.8f;
 		[Export] public float crouchHeight = 1.0f;
 
+		// Regen settings
+		[Export] public float regenDelay = 15f;    // seconds of no damage before regen starts
+		[Export] public float regenRate  = 10f;    // HP per second once regen kicks in
+
 		private Camera3D camera;
 		private Node3D cameraHolder;
 		private CollisionShape3D collisionShape;
 		private Weapon.WeaponManager wm;
 		private UI.PlayerHud hud;
 		private UI.RespawnScreen respawnScreen;
-		private MeshInstance3D bodyMesh;
+		// PlayerCharacter handles the animated model (replaces capsule MeshInstance3D)
+		private PlayerCharacter playerCharacter;
 
 		private float verticalVelocity = 0f;
 		private float cameraPitch = 0f;
 		private const float MAX_PITCH = 89f;
 
 		private Vector3 spawnPosition;
-
-		// ATM debt — added to currency for ammo but counted as a score penalty
 		private int atmDebt = 0;
+
+		// Regen state
+		private float timeSinceLastDamage = 0f;
+		private bool regenActive = false;
 
 		public override void _Ready()
 		{
 			base._Ready();
 
-			spawnPosition = GlobalPosition;
-
-			camera        = GetNode<Camera3D>(cameraPath);
-			cameraHolder  = GetNode<Node3D>(cameraHolderPath);
+			spawnPosition  = GlobalPosition;
+			camera         = GetNode<Camera3D>(cameraPath);
+			cameraHolder   = GetNode<Node3D>(cameraHolderPath);
 			collisionShape = GetNode<CollisionShape3D>(collisionShapePath);
-			bodyMesh      = GetNodeOrNull<MeshInstance3D>("MeshInstance3D");
+			// Grab the animated PlayerCharacter node instead of a raw MeshInstance3D
+			playerCharacter = GetNodeOrNull<PlayerCharacter>("PlayerCharacter");
 
 			if (HasNode(weaponManagerPath))
 			{
@@ -85,9 +92,6 @@ namespace CashoutCasino.Character
 			Input.MouseMode = Input.MouseModeEnum.Captured;
 		}
 
-		/// <summary>
-		/// Called by ATM — adds currency (ammo) but tracks it as score debt.
-		/// </summary>
 		public void AddAtmDebt(int amount)
 		{
 			atmDebt += amount;
@@ -96,11 +100,15 @@ namespace CashoutCasino.Character
 		}
 
 		public int GetAtmDebt() => atmDebt;
-
-		/// <summary>
-		/// Final score = currentCurrency - atmDebt
-		/// </summary>
 		public int GetFinalScore() => currentCurrency - atmDebt;
+
+		public override void TakeDamage(float damage, Character attacker = null)
+		{
+			// Reset regen timer on any hit
+			timeSinceLastDamage = 0f;
+			regenActive = false;
+			base.TakeDamage(damage, attacker);
+		}
 
 		public override void OnDeath(Character killer)
 		{
@@ -108,12 +116,18 @@ namespace CashoutCasino.Character
 			ModifyCurrency(-Economy.CurrencyEconomy.BODY_ELIM);
 			SetPhysicsProcess(false);
 
-			if (bodyMesh != null)
+			timeSinceLastDamage = 0f;
+			regenActive = false;
+
+			// Make the player model semi-transparent on death
+			if (playerCharacter != null)
 			{
 				var mat = new StandardMaterial3D();
 				mat.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
-				mat.AlbedoColor  = new Color(0.6f, 0.6f, 0.8f, 0.35f);
-				bodyMesh.MaterialOverride = mat;
+				mat.AlbedoColor = new Color(0.6f, 0.6f, 0.8f, 0.35f);
+				// Apply to the mesh inside the armature hierarchy
+				var mesh = playerCharacter.MyMesh;
+				if (mesh != null) mesh.MaterialOverride = mat;
 			}
 
 			respawnScreen?.StartCountdown(respawnTime, Respawn);
@@ -122,14 +136,17 @@ namespace CashoutCasino.Character
 		private void Respawn()
 		{
 			isDead = false;
-			currentHealth = maxHealth;
+			currentHealth    = maxHealth;
 			verticalVelocity = 0f;
+			timeSinceLastDamage = 0f;
+			regenActive = false;
 
 			GlobalPosition = spawnPosition;
 			SetPhysicsProcess(true);
 
-			if (bodyMesh != null)
-				bodyMesh.MaterialOverride = null;
+			// Restore default material on respawn
+			if (playerCharacter?.MyMesh != null)
+				playerCharacter.MyMesh.MaterialOverride = null;
 
 			hud?.OnHealthChanged(currentHealth, maxHealth);
 			Input.MouseMode = Input.MouseModeEnum.Captured;
@@ -161,6 +178,22 @@ namespace CashoutCasino.Character
 			{
 				if (keyEvent.Keycode == Key.Escape)
 					Input.MouseMode = Input.MouseModeEnum.Visible;
+			}
+		}
+
+		public override void _Process(double delta)
+		{
+			if (isDead) return;
+			if (currentHealth >= maxHealth) return;
+
+			float dt = (float)delta;
+			timeSinceLastDamage += dt;
+
+			if (timeSinceLastDamage >= regenDelay)
+			{
+				regenActive = true;
+				currentHealth = Mathf.Min(currentHealth + regenRate * dt, maxHealth);
+				OnHealthChangedInternal(currentHealth, maxHealth);
 			}
 		}
 
