@@ -112,12 +112,24 @@ namespace CashoutCasino.Character
 			{
 				Input.MouseMode = Input.MouseModeEnum.Captured;
 				camera.Current = true;
+				// Show only the HUD — respawn screen manages its own visibility.
+				if (hud != null) hud.Visible = true;
 			}
 			else
 			{
 				camera.Current = false;
-				if (HasNode(hudPath)) GetNode(hudPath).ProcessMode = ProcessModeEnum.Disabled;
-				if (HasNode(respawnScreenPath)) GetNode(respawnScreenPath).ProcessMode = ProcessModeEnum.Disabled;
+				// Hide HUD on remote players and stop it processing.
+				if (hud != null)
+				{
+					hud.Visible = false;
+					hud.ProcessMode = ProcessModeEnum.Disabled;
+				}
+				// Hide respawn screen on remote players.
+				if (respawnScreen != null)
+				{
+					respawnScreen.Visible = false;
+					respawnScreen.ProcessMode = ProcessModeEnum.Disabled;
+				}
 			}
 		}
 

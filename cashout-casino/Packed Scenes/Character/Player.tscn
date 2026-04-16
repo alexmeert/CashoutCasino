@@ -3193,6 +3193,7 @@ script = ExtResource("1")
 replication_config = SubResource("SceneReplicationConfig_player")
 
 [node name="PlayerHud" parent="." unique_id=335599664 instance=ExtResource("6_cl7pc")]
+visible = false
 
 [node name="RespawnScreen" parent="." unique_id=2113589798 instance=ExtResource("7")]
 

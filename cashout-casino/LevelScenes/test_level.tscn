@@ -15,6 +15,20 @@
 [ext_resource type="PackedScene" uid="uid://xkbyyooa24mv" path="res://Packed Scenes/Level/ATMMachine.tscn" id="14_lfd87"]
 [ext_resource type="PackedScene" uid="uid://cc31bm3yl5i5r" path="res://Packed Scenes/Level/SlotMachine.tscn" id="15_4koev"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_level"]
+sky_horizon_color = Color(0.66, 0.67, 0.69, 1)
+ground_horizon_color = Color(0.66, 0.67, 0.69, 1)
+energy_multiplier = 2.0
+
+[sub_resource type="Sky" id="Sky_level"]
+sky_material = SubResource("ProceduralSkyMaterial_level")
+
+[sub_resource type="Environment" id="Environment_level"]
+background_mode = 2
+sky = SubResource("Sky_level")
+tonemap_mode = 2
+glow_enabled = true
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_14b8f"]
 albedo_texture = ExtResource("1_pxjhl")
 uv1_scale = Vector3(1000, 1000, 1000)
@@ -52,27 +66,12 @@ texture_filter = 0
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_r2ksb"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_level"]
-sky_horizon_color = Color(0.66, 0.67, 0.69, 1)
-ground_horizon_color = Color(0.66, 0.67, 0.69, 1)
-energy_multiplier = 2.0
-
-[sub_resource type="Sky" id="Sky_level"]
-sky_material = SubResource("ProceduralSkyMaterial_level")
-
-[sub_resource type="Environment" id="Environment_level"]
-background_mode = 2
-sky = SubResource("Sky_level")
-tonemap_mode = 2
-glow_enabled = true
-
-
 [node name="TestLevel" type="Node3D" unique_id=2133213211]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=907760604]
 environment = SubResource("Environment_level")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1978832934]
 transform = Transform3D(0.866, -0.434, 0.25, 0, 0.5, 0.866, -0.5, -0.75, 0.433, 0, 10, 0)
 shadow_enabled = true
 
@@ -95,7 +94,7 @@ light_energy = 4.351
 spot_range = 4096.0
 spot_attenuation = 0.19
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1932448773]
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="." unique_id=1932448773]
 transform = Transform3D(-0.023465214, -0.92367905, 0.3824479, -0.056566257, 0.3831671, 0.92194533, -0.99812305, 0, -0.061240163, -7.8961716, 18.545952, 0)
 light_energy = 0.5
 
@@ -747,14 +746,14 @@ transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0,
 [node name="SlotMachine10" parent="." unique_id=379871960 instance=ExtResource("15_4koev")]
 transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0, 1.5219555, -50.69704, 0.07334679, 23.069914)
 
-[node name="P1Start" type="Marker3D" parent="."]
+[node name="P1Start" type="Marker3D" parent="." unique_id=1821713159]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
 
-[node name="P2Start" type="Marker3D" parent="."]
+[node name="P2Start" type="Marker3D" parent="." unique_id=845177657]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 2)
 
-[node name="P3Start" type="Marker3D" parent="."]
+[node name="P3Start" type="Marker3D" parent="." unique_id=1163433936]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
 
-[node name="P4Start" type="Marker3D" parent="."]
+[node name="P4Start" type="Marker3D" parent="." unique_id=1588307039]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
