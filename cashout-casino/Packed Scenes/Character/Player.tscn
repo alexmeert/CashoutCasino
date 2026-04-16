@@ -4,10 +4,28 @@
 [ext_resource type="Script" uid="uid://74q1uh0jxy77" path="res://Scripts/Weapon/WeaponManager.cs" id="2"]
 [ext_resource type="PackedScene" uid="uid://jjmbwwxo3f14" path="res://Packed Scenes/Weapon/AssaultRifle.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://cs3lkmqn0ldf4" path="res://Packed Scenes/Weapon/DualPistols.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://m3sudksspt1s" path="res://Packed Scenes/Menu/Leaderboard.tscn" id="4_x8cc5"]
 [ext_resource type="PackedScene" uid="uid://cn70t0now5k1c" path="res://Packed Scenes/Weapon/Shotgun.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://dq4kmgk564ws" path="res://Packed Scenes/Character/PlayerHUD.tscn" id="6_cl7pc"]
 [ext_resource type="PackedScene" uid="uid://dq00sm6udfidw" path="res://Packed Scenes/Character/RespawnScreen.tscn" id="7"]
 [ext_resource type="Script" uid="uid://885ytostwjll" path="res://Characters/PlayerCharacter.cs" id="8_chara"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_player"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:visible")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:Kills")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath(".:Deaths")
+properties/4/spawn = true
+properties/4/replication_mode = 2
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.4
@@ -3173,19 +3191,6 @@ _data = {
 &"Run": SubResource("Animation_qhb0e")
 }
 
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_player"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = true
-properties/0/replication_mode = 2
-properties/1/path = NodePath(".:rotation")
-properties/1/spawn = true
-properties/1/replication_mode = 2
-properties/2/path = NodePath(".:visible")
-properties/2/spawn = true
-properties/2/replication_mode = 2
-
-
 [node name="Player" type="CharacterBody3D" unique_id=920529542 groups=["Player"]]
 script = ExtResource("1")
 
@@ -3196,6 +3201,9 @@ replication_config = SubResource("SceneReplicationConfig_player")
 visible = false
 
 [node name="RespawnScreen" parent="." unique_id=2113589798 instance=ExtResource("7")]
+
+[node name="Leaderboard" parent="." unique_id=773598109 instance=ExtResource("4_x8cc5")]
+visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=570789552]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -3478,7 +3486,6 @@ bones/32/scale = Vector3(1.0000001, 0.9999999, 0.99999994)
 [node name="BASE_Low Poly Man" type="MeshInstance3D" parent="Armature/Skeleton3D" unique_id=35916661]
 mesh = SubResource("ArrayMesh_t8hoq")
 skin = SubResource("Skin_oo13o")
-skeleton = NodePath("..")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2130392242]
 libraries/ = SubResource("AnimationLibrary_nwlvs")

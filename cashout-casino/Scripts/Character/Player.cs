@@ -31,6 +31,12 @@ namespace CashoutCasino.Character
 		// PlayerCharacter handles the animated model (replaces capsule MeshInstance3D)
 		private PlayerCharacter playerCharacter;
 
+		[Export] public int Kills    { get; set; }
+		[Export] public int Deaths   { get; set; }
+		// Exposed for MultiplayerSynchronizer replication so leaderboard works on all clients.
+		[Export] public int SyncedCurrency { get => currentCurrency; set => currentCurrency = value; }
+		[Export] public int SyncedAtmDebt  { get => atmDebt;         set => atmDebt = value; }
+
 		private float verticalVelocity = 0f;
 		private float cameraPitch = 0f;
 		private const float MAX_PITCH = 89f;
@@ -44,6 +50,7 @@ namespace CashoutCasino.Character
 
 		// Spectate / kill-cam state
 		private string _lastKillerName = "";
+		private UI.Leaderboard _leaderboard;
 		private Player _spectateTarget;
 
 		public override void _Ready()
@@ -118,6 +125,7 @@ namespace CashoutCasino.Character
 			{
 				Input.MouseMode = Input.MouseModeEnum.Captured;
 				camera.Current = true;
+				_leaderboard = GetNodeOrNull<UI.Leaderboard>("Leaderboard");
 				if (hud != null)
 				{
 					hud.Visible = true;
@@ -156,6 +164,8 @@ namespace CashoutCasino.Character
 		public void ApplyKillReward(int amount)
 		{
 			if (!Multiplayer.IsServer()) return;
+			Kills++;
+			Rpc(MethodName.SyncStats, Kills, Deaths);
 			ModifyCurrency(amount);
 			Rpc(nameof(SyncCurrencyToClient), currentCurrency);
 		}
@@ -181,6 +191,14 @@ namespace CashoutCasino.Character
 				ServerApplyDamage(damage, killerName, weaponKind, isHeadshot);
 			else
 				RpcId(1, MethodName.ServerApplyDamage, damage, killerName, weaponKind, isHeadshot);
+		}
+
+		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void SyncStats(int kills, int deaths)
+		{
+			Kills  = kills;
+			Deaths = deaths;
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false,
@@ -239,6 +257,7 @@ namespace CashoutCasino.Character
 			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 		private void SyncDeath(Vector3 respawnPos)
 		{
+			if (Multiplayer.IsServer()) { Deaths++; Rpc(MethodName.SyncStats, Kills, Deaths); }
 			isDead = true;
 			SetPhysicsProcess(false);
 			spawnPosition = respawnPos;
@@ -339,6 +358,15 @@ namespace CashoutCasino.Character
 			{
 				if (keyEvent.Keycode == Key.Escape)
 					Input.MouseMode = Input.MouseModeEnum.Visible;
+			}
+			if (@event is InputEventKey tabEvent && tabEvent.Keycode == Key.Tab)
+			{
+				if (_leaderboard != null)
+				{
+					bool showing = tabEvent.Pressed;
+					_leaderboard.Visible = showing;
+					if (showing) _leaderboard.Refresh();
+				}
 			}
 		}
 
