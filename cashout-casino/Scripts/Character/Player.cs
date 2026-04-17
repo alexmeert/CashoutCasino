@@ -561,13 +561,14 @@ namespace CashoutCasino.Character
 			// Don't play the shoot animation when the mag is empty or reloading.
 			UpdateFpAnim(wantFire && !_isLocalReloading && wm.GetCurrentMag() > 0);
 
-			// Sync third-person anim to all peers whenever state changes.
+			// Play TP anim locally; MultiplayerSynchronizer replicates current_animation to peers.
 			bool tpMoving = new Vector2(Velocity.X, Velocity.Z).LengthSquared() > 0.1f;
 			string tpAnim = GetTpAnimName(tpMoving);
 			if (tpAnim != _lastTpAnim)
 			{
 				_lastTpAnim = tpAnim;
-				Rpc(MethodName.SyncTpAnim, tpAnim);
+				if (_tpAnimPlayer != null && _tpAnimPlayer.HasAnimation(tpAnim))
+					_tpAnimPlayer.Play(tpAnim);
 			}
 		}
 
@@ -624,14 +625,6 @@ namespace CashoutCasino.Character
 			_                         => moving ? "RifleShotgunRun"  : "RifleShotgunIdle",
 		};
 
-		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true,
-			TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-		private void SyncTpAnim(string animName)
-		{
-			_lastTpAnim = animName;
-			if (_tpAnimPlayer == null || !_tpAnimPlayer.HasAnimation(animName)) return;
-			_tpAnimPlayer.Play(animName);
-		}
 
 		private string GetWeaponPrefix() => wm?.GetCurrentWeaponKind() switch
 		{
