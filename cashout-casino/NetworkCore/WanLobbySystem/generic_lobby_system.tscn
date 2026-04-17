@@ -93,5 +93,7 @@ script = ExtResource("2_nacce")
 SpawnInexZeroOnConnect = true
 
 [node name="GameRoot" parent="." unique_id=1460889274 instance=ExtResource("3_nacce")]
+_portMinimum = 9000
+_localPort = 9000
 
 [connection signal="pressed" from="GenericLobbySystem/HBoxContainer/ColorRect/MarginContainer/LeftMenu/Button" to="GenericLobbySystem" method="CreatNewGameServer"]
