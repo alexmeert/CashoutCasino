@@ -73,7 +73,7 @@ text = "Client"
 [node name="MainGameSpace" type="Node3D" parent="." unique_id=1233399015]
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="MainGameSpace" unique_id=426855792]
-_spawnable_scenes = PackedStringArray("uid://b12m7brj7s7hi", "uid://c7se2y6gwwwuh")
+_spawnable_scenes = PackedStringArray("uid://b12m7brj7s7hi", "uid://dpbhbh3ssey3m")
 spawn_path = NodePath("..")
 script = ExtResource("2_o70cg")
 

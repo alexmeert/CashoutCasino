@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://c7se2y6gwwwuh"]
+[gd_scene format=3 uid="uid://dpbhbh3ssey3m"]
 
 [ext_resource type="Texture2D" uid="uid://bfbwvqh3x1oaf" path="res://Assets/2D-Textures-Assets/seamless_pattern_16x16px_SpriteSheet_ 464.png" id="1_pxjhl"]
 [ext_resource type="Texture2D" uid="uid://ded85ss0jo3y0" path="res://Assets/2D-Textures-Assets/seamless_pattern_16x16px_SpriteSheet_ 255.png" id="3_14b8f"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://dto73jstysu2y" path="res://Assets/3D-Models/CrapsTable.gltf" id="13_8jxut"]
 [ext_resource type="PackedScene" uid="uid://xkbyyooa24mv" path="res://Packed Scenes/Level/ATMMachine.tscn" id="14_lfd87"]
 [ext_resource type="PackedScene" uid="uid://cc31bm3yl5i5r" path="res://Packed Scenes/Level/SlotMachine.tscn" id="15_4koev"]
+[ext_resource type="PackedScene" uid="uid://bpbxxylqs5tp1" path="res://Packed Scenes/Menu/CountdownTimer.tscn" id="ct_1"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_level"]
 sky_horizon_color = Color(0.66, 0.67, 0.69, 1)
@@ -757,3 +758,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
 
 [node name="P4Start" type="Marker3D" parent="." unique_id=1588307039]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
+
+[node name="CountdownTimer" parent="." unique_id=436124620 instance=ExtResource("ct_1")]
+defaultDuration = 20.0

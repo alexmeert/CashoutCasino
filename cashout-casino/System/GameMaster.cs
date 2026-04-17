@@ -1,4 +1,5 @@
 using Godot;
+using CashoutCasino.UI;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -21,6 +22,7 @@ public partial class GameMaster : Node
 	private const int CharacterSceneIndex = 0;
 
 	private readonly Node3D[] _spawnPoints = new Node3D[4];
+	private CountdownTimer _roundTimer;
 
 	private bool _gameCycleStarted;
 	private ColorRect _lobbyBackground;
@@ -140,6 +142,11 @@ public partial class GameMaster : Node
 
 		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
+		// Hook up the round timer — only server drives it; clients just display it.
+		_roundTimer = levelNode.GetNodeOrNull<CountdownTimer>("CountdownTimer");
+		if (_roundTimer != null && GenericCore.Instance.IsServer)
+			_roundTimer.TimerCompleted += OnRoundTimerCompleted;
+
 		// Find all spawn points anywhere in the level hierarchy
 		_spawnPoints[0] = levelNode.FindChild("P1Start") as Node3D;
 		_spawnPoints[1] = levelNode.FindChild("P2Start") as Node3D;
@@ -212,6 +219,45 @@ public partial class GameMaster : Node
 				GD.PrintErr($"[GameMaster] PlayerCharacter node not found for player {i + 1}!");
 			}
 		}
+	}
+
+	private void OnRoundTimerCompleted()
+	{
+		if (!GenericCore.Instance.IsServer) return;
+		GD.Print("[GameMaster] Round over — transitioning to podium.");
+		GameFinished = true;
+
+		// Find the winner (highest final score) and broadcast their data to all peers.
+		CashoutCasino.Character.Player winner = null;
+		foreach (var node in GetTree().GetNodesInGroup("Player"))
+			if (node is CashoutCasino.Character.Player p)
+				if (winner == null || p.GetFinalScore() > winner.GetFinalScore())
+					winner = p;
+
+		if (winner != null)
+		{
+			var pc = winner.GetNodeOrNull<PlayerCharacter>("PlayerCharacter");
+			Rpc(MethodName.ChangeToEndScene,
+				winner.GetDisplayName(),
+				pc?.MyColor ?? new Color(1, 1, 1, 1),
+				winner.Kills,
+				winner.Deaths,
+				winner.GetFinalScore());
+		}
+		else
+			Rpc(MethodName.ChangeToEndScene, "Unknown", new Color(1,1,1,1), 0, 0, 0);
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = true,
+		TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	private void ChangeToEndScene(string winnerName, Color winnerColor, int kills, int deaths, int score)
+	{
+		WinnerData.Name   = winnerName;
+		WinnerData.Color  = winnerColor;
+		WinnerData.Kills  = kills;
+		WinnerData.Deaths = deaths;
+		WinnerData.Score  = score;
+		GetTree().ChangeSceneToFile("res://LevelScenes/Podium.tscn");
 	}
 
 	private static void ListChildren(Node parent, string indent)
