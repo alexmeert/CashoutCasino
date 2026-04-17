@@ -4946,11 +4946,9 @@ script = ExtResource("2")
 
 [node name="AssaultRifle" parent="CameraHolder/Camera3D/WeaponManager" unique_id=2146712028 instance=ExtResource("3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17920679, 1.0096756, -0.50785905)
-visible = false
 
 [node name="DualPistols" parent="CameraHolder/Camera3D/WeaponManager" unique_id=726762643 instance=ExtResource("4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1662817, 0)
-visible = false
 
 [node name="Shotgun" parent="CameraHolder/Camera3D/WeaponManager" unique_id=521789765 instance=ExtResource("5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1662816, -0.009454191)
