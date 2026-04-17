@@ -326,7 +326,7 @@ public partial class LobbyStreamlined : Node
                 portOffset++;
                 if(PortMinimum + portOffset>PortMaximum)
                 {
-                    portOffset = 1;
+                    portOffset = 0;
                 }
                 Rpc("UpdatePortOffset", portOffset);
                 proc.Start();
