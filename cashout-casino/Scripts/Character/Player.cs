@@ -38,8 +38,6 @@ namespace CashoutCasino.Character
 		private bool _wasFpFiring = false;
 		private bool _fpAnimLocked = false;
 		private bool _pistolsUseRight = false;
-		private AnimationPlayer _tpAnimPlayer;
-		private string _lastTpAnim = "";
 
 		[Export] public int Kills    { get; set; }
 		[Export] public int Deaths   { get; set; }
@@ -73,9 +71,8 @@ namespace CashoutCasino.Character
 			collisionShape = GetNode<CollisionShape3D>(collisionShapePath);
 			// Grab the animated PlayerCharacter node instead of a raw MeshInstance3D
 			playerCharacter = GetNodeOrNull<PlayerCharacter>("PlayerCharacter");
-			_armature     = GetNodeOrNull<Node3D>("Armature");
-			_fpPlayer     = GetNodeOrNull<Node3D>("FirstPersonPlayer");
-			_tpAnimPlayer = GetNodeOrNull<AnimationPlayer>("ThirdPersonAnimationPlayer");
+			_armature  = GetNodeOrNull<Node3D>("Armature");
+			_fpPlayer  = GetNodeOrNull<Node3D>("FirstPersonPlayer");
 
 			// FirstPersonPlayer is a CharacterBody3D; its inner CollisionShape3D must not
 			// participate in physics or it will interfere with the outer Player body.
@@ -299,13 +296,6 @@ namespace CashoutCasino.Character
 			isDead = true;
 			SetPhysicsProcess(false);
 			spawnPosition = respawnPos;
-			_lastTpAnim = "Death";
-			if (_tpAnimPlayer != null && _tpAnimPlayer.HasAnimation("Death"))
-			{
-				_tpAnimPlayer.GetAnimation("Death").LoopMode = Animation.LoopModeEnum.None;
-				_tpAnimPlayer.Play("Death");
-			}
-			collisionShape.Disabled = true;
 			if (playerCharacter?.MyMesh != null)
 			{
 				var mat = new StandardMaterial3D();
@@ -339,7 +329,6 @@ namespace CashoutCasino.Character
 		private void SyncRespawnAll()
 		{
 			isDead = false;
-			collisionShape.Disabled = false;
 			currentHealth = maxHealth;
 			verticalVelocity = 0f;
 			timeSinceLastDamage = 0f;
@@ -356,7 +345,6 @@ namespace CashoutCasino.Character
 			{
 				_spectateTarget = null;
 				_lastKillerName = "";
-				_lastTpAnim = "";
 				cameraHolder.Position = new Vector3(0f, standHeight - 0.15f, 0f);
 				cameraHolder.Rotation = Vector3.Zero;
 				cameraPitch = 0f;
@@ -488,15 +476,6 @@ namespace CashoutCasino.Character
 			if (Input.IsActionJustPressed("weapon_3")) { wm.SwitchWeapon(2); FpWeaponManager?.SwitchWeapon(2); }
 
 			UpdateFpAnim(wantFire);
-
-			// Sync third-person anim to all peers whenever state changes.
-			bool tpMoving = new Vector2(Velocity.X, Velocity.Z).LengthSquared() > 0.1f;
-			string tpAnim = GetTpAnimName(tpMoving);
-			if (tpAnim != _lastTpAnim)
-			{
-				_lastTpAnim = tpAnim;
-				Rpc(MethodName.SyncTpAnim, tpAnim);
-			}
 		}
 
 		private void SetCrouch(bool crouch)
@@ -544,21 +523,6 @@ namespace CashoutCasino.Character
 			var behind = _spectateTarget.GlobalTransform.Basis.Z.Normalized() * 4f + Vector3.Up * 1.2f;
 			cameraHolder.GlobalPosition = cameraHolder.GlobalPosition.Lerp(targetCenter + behind, (float)delta * 6f);
 			cameraHolder.LookAt(targetCenter);
-		}
-
-		private string GetTpAnimName(bool moving) => wm?.GetCurrentWeaponKind() switch
-		{
-			Weapon.WeaponKind.Pistol  => moving ? "PistolRun"        : "PistolIdle",
-			_                         => moving ? "RifleShotgunRun"  : "RifleShotgunIdle",
-		};
-
-		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true,
-			TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-		private void SyncTpAnim(string animName)
-		{
-			_lastTpAnim = animName;
-			if (_tpAnimPlayer == null || !_tpAnimPlayer.HasAnimation(animName)) return;
-			_tpAnimPlayer.Play(animName);
 		}
 
 		private string GetWeaponPrefix() => wm?.GetCurrentWeaponKind() switch
