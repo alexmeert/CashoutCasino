@@ -57,6 +57,8 @@ namespace CashoutCasino.Weapon
 
 		public void CancelReload() => GetCurrentWeapon()?.CancelReload();
 
+		public System.Collections.Generic.IReadOnlyList<Weapon> GetWeapons() => weapons;
+
 		public void SwitchWeapon(int slotIndex)
 		{
 			if (slotIndex < 0 || slotIndex >= weapons.Count)

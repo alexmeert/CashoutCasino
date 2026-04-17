@@ -412,6 +412,36 @@ namespace CashoutCasino.Character
 			if (IsMultiplayerAuthority()) hud?.OnHealthChanged(current, max);
 		}
 
+		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		public void ServerApplyUpgrade(int item, float speedBonus, float damageBonus, float healthBonus)
+		{
+			if (!Multiplayer.IsServer()) return;
+			Rpc(MethodName.SyncUpgrade, item, speedBonus, damageBonus, healthBonus);
+		}
+
+		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		private void SyncUpgrade(int item, float speedBonus, float damageBonus, float healthBonus)
+		{
+			switch (item)
+			{
+				case 0: // Shoes - speed
+					moveSpeed += speedBonus;
+					break;
+				case 1: // Voucher - damage on all weapons
+					if (wm != null)
+						foreach (var w in wm.GetWeapons())
+							w.damagePerHit += damageBonus;
+					break;
+				case 2: // Coat - max health + heal
+					maxHealth += healthBonus;
+					currentHealth = Mathf.Min(currentHealth + healthBonus, maxHealth);
+					OnHealthChangedInternal(currentHealth, maxHealth);
+					break;
+			}
+		}
+
 		private void OnCurrencyChangedSync(int newAmount)
 		{
 			wm?.SyncAmmoToAllWeapons(newAmount);
