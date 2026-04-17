@@ -128,9 +128,9 @@ offset_bottom = 286.0
 item_count = 3
 popup/item_0/text = "Assault Rifle"
 popup/item_0/id = 0
-popup/item_1/text = "Shotgun"
+popup/item_1/text = "Dual Pistols"
 popup/item_1/id = 1
-popup/item_2/text = "Dual Pistols"
+popup/item_2/text = "Shotgun"
 popup/item_2/id = 2
 
 [node name="ReadyCheckBox" type="CheckBox" parent="." unique_id=1217930863]

@@ -49,6 +49,7 @@ namespace CashoutCasino.Character
 		[Export] public int SyncedAtmDebt  { get => atmDebt;         set => atmDebt = value; }
 
 		private float verticalVelocity = 0f;
+		private int _lockedWeaponIndex = -1; // -1 = no lock
 		private float cameraPitch = 0f;
 		private const float MAX_PITCH = 89f;
 
@@ -150,6 +151,15 @@ namespace CashoutCasino.Character
 			GD.Print($"[Player] ClaimAuthority: peer {ownerId} owns {Name} (I am {Multiplayer.GetUniqueId()})");
 			if (IsMultiplayerAuthority())
 				SetupLocalAuthority();
+		}
+
+		[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true,
+			TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+		public void LockWeapon(int weaponIndex)
+		{
+			_lockedWeaponIndex = weaponIndex;
+			wm?.SwitchWeapon(weaponIndex);
+			FpWeaponManager?.SwitchWeapon(weaponIndex);
 		}
 
 		private void SetupLocalAuthority()
@@ -502,9 +512,12 @@ namespace CashoutCasino.Character
 			if (wantFire)
 				wm.FireCurrentWeapon(-camera.GlobalTransform.Basis.Z, this);
 
-			if (Input.IsActionJustPressed("weapon_1")) { wm.SwitchWeapon(0); FpWeaponManager?.SwitchWeapon(0); }
-			if (Input.IsActionJustPressed("weapon_2")) { wm.SwitchWeapon(1); FpWeaponManager?.SwitchWeapon(1); }
-			if (Input.IsActionJustPressed("weapon_3")) { wm.SwitchWeapon(2); FpWeaponManager?.SwitchWeapon(2); }
+			if (_lockedWeaponIndex < 0)
+			{
+				if (Input.IsActionJustPressed("weapon_1")) { wm.SwitchWeapon(0); FpWeaponManager?.SwitchWeapon(0); }
+				if (Input.IsActionJustPressed("weapon_2")) { wm.SwitchWeapon(1); FpWeaponManager?.SwitchWeapon(1); }
+				if (Input.IsActionJustPressed("weapon_3")) { wm.SwitchWeapon(2); FpWeaponManager?.SwitchWeapon(2); }
+			}
 
 			UpdateFpAnim(wantFire);
 

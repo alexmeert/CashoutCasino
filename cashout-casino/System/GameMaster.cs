@@ -213,6 +213,8 @@ public partial class GameMaster : Node
 			{
 				GD.Print($"[GameMaster] Initializing character for player {i + 1}");
 				pc.InitializeCharacter(npm.PlayerName, npm.MyColor, spawnPos);
+				// Lock the player to their selected weapon class.
+				characterNode.Rpc("LockWeapon", npm.WeaponClassSelection);
 			}
 			else
 			{
