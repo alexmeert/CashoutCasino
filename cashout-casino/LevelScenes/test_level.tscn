@@ -271,7 +271,43 @@ transform = Transform3D(1.5492132, 0, -0.07634126, 0, 1.3279372, 0, 0.09448226, 
 
 [node name="SlotMachineGroup" type="Node3D" parent="." unique_id=168742519]
 
+[node name="SlotMachine" parent="SlotMachineGroup" unique_id=1275681976 instance=ExtResource("15_4koev")]
+transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0, 1.5219555, -26.80508, 0.07334727, 29.607574)
+
+[node name="SlotMachine2" parent="SlotMachineGroup" unique_id=144449834 instance=ExtResource("15_4koev")]
+transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0, 1.5219555, -33.47592, 0.07334727, 24.45476)
+
+[node name="SlotMachine3" parent="SlotMachineGroup" unique_id=501631289 instance=ExtResource("15_4koev")]
+transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0, 1.5219555, -41.895622, 0.07334751, 18.209429)
+
+[node name="SlotMachine4" parent="SlotMachineGroup" unique_id=1204487712 instance=ExtResource("15_4koev")]
+transform = Transform3D(-1.4367245, 0, 1.0851609, 0, 1.4666798, 0, -1.0183874, 0, -1.5309278, -46.417286, 0.07334751, 17.266453)
+
+[node name="SlotMachine5" parent="SlotMachineGroup" unique_id=1529527242 instance=ExtResource("15_4koev")]
+transform = Transform3D(-1.4367245, 0, 1.0851609, 0, 1.4666797, 0, -1.0183873, 0, -1.5309277, -39.831734, 0.07334751, 22.247879)
+
+[node name="SlotMachine6" parent="SlotMachineGroup" unique_id=399821438 instance=ExtResource("15_4koev")]
+transform = Transform3D(-1.4367245, 0, 1.0851609, 0, 1.4666797, 0, -1.0183873, 0, -1.5309277, -31.433886, 0.073347986, 28.553347)
+
+[node name="SlotMachine7" parent="SlotMachineGroup" unique_id=323567147 instance=ExtResource("15_4koev")]
+transform = Transform3D(-1.3883302, 0, 1.1544726, 0, 1.4666797, 0, -1.0834341, 0, -1.4793601, -26.409489, 0.073348224, 32.253788)
+
+[node name="SlotMachine8" parent="SlotMachineGroup" unique_id=1677294009 instance=ExtResource("15_4koev")]
+transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0, 1.5219555, -33.692062, 0.07334727, 35.443577)
+
+[node name="SlotMachine9" parent="SlotMachineGroup" unique_id=669990638 instance=ExtResource("15_4koev")]
+transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0, 1.5219555, -42.18169, 0.07334679, 29.103497)
+
+[node name="SlotMachine10" parent="SlotMachineGroup" unique_id=379871960 instance=ExtResource("15_4koev")]
+transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0, 1.5219555, -50.69704, 0.07334679, 23.069914)
+
 [node name="ATMGroup" type="Node3D" parent="." unique_id=1856895937]
+
+[node name="ATMMachine" parent="ATMGroup" unique_id=130021698 instance=ExtResource("14_lfd87")]
+transform = Transform3D(1.2471141, 0, 0.6784433, 0, 1.290837, 0, -0.748631, 0, 1.1301913, -50.08761, 0.10661405, 13.03752)
+
+[node name="ATMMachine2" parent="ATMGroup" unique_id=626187752 instance=ExtResource("14_lfd87")]
+transform = Transform3D(-1.1653948, 0, -0.7887962, 0, 1.290837, 0, 0.8704003, 0, -1.0561336, -23.356245, 0.10661405, 33.238117)
 
 [node name="CrapsTableArea" type="Node3D" parent="." unique_id=509199342]
 
@@ -723,42 +759,6 @@ transform = Transform3D(0.99988157, 0, 0.015393187, 0, 1, 0, -0.015393187, 0, 0.
 [node name="CuckCouch" parent="GamesArea" unique_id=646395561 instance=ExtResource("11_bew14")]
 transform = Transform3D(1.5492132, 0, -0.07634126, 0, 1.3279372, 0, 0.09448226, 0, 1.2517552, -24.635561, 0.06507492, 40.02493)
 
-[node name="ATMMachine" parent="." unique_id=130021698 instance=ExtResource("14_lfd87")]
-transform = Transform3D(1.2471141, 0, 0.6784433, 0, 1.290837, 0, -0.748631, 0, 1.1301913, -50.08761, 0.10661405, 13.03752)
-
-[node name="ATMMachine2" parent="." unique_id=626187752 instance=ExtResource("14_lfd87")]
-transform = Transform3D(-1.1653948, 0, -0.7887962, 0, 1.290837, 0, 0.8704003, 0, -1.0561336, -23.356245, 0.10661405, 33.238117)
-
-[node name="SlotMachine" parent="." unique_id=1275681976 instance=ExtResource("15_4koev")]
-transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0, 1.5219555, -26.80508, 0.07334727, 29.607574)
-
-[node name="SlotMachine2" parent="." unique_id=144449834 instance=ExtResource("15_4koev")]
-transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0, 1.5219555, -33.47592, 0.07334727, 24.45476)
-
-[node name="SlotMachine3" parent="." unique_id=501631289 instance=ExtResource("15_4koev")]
-transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0, 1.5219555, -41.895622, 0.07334751, 18.209429)
-
-[node name="SlotMachine4" parent="." unique_id=1204487712 instance=ExtResource("15_4koev")]
-transform = Transform3D(-1.4367245, 0, 1.0851609, 0, 1.4666798, 0, -1.0183874, 0, -1.5309278, -46.417286, 0.07334751, 17.266453)
-
-[node name="SlotMachine5" parent="." unique_id=1529527242 instance=ExtResource("15_4koev")]
-transform = Transform3D(-1.4367245, 0, 1.0851609, 0, 1.4666797, 0, -1.0183873, 0, -1.5309277, -39.831734, 0.07334751, 22.247879)
-
-[node name="SlotMachine6" parent="." unique_id=399821438 instance=ExtResource("15_4koev")]
-transform = Transform3D(-1.4367245, 0, 1.0851609, 0, 1.4666797, 0, -1.0183873, 0, -1.5309277, -31.433886, 0.073347986, 28.553347)
-
-[node name="SlotMachine7" parent="." unique_id=323567147 instance=ExtResource("15_4koev")]
-transform = Transform3D(-1.3883302, 0, 1.1544726, 0, 1.4666797, 0, -1.0834341, 0, -1.4793601, -26.409489, 0.073348224, 32.253788)
-
-[node name="SlotMachine8" parent="." unique_id=1677294009 instance=ExtResource("15_4koev")]
-transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0, 1.5219555, -33.692062, 0.07334727, 35.443577)
-
-[node name="SlotMachine9" parent="." unique_id=669990638 instance=ExtResource("15_4koev")]
-transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0, 1.5219555, -42.18169, 0.07334679, 29.103497)
-
-[node name="SlotMachine10" parent="." unique_id=379871960 instance=ExtResource("15_4koev")]
-transform = Transform3D(1.4283044, 0, -1.0977091, 0, 1.4666799, 0, 1.0301635, 0, 1.5219555, -50.69704, 0.07334679, 23.069914)
-
 [node name="P1Start" type="Marker3D" parent="." unique_id=1821713159]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
 
@@ -773,48 +773,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
 
 [node name="CountdownTimer" parent="." unique_id=436124620 instance=ExtResource("ct_1")]
 defaultDuration = 300.0
-
-[node name="LoaferCouch5" parent="." unique_id=646990623 instance=ExtResource("11_bew14")]
-transform = Transform3D(1.2578943, 0, 0.7346492, 0, 1.3279374, 0, -0.9092261, 0, 1.0163711, -14.230333, 0.06507397, 33.981613)
-
-[node name="blockbench_export" parent="." unique_id=1574975832 instance=ExtResource("15_or88q")]
-transform = Transform3D(1.2781852, 0, 0.57687426, 0, 1.3566812, 0, -0.90269667, 0, 0.81683284, -15.706849, 0.066045165, 31.946667)
-
-[node name="LoaferCouch6" parent="." unique_id=723452768 instance=ExtResource("11_bew14")]
-transform = Transform3D(-1.2663763, 0, -0.72507334, 0, 1.3279372, 0, 0.8973745, 0, -1.0232245, -17.168049, 0.06507397, 29.904474)
-
-[node name="blockbench_export2" parent="." unique_id=152952085 instance=ExtResource("10_r2ksb")]
-transform = Transform3D(0.6032637, 0, -0.7975418, 0, 1, 0, 0.7975418, 0, 0.6032637, -15.695878, 0.8252331, 31.922934)
-
-[node name="LoaferCouch7" parent="." unique_id=1145645207 instance=ExtResource("11_bew14")]
-transform = Transform3D(1.2578943, 0, 0.7346492, 0, 1.3279374, 0, -0.9092261, 0, 1.0163711, -7.1087074, 0.06507397, 28.923643)
-
-[node name="blockbench_export3" parent="." unique_id=921160926 instance=ExtResource("15_or88q")]
-transform = Transform3D(1.2781852, 0, 0.57687426, 0, 1.3566812, 0, -0.90269667, 0, 0.81683284, -8.585223, 0.066045165, 26.888697)
-
-[node name="LoaferCouch8" parent="." unique_id=869906290 instance=ExtResource("11_bew14")]
-transform = Transform3D(-1.2663763, 0, -0.72507334, 0, 1.3279372, 0, 0.8973745, 0, -1.0232245, -10.046423, 0.06507397, 24.846504)
-
-[node name="blockbench_export4" parent="." unique_id=1993714577 instance=ExtResource("10_r2ksb")]
-transform = Transform3D(0.99972, 0, 0.023664474, 0, 1, 0, -0.023664474, 0, 0.99972, -8.549256, 0.8323765, 26.870304)
-
-[node name="LoaferCouch9" parent="." unique_id=343955835 instance=ExtResource("11_bew14")]
-transform = Transform3D(1.2578943, 0, 0.7346492, 0, 1.3279374, 0, -0.9092261, 0, 1.0163711, 0.5231862, 0.06507397, 23.295746)
-
-[node name="blockbench_export5" parent="." unique_id=841716636 instance=ExtResource("15_or88q")]
-transform = Transform3D(1.2781852, 0, 0.57687426, 0, 1.3566812, 0, -0.90269667, 0, 0.81683284, -0.95332956, 0.066045165, 21.2608)
-
-[node name="LoaferCouch10" parent="." unique_id=182366951 instance=ExtResource("11_bew14")]
-transform = Transform3D(-1.2663763, 0, -0.72507334, 0, 1.3279372, 0, 0.8973745, 0, -1.0232245, -2.4145293, 0.06507397, 19.218607)
-
-[node name="blockbench_export6" parent="." unique_id=368158700 instance=ExtResource("10_r2ksb")]
-transform = Transform3D(-0.61670625, 0, -0.7871934, 0, 1, 0, 0.7871934, 0, -0.61670625, -0.94426596, 0.8016565, 21.23234)
-
-[node name="SlotMachine11" parent="." unique_id=2102657801 instance=ExtResource("15_4koev")]
-transform = Transform3D(0.406026, 0, 1.8259599, 0, 1.4666798, 0, -1.7136024, 0, 0.43264812, 5.5883408, 0.073346555, 20.115082)
-
-[node name="ATMMachine3" parent="." unique_id=792453550 instance=ExtResource("14_lfd87")]
-transform = Transform3D(1.1038096, 0, 0.8584712, 0, 1.290837, 0, -0.94728345, 0, 1.0003223, 6.9482527, 0.10661429, 17.794256)
 
 [node name="Crates" type="CSGCombiner3D" parent="." unique_id=358490571]
 material_override = SubResource("StandardMaterial3D_13me4")
@@ -876,6 +834,17 @@ size = Vector3(1, 2.7476807, 1)
 [node name="CSGBox3D16" type="CSGBox3D" parent="Crates" unique_id=1364611954]
 transform = Transform3D(0.5296529, 0, 0.84821445, 0, 1, 0, -0.84821445, 0, 0.5296529, -22.489977, 1.3386756, -19.445576)
 size = Vector3(1, 2.5333252, 1)
+
+[node name="CSGBox3D17" type="CSGBox3D" parent="Crates" unique_id=1411217495]
+transform = Transform3D(-0.005202487, 4.495968, 0.07043631, -1.3541163, -0.021786172, 0.025960218, 0.02620352, -0.2332039, 1.3555247, -24.221287, 0.99948865, -40.95549)
+size = Vector3(1.3825684, 1, 0.96398926)
+
+[node name="CSGBox3D18" type="CSGBox3D" parent="Crates" unique_id=1355867384]
+transform = Transform3D(0.44593486, 0, -2.5275266, 0, 1, 0, 0.9131291, 0, 1.234341, -22.895138, 0.7416905, -39.218056)
+size = Vector3(1, 1.3393555, 1)
+
+[node name="CSGBox3D19" type="CSGBox3D" parent="Crates" unique_id=668392279]
+transform = Transform3D(0.11606414, 0, 0.9932417, 0, 1, 0, -0.9932417, 0, 0.11606414, -25.224226, 0.57201254, -39.34789)
 
 [node name="ShopStands" type="CSGCombiner3D" parent="." unique_id=1836634738]
 transform = Transform3D(0.9999708, 0, 0.0076444745, 0, 1, 0, -0.0076444745, 0, 0.9999708, 3.3443303, 0.5720128, -21.838331)
@@ -967,18 +936,6 @@ size = Vector3(0.44580078, 0.35179138, 0.1729126)
 transform = Transform3D(-0.31759685, 0, -2.6719215, 0, 1, 0, 0.9652951, 0, -0.8791036, 2.0187702, 0.7458148, 3.0368023)
 size = Vector3(0.44580078, 0.65135956, 0.1729126)
 
-[node name="GiantTable" parent="." unique_id=1944149664 instance=ExtResource("15_or88q")]
-transform = Transform3D(0.060093857, 0, 4.465057, 0, 3.4431276, 0, -4.946798, 0, 0.054241635, -52.731247, 0.036370635, -1.0052246)
-
-[node name="LoaferCouch" parent="." unique_id=154995992 instance=ExtResource("11_bew14")]
-transform = Transform3D(0.731938, 0, -1.1058769, 0, 1.3279375, 0, 1.3686696, 0, 0.5914014, -54.473476, 1.8107386, 2.2441316)
-
-[node name="LoaferCouch2" parent="." unique_id=702229089 instance=ExtResource("11_bew14")]
-transform = Transform3D(-0.8509108, 0, -1.0488186, 0, 1.3279375, 0, 1.2980527, 0, -0.6875308, -54.396217, 1.8107386, -4.405692)
-
-[node name="SlotMachine12" parent="." unique_id=1935694000 instance=ExtResource("15_4koev")]
-transform = Transform3D(-1.6607131, 0, 0.62435603, 0, 1.4666797, 0, -0.5859376, 0, -1.7696029, -50.429596, 1.8938644, -5.262017)
-
 [node name="ShopLight" type="SpotLight3D" parent="." unique_id=1164704455]
 transform = Transform3D(1, 0, 0, 0, 0.024711277, 0.9996947, 0, -0.9996947, 0.024711277, 3.2756615, 9.159355, -17.836985)
 light_color = Color(0, 1, 0, 1)
@@ -986,280 +943,235 @@ light_energy = 4.529
 spot_range = 4096.0
 spot_attenuation = 0.19
 
-[node name="LoaferCouch11" parent="." unique_id=769546921 instance=ExtResource("11_bew14")]
+[node name="OtherGameArea" type="Node3D" parent="." unique_id=582541282]
+
+[node name="MMMachine29" parent="OtherGameArea" unique_id=1872894707 instance=ExtResource("8_jnxa6")]
+transform = Transform3D(-0.85513663, 0, 0.6090958, 0, 0.71776193, 0, -0.59763956, 0, -0.87152886, -12.019394, 0.07599485, -25.241693)
+
+[node name="StoolChair29" parent="OtherGameArea" unique_id=1933858294 instance=ExtResource("9_r2ksb")]
+transform = Transform3D(-0.99979, 0, -0.02048865, 0, 1, 0, 0.02048865, 0, -0.99979, -12.707924, 0.07965052, -24.295834)
+
+[node name="MMMachine31" parent="OtherGameArea" unique_id=1665447211 instance=ExtResource("8_jnxa6")]
+transform = Transform3D(-0.85513663, 0, 0.6090958, 0, 0.71776193, 0, -0.59763956, 0, -0.87152886, -15.163723, 0.07599485, -27.639273)
+
+[node name="StoolChair31" parent="OtherGameArea" unique_id=1147199008 instance=ExtResource("9_r2ksb")]
+transform = Transform3D(-0.99979, 0, -0.02048865, 0, 1, 0, 0.02048865, 0, -0.99979, -15.852253, 0.07965052, -26.69341)
+
+[node name="StoolChair32" parent="OtherGameArea" unique_id=88466870 instance=ExtResource("9_r2ksb")]
+transform = Transform3D(-0.9999223, 0, -0.012461249, 0, 1, 0, 0.012461249, 0, -0.9999223, -17.57405, 0.079651475, -27.79828)
+
+[node name="MMMachine33" parent="OtherGameArea" unique_id=987132577 instance=ExtResource("8_jnxa6")]
+transform = Transform3D(0.8398695, 0, -0.63077515, 0, 0.7177619, 0, 0.6189111, 0, 0.85596895, -15.778545, 0.07599437, -30.302492)
+
+[node name="StoolChair33" parent="OtherGameArea" unique_id=1044852184 instance=ExtResource("9_r2ksb")]
+transform = Transform3D(0.9999894, 0, -0.0046076616, 0, 1, 0, 0.0046076616, 0, 0.9999894, -15.066494, 0.079650044, -31.23078)
+
+[node name="MMMachine34" parent="OtherGameArea" unique_id=6050784 instance=ExtResource("8_jnxa6")]
+transform = Transform3D(0.8398695, 0, -0.63077515, 0, 0.7177619, 0, 0.6189111, 0, 0.85596895, -14.156784, 0.07599485, -29.000788)
+
+[node name="StoolChair34" parent="OtherGameArea" unique_id=1285107732 instance=ExtResource("9_r2ksb")]
+transform = Transform3D(0.9999894, 0, -0.0046076616, 0, 1, 0, 0.0046076616, 0, 0.9999894, -13.4447365, 0.07965052, -29.929071)
+
+[node name="MMMachine35" parent="OtherGameArea" unique_id=545198945 instance=ExtResource("8_jnxa6")]
+transform = Transform3D(0.8398695, 0, -0.63077515, 0, 0.7177619, 0, 0.6189111, 0, 0.85596895, -12.695374, 0.07599437, -27.826769)
+
+[node name="StoolChair35" parent="OtherGameArea" unique_id=295227054 instance=ExtResource("9_r2ksb")]
+transform = Transform3D(0.9999894, 0, -0.0046076616, 0, 1, 0, 0.0046076616, 0, 0.9999894, -11.983326, 0.079650044, -28.755053)
+
+[node name="MMMachine36" parent="OtherGameArea" unique_id=102258710 instance=ExtResource("8_jnxa6")]
+transform = Transform3D(0.8398695, 0, -0.63077515, 0, 0.7177619, 0, 0.6189111, 0, 0.85596895, -10.997429, 0.07599485, -26.617834)
+
+[node name="StoolChair36" parent="OtherGameArea" unique_id=1937459375 instance=ExtResource("9_r2ksb")]
+transform = Transform3D(0.9999894, 0, -0.0046076616, 0, 1, 0, 0.0046076616, 0, 0.9999894, -10.361568, 0.07965052, -27.453344)
+
+[node name="ATMMachine5" parent="OtherGameArea" unique_id=1596644302 instance=ExtResource("14_lfd87")]
+transform = Transform3D(0.29091275, 0, 1.2915543, 0, 1.290837, 0, -1.4251707, 0, 0.26363838, -17.516865, 0.10661405, -30.152765)
+
+[node name="SlotMachine15" parent="OtherGameArea" unique_id=1549993911 instance=ExtResource("15_4koev")]
+transform = Transform3D(-1.4367245, 0, 1.0851609, 0, 1.4666798, 0, -1.0183874, 0, -1.5309278, -13.61198, 0.07334751, -26.374636)
+
+[node name="MMMachine30" parent="OtherGameArea" unique_id=1717759503 instance=ExtResource("8_jnxa6")]
+transform = Transform3D(0.85515755, 0, -0.60906535, 0, 0.717762, 0, 0.5976097, 0, 0.87155014, -9.486532, 0.07599485, -25.541342)
+
+[node name="StoolChair30" parent="OtherGameArea" unique_id=744922741 instance=ExtResource("9_r2ksb")]
+transform = Transform3D(0.9997893, 0, 0.020523604, 0, 1, 0, -0.020523604, 0, 0.9997893, -8.798036, 0.07965052, -26.487226)
+
+[node name="MMMachine32" parent="OtherGameArea" unique_id=2104352265 instance=ExtResource("8_jnxa6")]
+transform = Transform3D(0.85515755, 0, -0.60906535, 0, 0.717762, 0, 0.5976097, 0, 0.87155014, -6.3421197, 0.07599485, -23.143873)
+
+[node name="StoolChair37" parent="OtherGameArea" unique_id=1515719581 instance=ExtResource("9_r2ksb")]
+transform = Transform3D(0.9997893, 0, 0.020523604, 0, 1, 0, -0.020523604, 0, 0.9997893, -5.653623, 0.07965052, -24.08976)
+
+[node name="StoolChair38" parent="OtherGameArea" unique_id=1842581603 instance=ExtResource("9_r2ksb")]
+transform = Transform3D(0.999922, 0, 0.012496208, 0, 1, 0, -0.012496208, 0, 0.999922, -3.9317863, 0.079651475, -22.98495)
+
+[node name="MMMachine37" parent="OtherGameArea" unique_id=1436220930 instance=ExtResource("8_jnxa6")]
+transform = Transform3D(-0.83989114, 0, 0.63074523, 0, 0.71776193, 0, -0.61888176, 0, -0.8559911, -5.7272043, 0.07599437, -20.480675)
+
+[node name="StoolChair39" parent="OtherGameArea" unique_id=625355029 instance=ExtResource("9_r2ksb")]
+transform = Transform3D(-0.99998957, 0, 0.004572702, 0, 1, 0, -0.004572702, 0, -0.99998957, -6.4392233, 0.079650044, -19.552362)
+
+[node name="MMMachine38" parent="OtherGameArea" unique_id=427992434 instance=ExtResource("8_jnxa6")]
+transform = Transform3D(-0.83989114, 0, 0.63074523, 0, 0.71776193, 0, -0.61888176, 0, -0.8559911, -7.349011, 0.07599485, -21.782322)
+
+[node name="StoolChair40" parent="OtherGameArea" unique_id=119907985 instance=ExtResource("9_r2ksb")]
+transform = Transform3D(-0.99998957, 0, 0.004572702, 0, 1, 0, -0.004572702, 0, -0.99998957, -8.061026, 0.07965052, -20.854013)
+
+[node name="MMMachine39" parent="OtherGameArea" unique_id=126381017 instance=ExtResource("8_jnxa6")]
+transform = Transform3D(-0.83989114, 0, 0.63074523, 0, 0.71776193, 0, -0.61888176, 0, -0.8559911, -8.810463, 0.07599437, -22.956291)
+
+[node name="StoolChair41" parent="OtherGameArea" unique_id=941622594 instance=ExtResource("9_r2ksb")]
+transform = Transform3D(-0.99998957, 0, 0.004572702, 0, 1, 0, -0.004572702, 0, -0.99998957, -9.522478, 0.079650044, -22.027983)
+
+[node name="MMMachine40" parent="OtherGameArea" unique_id=109306086 instance=ExtResource("8_jnxa6")]
+transform = Transform3D(-0.83989114, 0, 0.63074523, 0, 0.71776193, 0, -0.61888176, 0, -0.8559911, -10.50845, 0.07599485, -24.165167)
+
+[node name="StoolChair42" parent="OtherGameArea" unique_id=1442231327 instance=ExtResource("9_r2ksb")]
+transform = Transform3D(-0.99998957, 0, 0.004572702, 0, 1, 0, -0.004572702, 0, -0.99998957, -11.144281, 0.07965052, -23.329634)
+
+[node name="ATMMachine6" parent="OtherGameArea" unique_id=532890432 instance=ExtResource("14_lfd87")]
+transform = Transform3D(-1.2470878, 0, -0.67848283, 0, 1.290837, 0, 0.74867463, 0, -1.1301676, -4.2234364, 0.10661405, -20.179653)
+
+[node name="SlotMachine16" parent="OtherGameArea" unique_id=1230964775 instance=ExtResource("15_4koev")]
+transform = Transform3D(1.4367601, 0, -1.0851073, 0, 1.4666797, 0, 1.0183371, 0, 1.5309656, -7.8939066, 0.07334751, -24.408455)
+
+[node name="MMMachine41" parent="OtherGameArea" unique_id=1233259369 instance=ExtResource("8_jnxa6")]
+transform = Transform3D(-0.85513663, 0, 0.6090958, 0, 0.71776193, 0, -0.59763956, 0, -0.87152886, -16.793068, 0.07599485, -28.905449)
+
+[node name="MMMachine42" parent="OtherGameArea" unique_id=1980603 instance=ExtResource("8_jnxa6")]
+transform = Transform3D(0.85515755, 0, -0.60906535, 0, 0.717762, 0, 0.5976097, 0, 0.87155014, -4.6626163, 0.07599485, -22.02068)
+
+[node name="LoungeArea" type="Node3D" parent="." unique_id=1338553365]
+
+[node name="LoaferCouch11" parent="LoungeArea" unique_id=769546921 instance=ExtResource("11_bew14")]
 transform = Transform3D(-0.014140508, 0, 1.2540292, 0, 1.3279374, 0, -1.5520276, 0, -0.011425307, 6.487985, 0.06507397, -8.033183)
 
-[node name="LoaferCouch12" parent="." unique_id=149092268 instance=ExtResource("11_bew14")]
+[node name="LoaferCouch12" parent="LoungeArea" unique_id=149092268 instance=ExtResource("11_bew14")]
 transform = Transform3D(-1.551959, 0, -0.016415477, 0, 1.3279372, 0, 0.020316243, 0, -1.2539737, 3.636023, 0.065074205, -11.006659)
 
-[node name="ATMMachine4" parent="." unique_id=1393695038 instance=ExtResource("14_lfd87")]
+[node name="ATMMachine4" parent="LoungeArea" unique_id=1393695038 instance=ExtResource("14_lfd87")]
 transform = Transform3D(-0.17774528, 0, 1.3083084, 0, 1.2908372, 0, -1.4436579, 0, -0.16108084, 7.053005, 0.10661429, -16.314007)
 
-[node name="SlotMachine13" parent="." unique_id=219642195 instance=ExtResource("15_4koev")]
+[node name="SlotMachine13" parent="LoungeArea" unique_id=219642195 instance=ExtResource("15_4koev")]
 transform = Transform3D(-1.6485865, 0, 0.6598379, 0, 1.4666797, 0, -0.619236, 0, -1.7566808, 2.0137725, 0.073346555, -23.507069)
 
-[node name="LoaferCouch13" parent="." unique_id=125952085 instance=ExtResource("11_bew14")]
+[node name="LoaferCouch13" parent="LoungeArea" unique_id=125952085 instance=ExtResource("11_bew14")]
 transform = Transform3D(1.552054, 0, -0.008820684, 0, 1.3279374, 0, 0.010916598, 0, 1.2540504, 3.4944217, 0.065074444, 11.560141)
 
-[node name="LoaferCouch14" parent="." unique_id=1926304511 instance=ExtResource("11_bew14")]
+[node name="LoaferCouch14" parent="LoungeArea" unique_id=1926304511 instance=ExtResource("11_bew14")]
 transform = Transform3D(0.004740556, 0, 1.2540753, 0, 1.3279374, 0, -1.5520849, 0, 0.0038302615, 6.5135508, 0.06507468, 8.756552)
 
-[node name="LoaferCouch15" parent="." unique_id=1130740825 instance=ExtResource("11_bew14")]
+[node name="LoaferCouch15" parent="LoungeArea" unique_id=1130740825 instance=ExtResource("11_bew14")]
 transform = Transform3D(0.0086417, 0, -1.2540619, 0, 1.3279374, 0, 1.5520684, 0, 0.006982303, -6.8415437, 0.065074444, 8.825844)
 
-[node name="LoaferCouch16" parent="." unique_id=186606739 instance=ExtResource("11_bew14")]
+[node name="LoaferCouch16" parent="LoungeArea" unique_id=186606739 instance=ExtResource("11_bew14")]
 transform = Transform3D(1.5520216, 0, 0.011972645, 0, 1.3279374, 0, -0.014817639, 0, 1.254024, -4.000134, 0.06507468, 11.809404)
 
-[node name="LoaferCouch17" parent="." unique_id=808425696 instance=ExtResource("11_bew14")]
+[node name="LoaferCouch17" parent="LoungeArea" unique_id=808425696 instance=ExtResource("11_bew14")]
 transform = Transform3D(-1.5509504, 0, -0.04809787, 0, 1.3279374, 0, 0.05952768, 0, -1.2531587, -4.1688704, 0.065074444, -11.079897)
 
-[node name="LoaferCouch18" parent="." unique_id=192983271 instance=ExtResource("11_bew14")]
+[node name="LoaferCouch18" parent="LoungeArea" unique_id=192983271 instance=ExtResource("11_bew14")]
 transform = Transform3D(0.021779142, 0, -1.253958, 0, 1.3279374, 0, 1.5519397, 0, 0.0175975, -7.0576596, 0.06507468, -8.142187)
 
-[node name="blockbench_export7" parent="." unique_id=1324049463 instance=ExtResource("15_or88q")]
+[node name="blockbench_export7" parent="LoungeArea" unique_id=1324049463 instance=ExtResource("15_or88q")]
 transform = Transform3D(0.88704306, 0, -0.004603513, 0, 1.3566812, 0, 0.0029724601, 0, 1.3737396, 3.574189, 0.066045165, 8.498565)
 
-[node name="blockbench_export8" parent="." unique_id=560854275 instance=ExtResource("15_or88q")]
+[node name="blockbench_export8" parent="LoungeArea" unique_id=560854275 instance=ExtResource("15_or88q")]
 transform = Transform3D(0.1936697, 0, 1.3406054, 0, 1.3566812, 0, -0.8656479, 0, 0.2999312, -3.8479464, 0.066045165, 8.793637)
 
-[node name="blockbench_export9" parent="." unique_id=193414181 instance=ExtResource("15_or88q")]
+[node name="blockbench_export9" parent="LoungeArea" unique_id=193414181 instance=ExtResource("15_or88q")]
 transform = Transform3D(-0.8733369, 0, -0.24060255, 0, 1.3566812, 0, 0.15536058, 0, -1.3525132, -4.0286026, 0.066045165, -7.7702546)
 
-[node name="blockbench_export10" parent="." unique_id=1312835685 instance=ExtResource("15_or88q")]
+[node name="blockbench_export10" parent="LoungeArea" unique_id=1312835685 instance=ExtResource("15_or88q")]
 transform = Transform3D(-1.0518773, 0, 0.008073993, 0, 1.3566812, 0, -0.0067193713, 0, -1.2639198, 3.6270475, 0.066045165, -7.9884152)
 
-[node name="MMMachine" parent="." unique_id=668037311 instance=ExtResource("8_jnxa6")]
+[node name="MMMachine" parent="LoungeArea" unique_id=668037311 instance=ExtResource("8_jnxa6")]
 transform = Transform3D(0.007046696, 0, 1.0632536, 0, 0.71776193, 0, -1.0432554, 0, 0.007181894, 6.9219246, 0.07599437, 3.0992262)
 
-[node name="StoolChair" parent="." unique_id=1600482635 instance=ExtResource("9_r2ksb")]
+[node name="StoolChair" parent="LoungeArea" unique_id=1600482635 instance=ExtResource("9_r2ksb")]
 transform = Transform3D(-0.5840514, 0, 0.8117166, 0, 1, 0, -0.8117166, 0, -0.5840514, 5.7523956, 0.079650044, 3.068798)
 
-[node name="MMMachine2" parent="." unique_id=2002297969 instance=ExtResource("8_jnxa6")]
+[node name="MMMachine2" parent="LoungeArea" unique_id=2002297969 instance=ExtResource("8_jnxa6")]
 transform = Transform3D(0.007046696, 0, 1.0632536, 0, 0.71776193, 0, -1.0432554, 0, 0.007181894, 7.021784, 0.07599485, 1.0220699)
 
-[node name="StoolChair2" parent="." unique_id=1552184873 instance=ExtResource("9_r2ksb")]
+[node name="StoolChair2" parent="LoungeArea" unique_id=1552184873 instance=ExtResource("9_r2ksb")]
 transform = Transform3D(-0.5840514, 0, 0.8117166, 0, 1, 0, -0.8117166, 0, -0.5840514, 5.852256, 0.07965052, 0.99164224)
 
-[node name="MMMachine4" parent="." unique_id=244669474 instance=ExtResource("8_jnxa6")]
+[node name="MMMachine4" parent="LoungeArea" unique_id=244669474 instance=ExtResource("8_jnxa6")]
 transform = Transform3D(0.007046696, 0, 1.0632536, 0, 0.71776193, 0, -1.0432554, 0, 0.007181894, 7.212448, 0.07599485, -2.9274616)
 
-[node name="StoolChair4" parent="." unique_id=280755495 instance=ExtResource("9_r2ksb")]
+[node name="StoolChair4" parent="LoungeArea" unique_id=280755495 instance=ExtResource("9_r2ksb")]
 transform = Transform3D(-0.5840514, 0, 0.8117166, 0, 1, 0, -0.8117166, 0, -0.5840514, 6.042919, 0.07965052, -2.9578896)
 
-[node name="SlotMachine14" parent="." unique_id=798700025 instance=ExtResource("15_4koev")]
+[node name="SlotMachine14" parent="LoungeArea" unique_id=798700025 instance=ExtResource("15_4koev")]
 transform = Transform3D(0.0019978844, 0, 1.8765149, 0, 1.4666797, 0, -1.7610468, 0, 0.0021288097, 7.0308075, 0.07334679, -0.91461384)
 
-[node name="LoaferCouch19" parent="." unique_id=1408302328 instance=ExtResource("11_bew14")]
-transform = Transform3D(-0.9014591, 0, 1.020878, 0, 1.3279374, 0, -1.2634723, 0, -0.7283736, -12.83595, 0.06507349, 18.57494)
-
-[node name="blockbench_export11" parent="." unique_id=1626187553 instance=ExtResource("15_or88q")]
-transform = Transform3D(-0.8948048, 0, 0.82037127, 0, 1.3566811, 0, -1.2837224, 0, -0.57183087, -14.879954, 0.06604469, 20.03889)
-
-[node name="LoaferCouch20" parent="." unique_id=1954781013 instance=ExtResource("11_bew14")]
-transform = Transform3D(0.8895553, 0, -1.027672, 0, 1.3279371, 0, 1.2718807, 0, 0.7187555, -16.93111, 0.06507349, 21.48748)
-
-[node name="blockbench_export12" parent="." unique_id=590386254 instance=ExtResource("10_r2ksb")]
+[node name="RouletteArea" type="Node3D" parent="." unique_id=1651779743]
 transform = Transform3D(0.80124336, 0, 0.5983386, 0, 1, 0, -0.5983386, 0, 0.80124336, -14.903619, 0.8252326, 20.027773)
 
-[node name="MMMachine29" parent="." unique_id=1872894707 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(-0.85513663, 0, 0.6090958, 0, 0.71776193, 0, -0.59763956, 0, -0.87152886, -12.019394, 0.07599485, -25.241693)
+[node name="LoaferCouch5" parent="RouletteArea" unique_id=646990623 instance=ExtResource("11_bew14")]
+transform = Transform3D(1.5519046, 0, -0.019501328, 0, 1.3279374, 0, 0.024135292, 0, 1.2539296, -7.809656, -0.76015866, 11.583276)
 
-[node name="StoolChair29" parent="." unique_id=1933858294 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(-0.99979, 0, -0.02048865, 0, 1, 0, 0.02048865, 0, -0.99979, -12.707924, 0.07965052, -24.295834)
+[node name="blockbench_export" parent="RouletteArea" unique_id=1574975832 instance=ExtResource("15_or88q")]
+transform = Transform3D(1.5642557, 0, -0.026525944, 0, 1.3566812, 0, 0.04150784, 0, 0.99964803, -7.775116, -0.75918746, 9.069331)
 
-[node name="MMMachine31" parent="." unique_id=1665447211 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(-0.85513663, 0, 0.6090958, 0, 0.71776193, 0, -0.59763956, 0, -0.87152886, -15.163723, 0.07599485, -27.639273)
+[node name="LoaferCouch6" parent="RouletteArea" unique_id=723452768 instance=ExtResource("11_bew14")]
+transform = Transform3D(-1.5516095, 0, 0.031274498, 0, 1.3279372, 0, -0.03870642, 0, -1.2536912, -7.7239704, -0.76015866, 6.5587454)
 
-[node name="StoolChair31" parent="." unique_id=1147199008 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(-0.99979, 0, -0.02048865, 0, 1, 0, 0.02048865, 0, -0.99979, -15.852253, 0.07965052, -26.69341)
+[node name="blockbench_export2" parent="RouletteArea" unique_id=152952085 instance=ExtResource("10_r2ksb")]
+transform = Transform3D(0.0061609745, 0, -0.99998105, 0, 1, 0, 0.99998105, 0, 0.0061609745, -7.752125, 4.7683716e-07, 9.056878)
 
-[node name="StoolChair32" parent="." unique_id=88466870 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(-0.9999223, 0, -0.012461249, 0, 1, 0, 0.012461249, 0, -0.9999223, -17.57405, 0.079651475, -27.79828)
+[node name="LoaferCouch7" parent="RouletteArea" unique_id=1145645207 instance=ExtResource("11_bew14")]
+transform = Transform3D(1.5519046, 0, -0.019501328, 0, 1.3279374, 0, 0.024135292, 0, 1.2539296, 0.9228802, -0.76015866, 11.791753)
 
-[node name="MMMachine33" parent="." unique_id=987132577 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(0.8398695, 0, -0.63077515, 0, 0.7177619, 0, 0.6189111, 0, 0.85596895, -15.778545, 0.07599437, -30.302492)
+[node name="blockbench_export3" parent="RouletteArea" unique_id=921160926 instance=ExtResource("15_or88q")]
+transform = Transform3D(1.5642557, 0, -0.026525944, 0, 1.3566812, 0, 0.04150784, 0, 0.99964803, 0.95741844, -0.75918746, 9.27781)
 
-[node name="StoolChair33" parent="." unique_id=1044852184 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(0.9999894, 0, -0.0046076616, 0, 1, 0, 0.0046076616, 0, 0.9999894, -15.066494, 0.079650044, -31.23078)
+[node name="LoaferCouch8" parent="RouletteArea" unique_id=869906290 instance=ExtResource("11_bew14")]
+transform = Transform3D(-1.5516095, 0, 0.031274498, 0, 1.3279372, 0, -0.03870642, 0, -1.2536912, 1.008564, -0.76015866, 6.7672234)
 
-[node name="MMMachine34" parent="." unique_id=6050784 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(0.8398695, 0, -0.63077515, 0, 0.7177619, 0, 0.6189111, 0, 0.85596895, -14.156784, 0.07599485, -29.000788)
+[node name="blockbench_export4" parent="RouletteArea" unique_id=1993714577 instance=ExtResource("10_r2ksb")]
+transform = Transform3D(0.8151784, 0, -0.57921004, 0, 1, 0, 0.57921004, 0, 0.8151784, 0.997242, 0.007143855, 9.284593)
 
-[node name="StoolChair34" parent="." unique_id=1285107732 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(0.9999894, 0, -0.0046076616, 0, 1, 0, 0.0046076616, 0, 0.9999894, -13.4447365, 0.07965052, -29.929071)
+[node name="LoaferCouch9" parent="RouletteArea" unique_id=343955835 instance=ExtResource("11_bew14")]
+transform = Transform3D(1.5519046, 0, -0.019501328, 0, 1.3279374, 0, 0.024135292, 0, 1.2539296, 10.405272, -0.76015866, 11.848893)
 
-[node name="MMMachine35" parent="." unique_id=545198945 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(0.8398695, 0, -0.63077515, 0, 0.7177619, 0, 0.6189111, 0, 0.85596895, -12.695374, 0.07599437, -27.826769)
+[node name="blockbench_export5" parent="RouletteArea" unique_id=841716636 instance=ExtResource("15_or88q")]
+transform = Transform3D(1.5642557, 0, -0.026525944, 0, 1.3566812, 0, 0.04150784, 0, 0.99964803, 10.43981, -0.75918746, 9.33495)
 
-[node name="StoolChair35" parent="." unique_id=295227054 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(0.9999894, 0, -0.0046076616, 0, 1, 0, 0.0046076616, 0, 0.9999894, -11.983326, 0.079650044, -28.755053)
+[node name="LoaferCouch10" parent="RouletteArea" unique_id=182366951 instance=ExtResource("11_bew14")]
+transform = Transform3D(-1.5516095, 0, 0.031274498, 0, 1.3279372, 0, -0.03870642, 0, -1.2536912, 10.490956, -0.76015866, 6.8243647)
 
-[node name="MMMachine36" parent="." unique_id=102258710 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(0.8398695, 0, -0.63077515, 0, 0.7177619, 0, 0.6189111, 0, 0.85596895, -10.997429, 0.07599485, -26.617834)
+[node name="blockbench_export6" parent="RouletteArea" unique_id=368158700 instance=ExtResource("10_r2ksb")]
+transform = Transform3D(-0.96514, 0, -0.26173434, 0, 1, 0, 0.26173434, 0, -0.96514, 10.464101, -0.02357614, 9.317571)
 
-[node name="StoolChair36" parent="." unique_id=1937459375 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(0.9999894, 0, -0.0046076616, 0, 1, 0, 0.0046076616, 0, 0.9999894, -10.361568, 0.07965052, -27.453344)
+[node name="SlotMachine11" parent="RouletteArea" unique_id=2102657801 instance=ExtResource("15_4koev")]
+transform = Transform3D(1.35064, 0, 1.2041683, 0, 1.4666798, 0, -1.1300715, 0, 1.4391987, 16.366806, -0.75188607, 12.331084)
 
-[node name="ATMMachine5" parent="." unique_id=1596644302 instance=ExtResource("14_lfd87")]
-transform = Transform3D(0.29091275, 0, 1.2915543, 0, 1.290837, 0, -1.4251707, 0, 0.26363838, -17.516865, 0.10661405, -30.152765)
+[node name="ATMMachine3" parent="RouletteArea" unique_id=792453550 instance=ExtResource("14_lfd87")]
+transform = Transform3D(1.4512163, 0, 0.08931285, 0, 1.290837, 0, -0.098552704, 0, 1.3151581, 18.845066, -0.71861833, 11.285226)
 
-[node name="SlotMachine15" parent="." unique_id=1549993911 instance=ExtResource("15_4koev")]
-transform = Transform3D(-1.4367245, 0, 1.0851609, 0, 1.4666798, 0, -1.0183874, 0, -1.5309278, -13.61198, 0.07334751, -26.374636)
+[node name="LoaferCouch19" parent="RouletteArea" unique_id=1408302328 instance=ExtResource("11_bew14")]
+transform = Transform3D(0.033696115, 0, 1.2537857, 0, 1.3279374, 0, -1.5517266, 0, 0.02722615, 2.5259933, -0.76015913, 0.07309246)
 
-[node name="MMMachine30" parent="." unique_id=1717759503 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(0.85515755, 0, -0.60906535, 0, 0.717762, 0, 0.5976097, 0, 0.87155014, -9.486532, 0.07599485, -25.541342)
+[node name="blockbench_export11" parent="RouletteArea" unique_id=1626187553 instance=ExtResource("15_or88q")]
+transform = Transform3D(0.051144302, 0, 0.9994655, 0, 1.3566811, 0, -1.5639703, 0, 0.032684118, 0.012310028, -0.75918794, 0.023067474)
 
-[node name="StoolChair30" parent="." unique_id=744922741 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(0.9997893, 0, 0.020523604, 0, 1, 0, -0.020523604, 0, 0.9997893, -8.798036, 0.07965052, -26.487226)
+[node name="LoaferCouch20" parent="RouletteArea" unique_id=1954781013 instance=ExtResource("11_bew14")]
+transform = Transform3D(-0.0482651, 0, -1.2534746, 0, 1.3279371, 0, 1.5513413, 0, -0.03899783, -2.4979134, -0.76015913, -0.043545723)
 
-[node name="MMMachine32" parent="." unique_id=2104352265 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(0.85515755, 0, -0.60906535, 0, 0.717762, 0, 0.5976097, 0, 0.87155014, -6.3421197, 0.07599485, -23.143873)
+[node name="blockbench_export12" parent="RouletteArea" unique_id=590386254 instance=ExtResource("10_r2ksb")]
 
-[node name="StoolChair37" parent="." unique_id=1515719581 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(0.9997893, 0, 0.020523604, 0, 1, 0, -0.020523604, 0, 0.9997893, -5.653623, 0.07965052, -24.08976)
+[node name="StageArea" type="Node3D" parent="." unique_id=468374668]
 
-[node name="StoolChair38" parent="." unique_id=1842581603 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(0.999922, 0, 0.012496208, 0, 1, 0, -0.012496208, 0, 0.999922, -3.9317863, 0.079651475, -22.98495)
+[node name="GiantTable" parent="StageArea" unique_id=1944149664 instance=ExtResource("15_or88q")]
+transform = Transform3D(0.060093857, 0, 4.465057, 0, 3.4431276, 0, -4.946798, 0, 0.054241635, -52.731247, 0.036370635, -1.0052246)
 
-[node name="MMMachine37" parent="." unique_id=1436220930 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(-0.83989114, 0, 0.63074523, 0, 0.71776193, 0, -0.61888176, 0, -0.8559911, -5.7272043, 0.07599437, -20.480675)
+[node name="LoaferCouch" parent="StageArea" unique_id=154995992 instance=ExtResource("11_bew14")]
+transform = Transform3D(0.731938, 0, -1.1058769, 0, 1.3279375, 0, 1.3686696, 0, 0.5914014, -54.473476, 1.8107386, 2.2441316)
 
-[node name="StoolChair39" parent="." unique_id=625355029 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(-0.99998957, 0, 0.004572702, 0, 1, 0, -0.004572702, 0, -0.99998957, -6.4392233, 0.079650044, -19.552362)
+[node name="LoaferCouch2" parent="StageArea" unique_id=702229089 instance=ExtResource("11_bew14")]
+transform = Transform3D(-0.8509108, 0, -1.0488186, 0, 1.3279375, 0, 1.2980527, 0, -0.6875308, -54.396217, 1.8107386, -4.405692)
 
-[node name="MMMachine38" parent="." unique_id=427992434 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(-0.83989114, 0, 0.63074523, 0, 0.71776193, 0, -0.61888176, 0, -0.8559911, -7.349011, 0.07599485, -21.782322)
-
-[node name="StoolChair40" parent="." unique_id=119907985 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(-0.99998957, 0, 0.004572702, 0, 1, 0, -0.004572702, 0, -0.99998957, -8.061026, 0.07965052, -20.854013)
-
-[node name="MMMachine39" parent="." unique_id=126381017 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(-0.83989114, 0, 0.63074523, 0, 0.71776193, 0, -0.61888176, 0, -0.8559911, -8.810463, 0.07599437, -22.956291)
-
-[node name="StoolChair41" parent="." unique_id=941622594 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(-0.99998957, 0, 0.004572702, 0, 1, 0, -0.004572702, 0, -0.99998957, -9.522478, 0.079650044, -22.027983)
-
-[node name="MMMachine40" parent="." unique_id=109306086 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(-0.83989114, 0, 0.63074523, 0, 0.71776193, 0, -0.61888176, 0, -0.8559911, -10.50845, 0.07599485, -24.165167)
-
-[node name="StoolChair42" parent="." unique_id=1442231327 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(-0.99998957, 0, 0.004572702, 0, 1, 0, -0.004572702, 0, -0.99998957, -11.144281, 0.07965052, -23.329634)
-
-[node name="ATMMachine6" parent="." unique_id=532890432 instance=ExtResource("14_lfd87")]
-transform = Transform3D(-1.2470878, 0, -0.67848283, 0, 1.290837, 0, 0.74867463, 0, -1.1301676, -4.2234364, 0.10661405, -20.179653)
-
-[node name="SlotMachine16" parent="." unique_id=1230964775 instance=ExtResource("15_4koev")]
-transform = Transform3D(1.4367601, 0, -1.0851073, 0, 1.4666797, 0, 1.0183371, 0, 1.5309656, -7.8939066, 0.07334751, -24.408455)
-
-[node name="MMMachine41" parent="." unique_id=1233259369 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(-0.85513663, 0, 0.6090958, 0, 0.71776193, 0, -0.59763956, 0, -0.87152886, -16.793068, 0.07599485, -28.905449)
-
-[node name="MMMachine42" parent="." unique_id=1980603 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(0.85515755, 0, -0.60906535, 0, 0.717762, 0, 0.5976097, 0, 0.87155014, -4.6626163, 0.07599485, -22.02068)
-
-[node name="CSGBox3D8" type="CSGBox3D" parent="." unique_id=1411217495]
-transform = Transform3D(-0.005202487, 4.495968, 0.07043631, -1.3541163, -0.021786172, 0.025960218, 0.02620352, -0.2332039, 1.3555247, -24.221287, 0.99948865, -40.95549)
-size = Vector3(1.3825684, 1, 0.96398926)
-
-[node name="CSGBox3D9" type="CSGBox3D" parent="." unique_id=1355867384]
-transform = Transform3D(0.44593486, 0, -2.5275266, 0, 1, 0, 0.9131291, 0, 1.234341, -22.895138, 0.7416905, -39.218056)
-size = Vector3(1, 1.3393555, 1)
-
-[node name="CSGBox3D10" type="CSGBox3D" parent="." unique_id=668392279]
-transform = Transform3D(0.11606414, 0, 0.9932417, 0, 1, 0, -0.9932417, 0, 0.11606414, -25.224226, 0.57201254, -39.34789)
-
-[node name="MMMachine43" parent="." unique_id=1070899609 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(-0.85513663, 0, 0.6090958, 0, 0.71776193, 0, -0.59763956, 0, -0.87152886, -12.019394, 0.07599485, -25.241693)
-
-[node name="StoolChair43" parent="." unique_id=778103762 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(-0.99979, 0, -0.02048865, 0, 1, 0, 0.02048865, 0, -0.99979, -12.707924, 0.07965052, -24.295834)
-
-[node name="MMMachine44" parent="." unique_id=1881697334 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(-0.85513663, 0, 0.6090958, 0, 0.71776193, 0, -0.59763956, 0, -0.87152886, -15.163723, 0.07599485, -27.639273)
-
-[node name="StoolChair44" parent="." unique_id=200377069 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(-0.99979, 0, -0.02048865, 0, 1, 0, 0.02048865, 0, -0.99979, -15.852253, 0.07965052, -26.69341)
-
-[node name="StoolChair45" parent="." unique_id=1985246219 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(-0.9999223, 0, -0.012461249, 0, 1, 0, 0.012461249, 0, -0.9999223, -17.57405, 0.079651475, -27.79828)
-
-[node name="MMMachine45" parent="." unique_id=1621271580 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(0.8398695, 0, -0.63077515, 0, 0.7177619, 0, 0.6189111, 0, 0.85596895, -15.778545, 0.07599437, -30.302492)
-
-[node name="StoolChair46" parent="." unique_id=718277382 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(0.9999894, 0, -0.0046076616, 0, 1, 0, 0.0046076616, 0, 0.9999894, -15.066494, 0.079650044, -31.23078)
-
-[node name="MMMachine46" parent="." unique_id=538666160 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(0.8398695, 0, -0.63077515, 0, 0.7177619, 0, 0.6189111, 0, 0.85596895, -14.156784, 0.07599485, -29.000788)
-
-[node name="StoolChair47" parent="." unique_id=431800122 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(0.9999894, 0, -0.0046076616, 0, 1, 0, 0.0046076616, 0, 0.9999894, -13.4447365, 0.07965052, -29.929071)
-
-[node name="MMMachine47" parent="." unique_id=1349206810 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(0.8398695, 0, -0.63077515, 0, 0.7177619, 0, 0.6189111, 0, 0.85596895, -12.695374, 0.07599437, -27.826769)
-
-[node name="StoolChair48" parent="." unique_id=1128123892 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(0.9999894, 0, -0.0046076616, 0, 1, 0, 0.0046076616, 0, 0.9999894, -11.983326, 0.079650044, -28.755053)
-
-[node name="MMMachine48" parent="." unique_id=1152217918 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(0.8398695, 0, -0.63077515, 0, 0.7177619, 0, 0.6189111, 0, 0.85596895, -10.997429, 0.07599485, -26.617834)
-
-[node name="StoolChair49" parent="." unique_id=821766569 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(0.9999894, 0, -0.0046076616, 0, 1, 0, 0.0046076616, 0, 0.9999894, -10.361568, 0.07965052, -27.453344)
-
-[node name="ATMMachine7" parent="." unique_id=535205779 instance=ExtResource("14_lfd87")]
-transform = Transform3D(0.29091275, 0, 1.2915543, 0, 1.290837, 0, -1.4251707, 0, 0.26363838, -17.516865, 0.10661405, -30.152765)
-
-[node name="SlotMachine17" parent="." unique_id=325761681 instance=ExtResource("15_4koev")]
-transform = Transform3D(-1.4367245, 0, 1.0851609, 0, 1.4666798, 0, -1.0183874, 0, -1.5309278, -13.61198, 0.07334751, -26.374636)
-
-[node name="MMMachine49" parent="." unique_id=894556547 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(0.85515755, 0, -0.60906535, 0, 0.717762, 0, 0.5976097, 0, 0.87155014, -9.486532, 0.07599485, -25.541342)
-
-[node name="StoolChair50" parent="." unique_id=1015524186 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(0.9997893, 0, 0.020523604, 0, 1, 0, -0.020523604, 0, 0.9997893, -8.798036, 0.07965052, -26.487226)
-
-[node name="MMMachine50" parent="." unique_id=1546627976 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(0.85515755, 0, -0.60906535, 0, 0.717762, 0, 0.5976097, 0, 0.87155014, -6.3421197, 0.07599485, -23.143873)
-
-[node name="StoolChair51" parent="." unique_id=774436777 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(0.9997893, 0, 0.020523604, 0, 1, 0, -0.020523604, 0, 0.9997893, -5.653623, 0.07965052, -24.08976)
-
-[node name="StoolChair52" parent="." unique_id=356280272 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(0.999922, 0, 0.012496208, 0, 1, 0, -0.012496208, 0, 0.999922, -3.9317863, 0.079651475, -22.98495)
-
-[node name="MMMachine51" parent="." unique_id=1127673047 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(-0.83989114, 0, 0.63074523, 0, 0.71776193, 0, -0.61888176, 0, -0.8559911, -5.7272043, 0.07599437, -20.480675)
-
-[node name="StoolChair53" parent="." unique_id=778539904 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(-0.99998957, 0, 0.004572702, 0, 1, 0, -0.004572702, 0, -0.99998957, -6.4392233, 0.079650044, -19.552362)
-
-[node name="MMMachine52" parent="." unique_id=314457248 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(-0.83989114, 0, 0.63074523, 0, 0.71776193, 0, -0.61888176, 0, -0.8559911, -7.349011, 0.07599485, -21.782322)
-
-[node name="StoolChair54" parent="." unique_id=375804967 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(-0.99998957, 0, 0.004572702, 0, 1, 0, -0.004572702, 0, -0.99998957, -8.061026, 0.07965052, -20.854013)
-
-[node name="MMMachine53" parent="." unique_id=2040606362 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(-0.83989114, 0, 0.63074523, 0, 0.71776193, 0, -0.61888176, 0, -0.8559911, -8.810463, 0.07599437, -22.956291)
-
-[node name="StoolChair55" parent="." unique_id=589915010 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(-0.99998957, 0, 0.004572702, 0, 1, 0, -0.004572702, 0, -0.99998957, -9.522478, 0.079650044, -22.027983)
-
-[node name="MMMachine54" parent="." unique_id=12496463 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(-0.83989114, 0, 0.63074523, 0, 0.71776193, 0, -0.61888176, 0, -0.8559911, -10.50845, 0.07599485, -24.165167)
-
-[node name="StoolChair56" parent="." unique_id=2078273405 instance=ExtResource("9_r2ksb")]
-transform = Transform3D(-0.99998957, 0, 0.004572702, 0, 1, 0, -0.004572702, 0, -0.99998957, -11.144281, 0.07965052, -23.329634)
-
-[node name="ATMMachine8" parent="." unique_id=951199966 instance=ExtResource("14_lfd87")]
-transform = Transform3D(-1.2470878, 0, -0.67848283, 0, 1.290837, 0, 0.74867463, 0, -1.1301676, -4.2234364, 0.10661405, -20.179653)
-
-[node name="SlotMachine18" parent="." unique_id=256906620 instance=ExtResource("15_4koev")]
-transform = Transform3D(1.4367601, 0, -1.0851073, 0, 1.4666797, 0, 1.0183371, 0, 1.5309656, -7.8939066, 0.07334751, -24.408455)
-
-[node name="MMMachine55" parent="." unique_id=1939511417 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(-0.85513663, 0, 0.6090958, 0, 0.71776193, 0, -0.59763956, 0, -0.87152886, -16.793068, 0.07599485, -28.905449)
-
-[node name="MMMachine56" parent="." unique_id=1576070848 instance=ExtResource("8_jnxa6")]
-transform = Transform3D(0.85515755, 0, -0.60906535, 0, 0.717762, 0, 0.5976097, 0, 0.87155014, -4.6626163, 0.07599485, -22.02068)
+[node name="SlotMachine12" parent="StageArea" unique_id=1935694000 instance=ExtResource("15_4koev")]
+transform = Transform3D(-1.6607131, 0, 0.62435603, 0, 1.4666797, 0, -0.5859376, 0, -1.7696029, -50.429596, 1.8938644, -5.262017)
