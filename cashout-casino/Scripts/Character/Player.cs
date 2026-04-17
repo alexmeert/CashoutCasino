@@ -1,4 +1,5 @@
 using Godot;
+using CashoutCasino.UI;
 
 namespace CashoutCasino.Character
 {
@@ -60,7 +61,7 @@ namespace CashoutCasino.Character
 
 		// Spectate / kill-cam state
 		private string _lastKillerName = "";
-		private UI.Leaderboard _leaderboard;
+		private Leaderboard _leaderboard;
 		private Player _spectateTarget;
 
 		public override void _Ready()
@@ -122,7 +123,20 @@ namespace CashoutCasino.Character
 			AddToGroup("Players");
 
 			// Authority setup happens via ClaimAuthority RPC sent by the server.
-			// Do NOT call SetupLocalAuthority here — authority isn't set yet at _Ready time.
+			// Cache leaderboard reference now so Tab works even before ClaimAuthority fires.
+			_leaderboard = GetNodeOrNull("Leaderboard") as Leaderboard;
+			if (_leaderboard == null)
+			{
+				var lbScene = GD.Load<PackedScene>("res://Packed Scenes/Menu/Leaderboard.tscn");
+				if (lbScene != null)
+				{
+					_leaderboard = lbScene.Instantiate<Leaderboard>();
+					_leaderboard.Name = "Leaderboard";
+					_leaderboard.Visible = false;
+					AddChild(_leaderboard);
+					GD.Print("[Leaderboard] Created dynamically.");
+				}
+			}
 		}
 
 		[Rpc(MultiplayerApi.RpcMode.Authority,
@@ -144,7 +158,7 @@ namespace CashoutCasino.Character
 			{
 				Input.MouseMode = Input.MouseModeEnum.Captured;
 				camera.Current = true;
-				_leaderboard = GetNodeOrNull<UI.Leaderboard>("Leaderboard");
+				if (_leaderboard == null) _leaderboard = GetNodeOrNull("Leaderboard") as Leaderboard;
 				if (hud != null)
 				{
 					hud.Visible = true;
@@ -393,6 +407,20 @@ namespace CashoutCasino.Character
 		public override void _Input(InputEvent @event)
 		{
 			if (!IsMultiplayerAuthority()) return;
+
+			// Tab works even when dead
+			if (@event is InputEventKey tab && tab.Keycode == Key.Tab)
+			{
+				GD.Print($"[Leaderboard] Tab {(tab.Pressed ? "pressed" : "released")}, leaderboard={((_leaderboard != null) ? "found" : "NULL")}, authority={IsMultiplayerAuthority()}");
+				if (_leaderboard != null)
+				{
+					_leaderboard.Visible = tab.Pressed;
+					if (tab.Pressed) _leaderboard.Refresh();
+				}
+				GetViewport().SetInputAsHandled();
+				return;
+			}
+
 			if (isDead) return;
 
 			if (@event is InputEventMouseMotion mouseMotion)
@@ -407,15 +435,6 @@ namespace CashoutCasino.Character
 			{
 				if (keyEvent.Keycode == Key.Escape)
 					Input.MouseMode = Input.MouseModeEnum.Visible;
-			}
-			if (@event is InputEventKey tabEvent && tabEvent.Keycode == Key.Tab)
-			{
-				if (_leaderboard != null)
-				{
-					bool showing = tabEvent.Pressed;
-					_leaderboard.Visible = showing;
-					if (showing) _leaderboard.Refresh();
-				}
 			}
 		}
 
