@@ -15,9 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://cc31bm3yl5i5r" path="res://Packed Scenes/Level/SlotMachine.tscn" id="15_4koev"]
 [ext_resource type="PackedScene" uid="uid://crnwflhptjpis" path="res://Assets/3D-Models/GenericTable.gltf" id="15_or88q"]
 [ext_resource type="Texture2D" uid="uid://dn4bklhkl014j" path="res://Assets/2D-Textures-Assets/seamless_pattern_16x16px_SpriteSheet_ 265.png" id="16_or88q"]
-[ext_resource type="Texture2D" uid="uid://7vne4o6g8hbf" path="res://Assets/2D-Textures-Assets/seamless_pattern_16x16px_SpriteSheet_ 266.png" id="17_hwydb"]
-[ext_resource type="PackedScene" uid="uid://b0hhwf5a8sskd" path="res://Assets/3D-Models/ShopSign.gltf" id="18_nqolc"]
-[ext_resource type="PackedScene" uid="uid://cjgx1njk4ekgd" path="res://Assets/3D-Models/DiceShotgun.gltf" id="19_c1vur"]
+[ext_resource type="PackedScene" uid="uid://bl6ht36pqgx0q" path="res://LevelScenes/ShopStands.tscn" id="20_nqolc"]
 [ext_resource type="PackedScene" uid="uid://bpbxxylqs5tp1" path="res://Packed Scenes/Menu/CountdownTimer.tscn" id="ct_1"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_level"]
@@ -78,10 +76,6 @@ texture_filter = 0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_13me4"]
 albedo_texture = ExtResource("16_or88q")
-texture_filter = 0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g18sr"]
-albedo_texture = ExtResource("17_hwydb")
 texture_filter = 0
 
 [node name="TestLevel" type="Node3D" unique_id=2133213211]
@@ -877,96 +871,6 @@ size = Vector3(1, 2.7476807, 1)
 transform = Transform3D(0.5296529, 0, 0.84821445, 0, 1, 0, -0.84821445, 0, 0.5296529, -22.489977, 1.3386756, -19.445576)
 size = Vector3(1, 2.5333252, 1)
 
-[node name="ShopStands" type="CSGCombiner3D" parent="." unique_id=1836634738]
-transform = Transform3D(0.9999708, 0, 0.0076444745, 0, 1, 0, -0.0076444745, 0, 0.9999708, 3.3443303, 0.5720128, -21.838331)
-material_override = SubResource("StandardMaterial3D_g18sr")
-use_collision = true
-
-[node name="CSGBox3D" type="CSGBox3D" parent="ShopStands" unique_id=1476342513]
-transform = Transform3D(0.9999708, 0, -0.0076444745, 0, 1, 0, 0.0076444745, 0, 0.9999708, -0.6469114, -0.087007105, 1.5241566)
-size = Vector3(0.585083, 0.84277344, 0.6254883)
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="ShopStands" unique_id=1749207886]
-transform = Transform3D(0.71978825, 0, 0.69419366, 0, 1, 0, -0.69419366, 0, 0.71978825, 0.53414345, -0.087007105, 3.3122177)
-size = Vector3(0.585083, 0.84277344, 0.6254883)
-
-[node name="CSGBox3D3" type="CSGBox3D" parent="ShopStands" unique_id=277950304]
-transform = Transform3D(0.8335389, 0, 0.55246085, 0, 1, 0, -0.55246085, 0, 0.8335389, -0.07995653, -0.24539322, 2.5090885)
-size = Vector3(0.585083, 0.526001, 0.6254883)
-
-[node name="ShopSign" parent="ShopStands" unique_id=657058812 instance=ExtResource("18_nqolc")]
-transform = Transform3D(-0.8310428, 0, 0.4301675, 0, 2.141137, 0, -1.8766807, 0, -0.19048928, 0.9461875, 1.6102921, 1.4030743)
-
-[node name="ShotgunShop" parent="ShopStands" unique_id=1796628402 instance=ExtResource("19_c1vur")]
-transform = Transform3D(1.452306, 0, 0.9301495, 0, 1.577057, 0, -0.86777633, 0, 1.5566934, 3.0022488, -1.097863, 4.3154488)
-
-[node name="CSGBox3D4" type="CSGBox3D" parent="ShopStands" unique_id=171639979]
-
-[node name="CSGBox3D11" type="CSGBox3D" parent="ShopStands" unique_id=556309613]
-transform = Transform3D(-0.7413846, 0, -1.9237213, 0, 1, 0, 0.69499004, 0, -2.0521412, 2.6449685, -0.030821323, 3.671215)
-size = Vector3(0.82910156, 0.9383545, 1)
-
-[node name="CSGBox3D12" type="CSGBox3D" parent="ShopStands" unique_id=1138512787]
-transform = Transform3D(-0.86593354, 0, -1.4720405, 0, 1, 0, 0.5318097, 0, -2.3968909, 1.7695637, 0.5551467, 1.3708916)
-size = Vector3(1.9516602, 2.1102905, 0.6442871)
-
-[node name="CSGBox3D13" type="CSGBox3D" parent="ShopStands" unique_id=2101512066]
-transform = Transform3D(-0.17977895, 0, -2.7684577, 0, 1, 0, 1.0001711, 0, -0.49762577, 1.7425876, 1.9173771, 1.0420437)
-size = Vector3(0.6008301, 0.65182495, 0.25427246)
-
-[node name="CSGBox3D14" type="CSGBox3D" parent="ShopStands" unique_id=93547176]
-transform = Transform3D(-1.0150484, 0, 0.13387573, 0, 1, 0, -0.048365608, 0, -2.809638, 1.5163374, 1.7795426, 2.1020908)
-size = Vector3(0.44580078, 0.35179138, 0.1729126)
-
-[node name="CSGBox3D15" type="CSGBox3D" parent="ShopStands" unique_id=1216544981]
-transform = Transform3D(-0.31759685, 0, -2.6719215, 0, 1, 0, 0.9652951, 0, -0.8791036, 2.0187702, 0.7458148, 3.0368023)
-size = Vector3(0.44580078, 0.65135956, 0.1729126)
-
-[node name="ShopStands2" type="CSGCombiner3D" parent="." unique_id=339301700]
-transform = Transform3D(0.6250383, 0, 0.78059405, 0, 1, 0, -0.78059405, 0, 0.6250383, -32.49218, 0.5720128, 10.653542)
-material_override = SubResource("StandardMaterial3D_g18sr")
-use_collision = true
-
-[node name="CSGBox3D" type="CSGBox3D" parent="ShopStands2" unique_id=83411568]
-transform = Transform3D(0.9999708, 0, -0.0076444745, 0, 1, 0, 0.0076444745, 0, 0.9999708, -0.6469114, -0.087007105, 1.5241566)
-size = Vector3(0.585083, 0.84277344, 0.6254883)
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="ShopStands2" unique_id=1710259892]
-transform = Transform3D(0.71978825, 0, 0.69419366, 0, 1, 0, -0.69419366, 0, 0.71978825, 0.53414345, -0.087007105, 3.3122177)
-size = Vector3(0.585083, 0.84277344, 0.6254883)
-
-[node name="CSGBox3D3" type="CSGBox3D" parent="ShopStands2" unique_id=716638873]
-transform = Transform3D(0.8335389, 0, 0.55246085, 0, 1, 0, -0.55246085, 0, 0.8335389, -0.07995653, -0.24539322, 2.5090885)
-size = Vector3(0.585083, 0.526001, 0.6254883)
-
-[node name="ShopSign" parent="ShopStands2" unique_id=666018023 instance=ExtResource("18_nqolc")]
-transform = Transform3D(-0.8310428, 0, 0.4301675, 0, 2.141137, 0, -1.8766807, 0, -0.19048928, 0.9461875, 1.6102921, 1.4030743)
-
-[node name="ShotgunShop" parent="ShopStands2" unique_id=1943415422 instance=ExtResource("19_c1vur")]
-transform = Transform3D(1.452306, 0, 0.9301495, 0, 1.577057, 0, -0.86777633, 0, 1.5566934, 3.0022488, -1.097863, 4.3154488)
-
-[node name="CSGBox3D4" type="CSGBox3D" parent="ShopStands2" unique_id=677514383]
-
-[node name="CSGBox3D11" type="CSGBox3D" parent="ShopStands2" unique_id=828338049]
-transform = Transform3D(-0.7413846, 0, -1.9237213, 0, 1, 0, 0.69499004, 0, -2.0521412, 2.6449685, -0.030821323, 3.671215)
-size = Vector3(0.82910156, 0.9383545, 1)
-
-[node name="CSGBox3D12" type="CSGBox3D" parent="ShopStands2" unique_id=1271564356]
-transform = Transform3D(-0.86593354, 0, -1.4720405, 0, 1, 0, 0.5318097, 0, -2.3968909, 1.7695637, 0.5551467, 1.3708916)
-size = Vector3(1.9516602, 2.1102905, 0.6442871)
-
-[node name="CSGBox3D13" type="CSGBox3D" parent="ShopStands2" unique_id=143737878]
-transform = Transform3D(-0.17977895, 0, -2.7684577, 0, 1, 0, 1.0001711, 0, -0.49762577, 1.7425876, 1.9173771, 1.0420437)
-size = Vector3(0.6008301, 0.65182495, 0.25427246)
-
-[node name="CSGBox3D14" type="CSGBox3D" parent="ShopStands2" unique_id=1299332819]
-transform = Transform3D(-1.0150484, 0, 0.13387573, 0, 1, 0, -0.048365608, 0, -2.809638, 1.5163374, 1.7795426, 2.1020908)
-size = Vector3(0.44580078, 0.35179138, 0.1729126)
-
-[node name="CSGBox3D15" type="CSGBox3D" parent="ShopStands2" unique_id=858600032]
-transform = Transform3D(-0.31759685, 0, -2.6719215, 0, 1, 0, 0.9652951, 0, -0.8791036, 2.0187702, 0.7458148, 3.0368023)
-size = Vector3(0.44580078, 0.65135956, 0.1729126)
-
 [node name="GiantTable" parent="." unique_id=1944149664 instance=ExtResource("15_or88q")]
 transform = Transform3D(0.060093857, 0, 4.465057, 0, 3.4431276, 0, -4.946798, 0, 0.054241635, -52.731247, 0.036370635, -1.0052246)
 
@@ -1263,3 +1167,6 @@ transform = Transform3D(-0.85513663, 0, 0.6090958, 0, 0.71776193, 0, -0.59763956
 
 [node name="MMMachine56" parent="." unique_id=1576070848 instance=ExtResource("8_jnxa6")]
 transform = Transform3D(0.85515755, 0, -0.60906535, 0, 0.717762, 0, 0.5976097, 0, 0.87155014, -4.6626163, 0.07599485, -22.02068)
+
+[node name="ShopStands" parent="." unique_id=1477661347 instance=ExtResource("20_nqolc")]
+transform = Transform3D(0.9999708, 0, 0.0076444745, 0, 1, 0, -0.0076444745, 0, 0.9999708, 0.070944384, 0.5626792, -18.855684)
