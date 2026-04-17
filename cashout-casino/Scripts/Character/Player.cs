@@ -41,6 +41,7 @@ namespace CashoutCasino.Character
 		private bool _pistolsUseRight = false;
 		private AnimationPlayer _tpAnimPlayer;
 		private string _lastTpAnim = "";
+		private bool _isLocalReloading = false;
 
 		[Export] public int Kills    { get; set; }
 		[Export] public int Deaths   { get; set; }
@@ -385,12 +386,11 @@ namespace CashoutCasino.Character
 			regenActive = false;
 			GlobalPosition = spawnPosition;
 			SetPhysicsProcess(true);
-			// Restore player color (don't set null — that clears their color).
+			// Restore player color — ApplyColor duplicates the surface material so the
+			// outline next_pass is preserved on the override.
 			var pc = GetNodeOrNull<PlayerCharacter>("PlayerCharacter");
-			if (pc?.MyMesh != null)
-				pc.MyMesh.MaterialOverride = pc.MyColor.A > 0
-					? new StandardMaterial3D { AlbedoColor = pc.MyColor }
-					: null;
+			if (pc != null && pc.MyColor.A > 0)
+				pc.ApplyColor(pc.MyColor);
 			if (IsMultiplayerAuthority())
 			{
 				_spectateTarget = null;
@@ -456,10 +456,13 @@ namespace CashoutCasino.Character
 				cameraHolder.Rotation = new Vector3(Mathf.DegToRad(cameraPitch), 0f, 0f);
 			}
 
-			if (@event is InputEventKey keyEvent && keyEvent.Pressed)
+			if (@event is InputEventKey keyEvent && keyEvent.Pressed && !keyEvent.IsEcho())
 			{
 				if (keyEvent.Keycode == Key.Escape)
 					Input.MouseMode = Input.MouseModeEnum.Visible;
+
+				if (keyEvent.Keycode == Key.R && wm != null && !_isLocalReloading)
+					TryStartLocalReload();
 			}
 		}
 
@@ -470,6 +473,14 @@ namespace CashoutCasino.Character
 				if (IsMultiplayerAuthority()) UpdateSpectateCam(delta);
 				return;
 			}
+
+			if (IsMultiplayerAuthority() && _isLocalReloading && FpAnimPlayer != null)
+			{
+				float len = (float)FpAnimPlayer.CurrentAnimationLength;
+				float progress = len > 0f ? (float)(FpAnimPlayer.CurrentAnimationPosition / len) : 0f;
+				hud?.OnReloadProgress(progress);
+			}
+
 			if (currentHealth >= maxHealth) return;
 
 			float dt = (float)delta;
@@ -524,17 +535,31 @@ namespace CashoutCasino.Character
 			bool fireHeld    = Input.IsActionPressed("fire");
 			bool firePressed = Input.IsActionJustPressed("fire");
 			bool wantFire    = wm.CurrentWeaponHoldToFire() ? fireHeld : firePressed;
-			if (wantFire)
+
+			// Shotgun reload can be cancelled by firing when there's ammo in the mag.
+			if (wantFire && _isLocalReloading && wm.CanInterruptCurrentReload && wm.GetCurrentMag() > 0)
+			{
+				_isLocalReloading = false;
+				_fpAnimLocked = false;
+				wm.CancelReload();
+				hud?.OnReloadComplete();
+			}
+
+			// Auto-reload when the mag hits zero.
+			if (wantFire && wm.GetCurrentMag() <= 0 && !_isLocalReloading)
+				TryStartLocalReload();
+			else if (wantFire)
 				wm.FireCurrentWeapon(-camera.GlobalTransform.Basis.Z, this);
 
 			if (_lockedWeaponIndex < 0)
 			{
-				if (Input.IsActionJustPressed("weapon_1")) { wm.SwitchWeapon(0); FpWeaponManager?.SwitchWeapon(0); }
-				if (Input.IsActionJustPressed("weapon_2")) { wm.SwitchWeapon(1); FpWeaponManager?.SwitchWeapon(1); }
-				if (Input.IsActionJustPressed("weapon_3")) { wm.SwitchWeapon(2); FpWeaponManager?.SwitchWeapon(2); }
+				if (Input.IsActionJustPressed("weapon_1")) { CancelLocalReload(); wm.SwitchWeapon(0); FpWeaponManager?.SwitchWeapon(0); }
+				if (Input.IsActionJustPressed("weapon_2")) { CancelLocalReload(); wm.SwitchWeapon(1); FpWeaponManager?.SwitchWeapon(1); }
+				if (Input.IsActionJustPressed("weapon_3")) { CancelLocalReload(); wm.SwitchWeapon(2); FpWeaponManager?.SwitchWeapon(2); }
 			}
 
-			UpdateFpAnim(wantFire);
+			// Don't play the shoot animation when the mag is empty or reloading.
+			UpdateFpAnim(wantFire && !_isLocalReloading && wm.GetCurrentMag() > 0);
 
 			// Sync third-person anim to all peers whenever state changes.
 			bool tpMoving = new Vector2(Velocity.X, Velocity.Z).LengthSquared() > 0.1f;
@@ -651,15 +676,68 @@ namespace CashoutCasino.Character
 
 		private void OnFpAnimFinished(StringName animName)
 		{
-			if (animName.ToString().StartsWith("Pistols"))
+			string anim = animName.ToString();
+
+			if (anim.EndsWith("Reload"))
+			{
+				CompleteLocalReloadStep();
+				return;
+			}
+
+			if (anim.StartsWith("Pistols"))
 				_pistolsUseRight = !_pistolsUseRight;
 			_fpAnimLocked = false;
-			// Return to idle or run once the locked animation finishes.
+
 			string prefix = GetWeaponPrefix();
 			bool moving = new Vector2(Velocity.X, Velocity.Z).LengthSquared() > 0.1f;
 			string next = moving ? $"{prefix}Run" : $"{prefix}Idle";
 			if (FpAnimPlayer != null && FpAnimPlayer.HasAnimation(next))
 				FpAnimPlayer.Play(next);
+		}
+
+		private void TryStartLocalReload()
+		{
+			if (wm == null || _isLocalReloading) return;
+			if (!wm.StartReload()) return;
+			_isLocalReloading = true;
+			_fpAnimLocked = true;
+			PlayReloadAnim();
+		}
+
+		private void PlayReloadAnim()
+		{
+			string animName = $"{GetWeaponPrefix()}Reload";
+			if (FpAnimPlayer != null && FpAnimPlayer.HasAnimation(animName))
+				FpAnimPlayer.Play(animName);
+			else
+				CompleteLocalReloadStep(); // no animation defined — complete instantly
+		}
+
+		private void CompleteLocalReloadStep()
+		{
+			bool moreSteps = wm.CompleteReloadStep();
+			if (moreSteps)
+			{
+				PlayReloadAnim(); // shotgun: reload next shell
+				return;
+			}
+			_isLocalReloading = false;
+			_fpAnimLocked = false;
+			hud?.OnReloadComplete();
+			string prefix = GetWeaponPrefix();
+			bool moving = new Vector2(Velocity.X, Velocity.Z).LengthSquared() > 0.1f;
+			string next = moving ? $"{prefix}Run" : $"{prefix}Idle";
+			if (FpAnimPlayer != null && FpAnimPlayer.HasAnimation(next))
+				FpAnimPlayer.Play(next);
+		}
+
+		private void CancelLocalReload()
+		{
+			if (!_isLocalReloading) return;
+			_isLocalReloading = false;
+			_fpAnimLocked = false;
+			wm?.CancelReload();
+			hud?.OnReloadComplete();
 		}
 
 		public override void RequestAIDecision() { }

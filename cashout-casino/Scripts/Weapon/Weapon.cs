@@ -8,6 +8,8 @@ namespace CashoutCasino.Weapon
 	public abstract partial class Weapon : Node3D
 	{
 		public virtual WeaponKind Kind => WeaponKind.Other;
+		public virtual string DisplayName => Name;
+		public virtual bool CanInterruptReload => false;
 
 		public Camera3D FireCamera;
 
@@ -18,6 +20,10 @@ namespace CashoutCasino.Weapon
 		[Export] public float damagePerHit = 10f;
 
 		public int currentAmmo;
+		public int magSize  = 30;
+		public int currentMag;
+		public bool IsReloading { get; protected set; }
+
 		protected ulong lastFireTime;
 		protected CashoutCasino.Character.Character owner;
 
@@ -40,12 +46,33 @@ namespace CashoutCasino.Weapon
 
 		protected bool TryStartFire(CashoutCasino.Character.Character weaponOwner)
 		{
-			if (!CanFire())
+			if (!CanFire() || IsReloading || currentMag <= 0)
 				return false;
 
 			owner = weaponOwner;
 			lastFireTime = Time.GetTicksMsec();
+			currentMag--;
 			return true;
+		}
+
+		// Returns true if more reload steps remain (shell-by-shell weapons).
+		public virtual bool FinishReloadStep()
+		{
+			currentMag  = magSize;
+			IsReloading = false;
+			return false;
+		}
+
+		public virtual bool StartReload()
+		{
+			if (IsReloading || currentMag >= magSize) return false;
+			IsReloading = true;
+			return true;
+		}
+
+		public virtual void CancelReload()
+		{
+			IsReloading = false;
 		}
 
 		protected bool TrySpawnBulletFromMuzzle(

@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dq00sm6udfidw" path="res://Packed Scenes/Character/RespawnScreen.tscn" id="7"]
 [ext_resource type="Script" uid="uid://885ytostwjll" path="res://Characters/PlayerCharacter.cs" id="8_chara"]
 [ext_resource type="Script" uid="uid://db5nv3t24c6a0" path="res://Scripts/Weapon/AssaultRifle.cs" id="9_7wf5q"]
+[ext_resource type="Shader" uid="uid://bds03jtxlmwh3" path="res://Characters/Outline.gdshader" id="9_r52jx"]
 [ext_resource type="Texture2D" uid="uid://bbcl8p3xwque8" path="res://Assets/3D-Models/RouletteWheelDrumGun_0.png" id="10_r52jx"]
 [ext_resource type="Script" uid="uid://sut6qlacnwvh" path="res://Scripts/Weapon/DualPistols.cs" id="11_ijtlc"]
 [ext_resource type="PackedScene" uid="uid://dlyvrwnqupi1r" path="res://Assets/3D-Models/PokerChipDualPistols.gltf" id="12_wbcqo"]
@@ -40,7 +41,15 @@ radius = 0.24485002
 radius = 0.38134766
 height = 1.5338867
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ijtlc"]
+render_priority = 0
+shader = ExtResource("9_r52jx")
+shader_parameter/step_count = 3
+shader_parameter/thickness = 3.0
+shader_parameter/edge_color = Color(0, 0, 0, 1)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d6q10"]
+next_pass = SubResource("ShaderMaterial_ijtlc")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_t8hoq"]
 resource_name = "PlayerAnimations_Cube_002"
@@ -4846,7 +4855,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_gd3no"]
 resource_name = "ShotgunShoot"
-length = 0.5
+length = 1.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -4854,10 +4863,10 @@ tracks/0/path = NodePath("WeaponManager/Shotgun:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.5, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 1.1662816, -0.009454191), Vector3(0, 1.1662815, 0.29090336), Vector3(0, 1.1662816, -0.009454191)]
+"values": [Vector3(0, 1.1662816, -0.009454191), Vector3(0, 1.1662815, 0.29090336), Vector3(0, 1.1662816, -0.009454191), Vector3(0, 1.1662816, -0.009454191)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -4866,10 +4875,10 @@ tracks/1/path = NodePath("WeaponManager/Shotgun:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.5, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0.33606315, 0, 0), Vector3(0, 0, 0)]
+"values": [Vector3(0, 0, 0), Vector3(0.33606315, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cayv7"]
@@ -5208,7 +5217,6 @@ script = ExtResource("2")
 [node name="AssaultRifle" type="Node3D" parent="FirstPersonPlayer/WeaponManager" unique_id=293869399 node_paths=PackedStringArray("Muzzle")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17920679, 1.0096756, -0.50785905)
 script = ExtResource("9_7wf5q")
-bulletSpeed = 150.0
 Muzzle = NodePath("Marker3D")
 
 [node name="Marker3D" type="Marker3D" parent="FirstPersonPlayer/WeaponManager/AssaultRifle" unique_id=827857944]
@@ -5275,7 +5283,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1662817, 0)
 script = ExtResource("11_ijtlc")
 LeftMuzzle = NodePath("LeftMarker")
 RightMuzzle = NodePath("RightMarker")
-bulletSpeed = 150.0
 
 [node name="blockbench_export2" parent="FirstPersonPlayer/WeaponManager/DualPistols" unique_id=962484517 instance=ExtResource("12_wbcqo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26, -1.183, -0.376)

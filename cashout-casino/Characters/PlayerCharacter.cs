@@ -43,10 +43,7 @@ public partial class PlayerCharacter : Node3D
 
 		// Apply the color to the existing capsule mesh by overriding its material
 		if (MyMesh != null)
-		{
-			MyColor = color;
-			MyMesh.MaterialOverride = new StandardMaterial3D { AlbedoColor = color };
-		}
+			ApplyColor(color);
 		else
 			GD.PrintErr("[PlayerCharacter] MyMesh is null — wire the MeshInstance3D export in the Godot inspector!");
 
@@ -54,5 +51,19 @@ public partial class PlayerCharacter : Node3D
 			NameLabel.Text = playerName;
 		else
 			GD.PrintErr("[PlayerCharacter] NameLabel is null — wire the Label3D export in the Godot inspector!");
+	}
+
+	// Duplicates the mesh's original surface material so next_pass (outline shader) is preserved.
+	public void ApplyColor(Color color)
+	{
+		if (MyMesh == null) return;
+		MyColor = color;
+
+		var baseMat = MyMesh.Mesh?.SurfaceGetMaterial(0) as StandardMaterial3D;
+		StandardMaterial3D mat = baseMat != null
+			? (StandardMaterial3D)baseMat.Duplicate()
+			: new StandardMaterial3D();
+		mat.AlbedoColor = color;
+		MyMesh.MaterialOverride = mat;
 	}
 }
