@@ -44,6 +44,19 @@ namespace CashoutCasino.Weapon
 			return weapons[Mathf.Clamp(currentWeaponIndex, 0, weapons.Count - 1)];
 		}
 
+		public bool IsReloading      => GetCurrentWeapon()?.IsReloading ?? false;
+		public bool CanInterruptCurrentReload => GetCurrentWeapon()?.CanInterruptReload ?? false;
+		public int  GetCurrentMag()     => GetCurrentWeapon()?.currentMag ?? 0;
+		public int  GetCurrentMagSize() => GetCurrentWeapon()?.magSize    ?? 0;
+
+		// Returns true if the weapon accepted the reload request.
+		public bool StartReload() => GetCurrentWeapon()?.StartReload() ?? false;
+
+		// Returns true if more steps remain (shotgun shell-by-shell).
+		public bool CompleteReloadStep() => GetCurrentWeapon()?.FinishReloadStep() ?? false;
+
+		public void CancelReload() => GetCurrentWeapon()?.CancelReload();
+
 		public void SwitchWeapon(int slotIndex)
 		{
 			if (slotIndex < 0 || slotIndex >= weapons.Count)
@@ -51,7 +64,10 @@ namespace CashoutCasino.Weapon
 
 			var current = GetCurrentWeapon();
 			if (current != null)
+			{
+				current.CancelReload();
 				current.Visible = false;
+			}
 
 			EquipWeapon(slotIndex);
 		}
@@ -110,7 +126,7 @@ namespace CashoutCasino.Weapon
 			return GetCurrentWeapon()?.GetAmmoCount() ?? 0;
 		}
 
-		public string GetCurrentWeaponName() => GetCurrentWeapon()?.Name ?? "None";
+		public string GetCurrentWeaponName() => GetCurrentWeapon()?.DisplayName ?? "None";
 
 		public WeaponKind GetCurrentWeaponKind() => GetCurrentWeapon()?.Kind ?? WeaponKind.Other;
 	}

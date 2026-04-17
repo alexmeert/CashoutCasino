@@ -8,18 +8,16 @@ namespace CashoutCasino.Weapon
 
 		public Color TrailColor = new Color(1f, 0.95f, 0.6f, 1f);
 
-		public new Camera3D FireCamera;
-
-		protected void PerformRaycast(Vector3 direction, CashoutCasino.Character.Character owner)
+		protected void PerformRaycast(Vector3 direction, CashoutCasino.Character.Character owner, Vector3? trailFrom = null)
 		{
 			Vector3 rayOrigin = FireCamera != null
 				? FireCamera.GlobalPosition
 				: owner.GlobalPosition + Vector3.Up * 1.6f;
 
-			PerformRaycastFrom(rayOrigin, direction.Normalized(), owner);
+			PerformRaycastFrom(rayOrigin, direction.Normalized(), owner, trailFrom);
 		}
 
-		protected void PerformRaycastFrom(Vector3 origin, Vector3 direction, CashoutCasino.Character.Character owner)
+		protected void PerformRaycastFrom(Vector3 origin, Vector3 direction, CashoutCasino.Character.Character owner, Vector3? trailFrom = null)
 		{
 			var spaceState = owner.GetWorld3D().DirectSpaceState;
 			Vector3 target = origin + direction * range;
@@ -73,7 +71,9 @@ namespace CashoutCasino.Weapon
 				}
 			}
 
-			SpawnTrail(origin + direction * 0.5f, hitPoint, owner);
+			// Trail starts at the muzzle if provided, otherwise just ahead of the camera.
+			Vector3 trailStart = trailFrom ?? (origin + direction * 0.5f);
+			SpawnTrail(trailStart, hitPoint, owner);
 		}
 
 		public void SpawnTrail(Vector3 from, Vector3 to, CashoutCasino.Character.Character owner)
@@ -90,6 +90,7 @@ namespace CashoutCasino.Weapon
 		public override void _Ready()
 		{
 			currentAmmo = maxAmmo;
+			currentMag  = magSize;
 		}
 	}
 }

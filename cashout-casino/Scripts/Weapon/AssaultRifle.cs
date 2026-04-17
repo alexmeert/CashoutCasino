@@ -3,30 +3,29 @@ using CashoutCasino.Economy;
 
 namespace CashoutCasino.Weapon
 {
-	public partial class AssaultRifle : ProjectileWeapon
+	public partial class AssaultRifle : HitscanWeapon
 	{
-		private static readonly PackedScene DefaultBulletScene =
-			GD.Load<PackedScene>("res://Packed Scenes/Projectile/Bullet.tscn");
-
-		[Export] public PackedScene bulletScene;
-		[Export] public float bulletSpeed = 95f;
-
 		public override WeaponKind Kind => WeaponKind.Rifle;
+		public override string DisplayName => "Assault Rifle";
 		public override CurrencyEconomy.CostType FireCostType => CurrencyEconomy.CostType.ShootAR;
 		public override bool HoldToFire => true;
 
-		protected override PackedScene ProjectileScene => bulletScene;
-		protected override float ProjectileSpeed => bulletSpeed;
-
 		public override void _Ready()
 		{
-			fireRate = 0.09f;
-			ammoCost = 1;
+			fireRate     = 0.09f;
+			ammoCost     = 1;
 			damagePerHit = 15f;
-			maxAmmo = 100;
-
-			bulletScene ??= DefaultBulletScene;
+			maxAmmo      = 100;
+			magSize      = 30;
 			base._Ready();
+		}
+
+		public override bool Fire(Vector3 direction, CashoutCasino.Character.Character owner)
+		{
+			if (!TryStartFire(owner)) return false;
+			// Trail starts at muzzle; hit detection uses camera-center raycast.
+			PerformRaycast(direction, owner, Muzzle?.GlobalPosition);
+			return true;
 		}
 	}
 }

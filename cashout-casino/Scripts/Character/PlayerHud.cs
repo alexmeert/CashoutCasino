@@ -23,6 +23,7 @@ namespace CashoutCasino.UI
 		private Control healthPanel;
 		private Control weaponPanel;
 		private Control reticle;
+		private RingDrawer _reloadRing;
 
 		private static readonly Font KillFeedFont =
 			GD.Load<Font>("res://Assets/upheaval/upheavtt.ttf");
@@ -55,6 +56,19 @@ namespace CashoutCasino.UI
 
 			if (atmDebtLabel != null)
 				atmDebtLabel.Visible = false;
+
+			// Small ring centered on the reticle, shown while reloading.
+			_reloadRing = new RingDrawer();
+			_reloadRing.AnchorLeft   = _reloadRing.AnchorRight  = 0.5f;
+			_reloadRing.AnchorTop    = _reloadRing.AnchorBottom  = 0.5f;
+			_reloadRing.OffsetLeft   = -28f;
+			_reloadRing.OffsetRight  =  28f;
+			_reloadRing.OffsetTop    = -28f;
+			_reloadRing.OffsetBottom =  28f;
+			_reloadRing.Thickness    = 5f;
+			_reloadRing.ArcColor     = new Color(1f, 0.85f, 0.2f, 1f);
+			_reloadRing.Visible      = false;
+			AddChild(_reloadRing);
 		}
 
 		public void SetAsLocalInstance()
@@ -69,7 +83,10 @@ namespace CashoutCasino.UI
 			weaponNameLabel.Text = WeaponManager.GetCurrentWeaponName();
 			var w = WeaponManager.GetCurrentWeapon();
 			if (w != null)
-				ammoLabel.Text = $"{w.GetAmmoCount()} / {w.maxAmmo}";
+			{
+				string reloadTag = w.IsReloading ? "  [RELOADING]" : "";
+				ammoLabel.Text = $"{w.currentMag} / {w.magSize}{reloadTag}";
+			}
 		}
 
 		public void OnCurrencyChanged(int newAmount)
@@ -103,6 +120,19 @@ namespace CashoutCasino.UI
 			if (healthPanel != null) healthPanel.Visible = true;
 			if (weaponPanel != null) weaponPanel.Visible = true;
 			if (reticle    != null) reticle.Visible    = true;
+		}
+
+		public void OnReloadProgress(float progress)
+		{
+			if (_reloadRing == null) return;
+			_reloadRing.Progress = progress;
+			_reloadRing.Visible  = true;
+			_reloadRing.QueueRedraw();
+		}
+
+		public void OnReloadComplete()
+		{
+			if (_reloadRing != null) _reloadRing.Visible = false;
 		}
 
 		public void OnDamageTaken()
