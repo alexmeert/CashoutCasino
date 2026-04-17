@@ -19,12 +19,17 @@ run/main_scene="uid://b12m7brj7s7hi"
 config/features=PackedStringArray("4.6", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[display]
+
+window/vsync/vsync_mode=0
+
 [dotnet]
 
 project/assembly_name="StartingTheGameProject"
 
 [editor]
 
+movie_writer/disable_vsync=true
 run/main_scene=""
 
 [global_group]
