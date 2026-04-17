@@ -1,9 +1,12 @@
-[gd_scene format=3 uid="uid://bl6ht36pqgx0q"]
+[gd_scene format=3 uid="uid://d0e27o4x3mm47"]
 
 [ext_resource type="Texture2D" uid="uid://7vne4o6g8hbf" path="res://Assets/2D-Textures-Assets/seamless_pattern_16x16px_SpriteSheet_ 266.png" id="1_s58pp"]
 [ext_resource type="PackedScene" uid="uid://b0hhwf5a8sskd" path="res://Assets/3D-Models/ShopSign.gltf" id="2_h4jre"]
 [ext_resource type="Script" uid="uid://bho2g2e6ucuhn" path="res://Scripts/Level/ShopStands.cs" id="2_u3ox5"]
 [ext_resource type="PackedScene" uid="uid://cjgx1njk4ekgd" path="res://Assets/3D-Models/DiceShotgun.gltf" id="3_u3ox5"]
+[ext_resource type="PackedScene" uid="uid://cvlfv31rwki1i" path="res://Assets/3D-Models/DamageIncrease.gltf" id="5_jcquc"]
+[ext_resource type="PackedScene" uid="uid://cgg3gldwl6ev" path="res://Assets/3D-Models/Boots.gltf" id="6_dbae2"]
+[ext_resource type="PackedScene" uid="uid://cheedxi8467jh" path="res://Assets/3D-Models/HealthUpgrade.gltf" id="7_da5o4"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g18sr"]
 albedo_texture = ExtResource("1_s58pp")
@@ -74,4 +77,14 @@ font_size = 48
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ShopInteract/InteractArea" unique_id=17245967]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0126389265, 0.89497375, 1.653293)
 shape = SubResource("SphereShape3D_shop")
+
+[node name="blockbench_export" parent="." unique_id=1675067767 instance=ExtResource("5_jcquc")]
+transform = Transform3D(0.69997954, 0, -0.0053511322, 0, 0.7, 0, 0.0053511322, 0, 0.69997954, -0.01075505, 0.13287872, 0.04886831)
+
+[node name="blockbench_export2" parent="." unique_id=2146591473 instance=ExtResource("6_dbae2")]
+transform = Transform3D(0.19999416, 0, -0.0015288948, 0, 0.2, 0, 0.0015288948, 0, 0.19999416, -0.6054833, 0.33437955, 1.4878833)
+
+[node name="blockbench_export3" parent="." unique_id=753123877 instance=ExtResource("7_da5o4")]
+transform = Transform3D(0.19058166, 0.059326924, 0.012606847, -0.060521793, 0.18330179, 0.05232161, 0.0039661173, -0.053672664, 0.19262274, 2.5294428, 0.3080145, 3.4556413)

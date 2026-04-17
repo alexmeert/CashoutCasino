@@ -41,7 +41,6 @@ script = ExtResource("2_o70cg")
 SpawnInexZeroOnConnect = true
 
 [node name="HostButton" type="Button" parent="CanvasLayer" unique_id=1783935955]
-visible = false
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -57,7 +56,6 @@ scale = Vector2(1.1741682, 1.1741682)
 text = "Host"
 
 [node name="ClientButton" type="Button" parent="CanvasLayer" unique_id=1755454888]
-visible = false
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
