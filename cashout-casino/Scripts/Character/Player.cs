@@ -158,8 +158,13 @@ namespace CashoutCasino.Character
 		public void LockWeapon(int weaponIndex)
 		{
 			_lockedWeaponIndex = weaponIndex;
-			wm?.SwitchWeapon(weaponIndex);
-			FpWeaponManager?.SwitchWeapon(weaponIndex);
+			// Only switch (and show) the weapon for the local player.
+			// Remote players keep their WeaponManager hidden.
+			if (IsMultiplayerAuthority())
+			{
+				wm?.SwitchWeapon(weaponIndex);
+				FpWeaponManager?.SwitchWeapon(weaponIndex);
+			}
 		}
 
 		private void SetupLocalAuthority()
@@ -175,9 +180,15 @@ namespace CashoutCasino.Character
 					hud.SetAsLocalInstance();
 					hud.OwnerPlayer = this;
 				}
-				// Hide third-person weapons; FP weapons handle the local view.
-				if (wm != null) wm.Visible = false;
-				// Local player sees first-person view only.
+				// If FP arms exist use those; otherwise show the 3rd-person weapon on the camera.
+				if (_fpPlayer != null)
+				{
+					if (wm != null) wm.Visible = false;
+				}
+				else
+				{
+					if (wm != null) wm.Visible = true; // No FP arms — use 3P weapon on camera
+				}
 				if (_armature != null) _armature.Visible = false;
 				if (_fpPlayer != null)
 				{
@@ -207,9 +218,13 @@ namespace CashoutCasino.Character
 					respawnScreen.Visible = false;
 					respawnScreen.ProcessMode = ProcessModeEnum.Disabled;
 				}
-				// Remote players see the third-person character; hide first-person arms.
-				if (_armature != null)  _armature.Visible  = true;
-				if (_fpPlayer != null)  _fpPlayer.Visible  = false;
+				// Remote players: show third-person body only.
+				// Hide the entire CameraHolder (contains Camera3D + WeaponManager).
+				var camHolder = GetNodeOrNull<Node3D>("CameraHolder");
+				if (camHolder != null) camHolder.Visible = false;
+				if (_armature != null) _armature.Visible = true;
+				if (_fpPlayer != null) _fpPlayer.Visible = false;
+				if (wm != null) wm.Visible = false;
 			}
 		}
 
